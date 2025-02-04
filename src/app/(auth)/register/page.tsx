@@ -1,11 +1,6 @@
 import LoginForm from "@/components/forms/auth/login-form";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Login",
-};
-
-const LoginPage = () => {
+const Register = () => {
   return (
     <div className="w-full max-w-sm p-4 md:p-0">
       {/* TODO add logo for mobile */}
@@ -20,4 +15,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Register;
