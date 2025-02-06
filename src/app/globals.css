@@ -46,6 +46,14 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* custom chart colors */
+    --chart-blue: #54a6ff;
+    --chart-yellow: #ffc73a;
+    --chart-orange: #ff4423;
+    --chart-green: #9cd323;
+    /* --chart-yellow : #FFC73A;
+    --chart-yellow : #FFC73A; */
   }
   .dark {
     --background: 240 10% 3.9%;
