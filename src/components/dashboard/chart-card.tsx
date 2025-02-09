@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "motion/react";
+
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +27,7 @@ export interface ChartCardProps {
 
 const ChartCard = () => {
   return (
-    <div className="w-full border rounded-xl py-4 px-6">
+    <motion.div layout className="w-full border rounded-xl py-4 px-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
@@ -52,7 +56,7 @@ const ChartCard = () => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
