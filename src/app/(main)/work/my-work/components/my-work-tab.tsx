@@ -2,22 +2,24 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentsDataTable from "./tables/documents-data-table";
+import ControlsDataTable from "./tables/controls-data-table";
+import EvidenceDataTable from "./tables/evidence-table";
 
 export const tabData = [
   {
     label: "Documents",
     value: "documents",
-    table: () => <DocumentsDataTable />,
+    table: () => <ControlsDataTable />,
   },
   {
     label: "Controls",
     value: "controls",
-    table: () => <p>Data Table for controls</p>,
+    table: () => <DocumentsDataTable />,
   },
   {
     label: "Evidence",
     value: "evidence",
-    table: () => <p>Data Table for Evidence</p>,
+    table: () => <EvidenceDataTable />,
   },
   {
     label: "Actions Items",
