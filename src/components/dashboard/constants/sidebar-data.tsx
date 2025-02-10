@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Chart2,
   Cpu,
@@ -28,7 +30,7 @@ export const sidebarData: SidebarItem[] = [
   {
     label: "Dashboard",
     icon: ElementPlus,
-    href: "/dashboard",
+    href: "/",
   },
   {
     label: "Work",

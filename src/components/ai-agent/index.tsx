@@ -4,8 +4,10 @@ import { ArrowRight2 } from "iconsax-react";
 import AiIcon from "../icons/ai-icon";
 
 import { motion } from "motion/react";
+import { useAiChat } from "@/store/useAiChatStore";
 
 const AiAgent = () => {
+  const { closeChat } = useAiChat();
   return (
     <motion.div
       layout
@@ -18,7 +20,7 @@ const AiAgent = () => {
           <div className="text-sm font-medium">AI Agent</div>
         </div>
 
-        <button>
+        <button onClick={closeChat}>
           <ArrowRight2 color="#596780" className="size-5" />
         </button>
       </div>
