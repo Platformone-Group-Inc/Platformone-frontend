@@ -30,10 +30,6 @@ const NavItem: React.FC<Props> = ({ menu }) => {
     path === menu.href ||
     (hasSubItems && menu.group?.some((subItem) => path === subItem.href));
 
-  console.log(
-    `Current path: ${path}, First sub-item path: ${menu.group?.[0]?.href}`
-  );
-
   return (
     <SidebarMenuItem>
       {hasSubItems ? (

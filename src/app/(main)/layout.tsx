@@ -19,7 +19,9 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
         <SidebarTrigger className="absolute translate-y-6 -translate-x-4 z-50 bg-white border p-4 rounded-full" />
         <ScrollArea className="h-dvh w-full">
           <Header />
-          {children}
+          <div className="p-8 bg-[#EEF2FF] flex gap-4 min-h-svh">
+            {children}
+          </div>
         </ScrollArea>
       </main>
     </SidebarProvider>

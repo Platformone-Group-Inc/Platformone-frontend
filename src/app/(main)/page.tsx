@@ -16,18 +16,16 @@ import { useAiChat } from "@/store/useAiChatStore";
 const Dashboard = () => {
   const { isOpen } = useAiChat();
   return (
-    <div className="p-8 bg-[#EEF2FF] flex gap-4 min-h-svh">
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          layout
-          key={"tab"}
-          className="rounded-xl flex-grow bg-white h-full"
-        >
-          <DashboardTab />
-        </motion.div>
-        {isOpen && <AiAgent key={"ai-agent"} />}
-      </AnimatePresence>
-    </div>
+    <AnimatePresence mode="popLayout">
+      <motion.div
+        layout
+        key={"tab"}
+        className="rounded-xl flex-grow bg-white h-full"
+      >
+        <DashboardTab />
+      </motion.div>
+      {isOpen && <AiAgent key={"ai-agent"} />}
+    </AnimatePresence>
   );
 };
 
