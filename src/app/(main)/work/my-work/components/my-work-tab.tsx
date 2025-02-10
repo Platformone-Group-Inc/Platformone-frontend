@@ -31,9 +31,13 @@ export const tabData = [
 const MyWorkTab = () => {
   return (
     <Tabs defaultValue={tabData[0].value}>
-      <TabsList>
+      <TabsList className="p-1 h-auto gap-4 bg-white border">
         {tabData.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value}>
+          <TabsTrigger
+            key={tab.value}
+            value={tab.value}
+            className="h-auto px-3.5 py-1.5 text-sm font-medium data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-black/40 transition-all"
+          >
             {tab.label}
           </TabsTrigger>
         ))}
