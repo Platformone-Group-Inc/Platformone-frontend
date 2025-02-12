@@ -31,11 +31,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
           <SidebarMenu>
+            {/* TODO arrow direction */}
             {sidebarData.map((item) => (
               <Collapsible
                 key={item.label}
                 asChild
-                defaultOpen
                 className="group/collapsible"
               >
                 <NavItem menu={item} />
@@ -44,7 +44,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-
       <SidebarRail />
     </Sidebar>
   );

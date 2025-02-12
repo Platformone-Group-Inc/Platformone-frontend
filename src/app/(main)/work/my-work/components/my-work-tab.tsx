@@ -22,7 +22,7 @@ export const tabData = [
     table: () => <EvidenceDataTable />,
   },
   {
-    label: "Actions Items",
+    label: "Action Items",
     value: "actions",
     table: () => <p>Data Table for Actions Item </p>,
   },

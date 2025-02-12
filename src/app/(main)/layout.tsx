@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Header from "@/components/dashboard/header";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import AiAgentProvider from "@/components/providers/ai-agent-provider";
 
 const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   return (
@@ -17,12 +18,10 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
       <AppSidebar />
       <main className="w-full">
         <SidebarTrigger className="absolute translate-y-6 -translate-x-4 z-50 bg-white border p-4 rounded-full" />
-        <ScrollArea className="h-dvh w-full">
-          <Header />
-          <div className="p-8 bg-[#EEF2FF] flex gap-4 min-h-svh">
-            {children}
-          </div>
-        </ScrollArea>
+        <Header />
+        <div className="p-8 bg-[#EEF2FF] flex gap-4">
+          <AiAgentProvider>{children}</AiAgentProvider>
+        </div>
       </main>
     </SidebarProvider>
   );

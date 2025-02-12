@@ -42,7 +42,7 @@ const NavItem: React.FC<Props> = ({ menu }) => {
                 isActive && "bg-primary/20 text-[#5E43D8] fill-primary"
               )}
             >
-              <menu.icon size={20} color={isActive ? "#5E43D8" : "#90A3BF"} />
+              <menu.icon size={20} color={isActive ? "#5E43D8" : "#64748B"} />
 
               <span>{menu.label}</span>
               <ChevronRight
