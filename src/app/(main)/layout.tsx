@@ -2,7 +2,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 import Header from "@/components/dashboard/header";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ScrollArea } from "@/components/ui/scroll-area";
+// TODO kuchh to krna hai pta nhi kya
+// import { ScrollArea } from "@/components/ui/scroll-area";
 import AiAgentProvider from "@/components/providers/ai-agent-provider";
 
 const DashboardLayout = ({ children }: React.PropsWithChildren) => {
