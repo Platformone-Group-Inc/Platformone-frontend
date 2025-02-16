@@ -5,6 +5,7 @@ import { PlusIcon } from "lucide-react";
 const NoFrameworks = () => {
   return (
     <div className="min-h-[500px] h-full w-full flex flex-col text-center items-center justify-center gap-4">
+      {/* TODO: add mask */}
       <span className="p-3 bg-primary/10 rounded-xl">
         <Ram2 className="size-6 stroke-primary" />
       </span>
