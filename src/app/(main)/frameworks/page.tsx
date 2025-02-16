@@ -1,4 +1,4 @@
-// import NoFrameworks from "./components/no-frameworks";
+import NoFrameworks from "./components/no-frameworks";
 
 import FrameworksGrid from "./components/frameworks-grid";
 
@@ -13,8 +13,8 @@ const FrameworksPage = () => {
           controls to them.
         </p>
       </div>
-      {/* <NoFrameworks /> */}
-      <FrameworksGrid />
+      <NoFrameworks />
+      {/* <FrameworksGrid /> */}
     </div>
   );
 };

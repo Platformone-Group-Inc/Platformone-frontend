@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Ram2 } from "iconsax-react";
-import { PlusIcon } from "lucide-react";
+import AddFrameworkModal from "./modals/add-framework-modal";
 
 const NoFrameworks = () => {
   return (
@@ -16,10 +15,7 @@ const NoFrameworks = () => {
           dictum diam.
         </p>
       </div>
-      <Button className="h-auto gap-1.5 py-2.5 px-5">
-        <PlusIcon className="text-xl" />
-        <span className="font-medium">Add Framework</span>
-      </Button>
+      <AddFrameworkModal />
     </div>
   );
 };
