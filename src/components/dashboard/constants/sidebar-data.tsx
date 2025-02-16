@@ -63,6 +63,7 @@ export const sidebarData: SidebarItem[] = [
   {
     label: "Controls",
     icon: Setting4,
+    href: "/controls",
     group: [],
   },
   { label: "Technologies", icon: Cpu, href: "/technologies" },
