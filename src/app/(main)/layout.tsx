@@ -20,7 +20,7 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
       <main className="w-full">
         <SidebarTrigger className="absolute translate-y-6 -translate-x-4 z-50 bg-white border p-4 rounded-full" />
         <Header />
-        <div className="p-8 bg-[#EEF2FF] flex gap-4">
+        <div className="p-8 bg-[#EEF2FF] flex min-h-svh gap-4">
           <AiAgentProvider>{children}</AiAgentProvider>
         </div>
       </main>

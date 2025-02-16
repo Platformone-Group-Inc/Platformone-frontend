@@ -22,8 +22,11 @@ const UserDropdownMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-3">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage
+            src="https://github.com/sahilverma-dev.png"
+            alt="Sahil Verma"
+          />
+          <AvatarFallback>SV</AvatarFallback>
         </Avatar>
         <p className="font-semibold">Sahil</p>
       </DropdownMenuTrigger>
