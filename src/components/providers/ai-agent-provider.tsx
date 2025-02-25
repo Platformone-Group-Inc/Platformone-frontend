@@ -8,15 +8,11 @@ import { motion } from "motion/react";
 
 import { AnimatePresence } from "motion/react";
 import { useAiChat } from "@/store/useAiChatStore";
-import React from "react";
+
 import { ScrollArea } from "../ui/scroll-area";
-
-// export const metadata: Metadata = {
-//   title: "Dashboard",
-// };
-
 const AiAgentProvider = ({ children }: React.PropsWithChildren) => {
   const { isOpen } = useAiChat();
+
   return (
     <AnimatePresence mode="popLayout">
       <motion.div
