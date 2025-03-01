@@ -5,9 +5,12 @@ import { PlusIcon } from "lucide-react";
 import ControlCard from "./components/control-card";
 import { Badge } from "@/components/ui/badge";
 
+import { DeleteControlModal } from "./components/delete-modal";
+
 const ControlsPage = () => {
   return (
     <div className="p-6 w-full">
+      <DeleteControlModal />
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <h1 className="font-semibold text-xl">
           Control Set
