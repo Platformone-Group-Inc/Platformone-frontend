@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { UploadIcon } from "lucide-react";
+import { UploadCloudIcon, UploadIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { createContext, useContext } from "react";
 import { useDropzone } from "react-dropzone";
@@ -176,10 +176,11 @@ export const DropzoneEmptyState = ({ children }: DropzoneEmptyStateProps) => {
 
   return (
     <>
-      <div className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
-        <UploadIcon size={16} />
+      <div className="flex p-2.5 items-center justify-center rounded-md border text-muted-foreground">
+        {/* <UploadIcon size={16} /> */}
+        <UploadCloudIcon size={20} />
       </div>
-      <p className="my-2 w-full truncate font-medium text-sm">
+      <p className="my-2 w-full text-black truncate font-medium text-sm">
         <span className="font-semibold text-primary">Click here</span> or drag
         and drop Upload {maxFiles === 1 ? "a file" : "files"}
       </p>

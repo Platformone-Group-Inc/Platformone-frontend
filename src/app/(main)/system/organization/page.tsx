@@ -2,11 +2,11 @@
 
 import BrandLogo from "@/components/icons/brand-logo";
 import { Button } from "@/components/ui/button";
-// import {
-//   Dropzone,
-//   DropzoneContent,
-//   DropzoneEmptyState,
-// } from "@/components/ui/dropzone";
+import {
+  Dropzone,
+  DropzoneContent,
+  DropzoneEmptyState,
+} from "@/components/ui/dropzone";
 import { Input } from "@/components/ui/input";
 import { TrashIcon } from "lucide-react";
 
@@ -33,6 +33,17 @@ const Organization = () => {
           various reports requiring this information.
         </p>
 
+        <Dropzone
+          maxSize={1024 * 1024 * 10}
+          minSize={1024}
+          maxFiles={10}
+          accept={{ "image/*": [] }}
+          onError={console.error}
+          className="w-full max-w-[500px] h-52"
+        >
+          <DropzoneEmptyState />
+          <DropzoneContent />
+        </Dropzone>
         <div className="border p-4 rounded-md flex gap-3 max-w-[550px]">
           <BrandLogo />
           <div className="flex-grow">
@@ -47,18 +58,6 @@ const Organization = () => {
             <TrashIcon />
           </Button>
         </div>
-
-        {/* <Dropzone
-          maxSize={1024 * 1024 * 10}
-          minSize={1024}
-          maxFiles={10}
-          accept={{ "image/*": [] }}
-          onError={console.error}
-          className="w-full max-w-[500px] h-52"
-        >
-          <DropzoneEmptyState />
-          <DropzoneContent />
-        </Dropzone> */}
       </div>
     </>
   );
