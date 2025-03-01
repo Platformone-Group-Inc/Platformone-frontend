@@ -1,14 +1,11 @@
 "use client";
 
-import BrandLogo from "@/components/icons/brand-logo";
-import { Button } from "@/components/ui/button";
 import {
   Dropzone,
   DropzoneContent,
   DropzoneEmptyState,
 } from "@/components/ui/dropzone";
 import { Input } from "@/components/ui/input";
-import { TrashIcon } from "lucide-react";
 
 const Organization = () => {
   return (
