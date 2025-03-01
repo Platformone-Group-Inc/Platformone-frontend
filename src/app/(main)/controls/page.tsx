@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Filter, Import } from "iconsax-react";
 import { PlusIcon } from "lucide-react";
 
-import ControlCard from "./components/ControlCard";
+import ControlCard from "./components/control-card";
 import { Badge } from "@/components/ui/badge";
 
 const ControlsPage = () => {
