@@ -1,11 +1,14 @@
 "use client";
 
-import {
-  Dropzone,
-  DropzoneContent,
-  DropzoneEmptyState,
-} from "@/components/ui/dropzone";
+import BrandLogo from "@/components/icons/brand-logo";
+import { Button } from "@/components/ui/button";
+// import {
+//   Dropzone,
+//   DropzoneContent,
+//   DropzoneEmptyState,
+// } from "@/components/ui/dropzone";
 import { Input } from "@/components/ui/input";
+import { TrashIcon } from "lucide-react";
 
 const Organization = () => {
   return (
@@ -30,7 +33,22 @@ const Organization = () => {
           various reports requiring this information.
         </p>
 
-        <Dropzone
+        <div className="border p-4 rounded-md flex gap-3 max-w-[550px]">
+          <BrandLogo />
+          <div className="flex-grow">
+            <p className="font-medium text-sm">Logo.png</p>
+            <p className="text-gray-400 text-sm">200 KB - 100% uploaded</p>
+          </div>
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            className="text-red-500 hover:text-red-600"
+          >
+            <TrashIcon />
+          </Button>
+        </div>
+
+        {/* <Dropzone
           maxSize={1024 * 1024 * 10}
           minSize={1024}
           maxFiles={10}
@@ -40,7 +58,7 @@ const Organization = () => {
         >
           <DropzoneEmptyState />
           <DropzoneContent />
-        </Dropzone>
+        </Dropzone> */}
       </div>
     </>
   );
