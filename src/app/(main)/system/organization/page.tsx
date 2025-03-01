@@ -39,12 +39,12 @@ const Organization = () => {
           maxFiles={10}
           accept={{ "image/*": [] }}
           onError={console.error}
-          className="w-full max-w-[500px] h-52"
+          className="w-full max-w-[550px] h-52"
         >
           <DropzoneEmptyState />
           <DropzoneContent />
         </Dropzone>
-        <div className="border p-4 rounded-md flex gap-3 max-w-[550px]">
+        {/* <div className="border p-4 rounded-md flex gap-3 max-w-[550px]">
           <BrandLogo />
           <div className="flex-grow">
             <p className="font-medium text-sm">Logo.png</p>
@@ -57,7 +57,7 @@ const Organization = () => {
           >
             <TrashIcon />
           </Button>
-        </div>
+        </div> */}
       </div>
     </>
   );
