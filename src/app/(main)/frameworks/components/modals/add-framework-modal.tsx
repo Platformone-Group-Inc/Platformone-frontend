@@ -28,7 +28,7 @@ const AddFrameworkModal = () => {
             <DialogTitle className="px-6 pt-6">Add Framework</DialogTitle>
             <DialogDescription asChild>
               <div className="p-6">
-                <div className="space-y-4 [&_strong]:font-semibold [&_strong]:text-foreground">
+                <div className="space-y-4 [&_strong]:font-semibold [&_strong]:text-secondary">
                   <div className="space-y-1">
                     <p>
                       <strong>Lorem, ipsum dolor.</strong>

@@ -118,7 +118,7 @@ const NotificationPopover = () => {
         >
           <Bell size={24} strokeWidth={2} aria-hidden="true" />
           {unreadCount > 0 && (
-            <Badge className="absolute bg-red-400 rounded-full top-0 left-full p-1.5  aspect-square -translate-x-1/2 ">
+            <Badge className="absolute bg-error rounded-full top-0 left-full p-1.5  aspect-square -translate-x-1/2 ">
               {/* {unreadCount > 99 ? "99+" : unreadCount} */}
             </Badge>
           )}
@@ -144,11 +144,11 @@ const NotificationPopover = () => {
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className="rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent"
+            className="rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent"
           >
             <div className="relative flex items-start gap-3 pe-3">
               <img
-                className="size-9 rounded-md"
+                className="size-9 rounded-lg"
                 src={notification.image}
                 width={32}
                 height={32}

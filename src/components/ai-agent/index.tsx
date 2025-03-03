@@ -46,10 +46,8 @@ const AiAgent = () => {
         </button>
       </div>
       <ScrollArea className="flex-grow overflow-y-scroll p-4">
-        <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-          {characterText}
-        </p>
-        <Button variant="link" className="text-red-500" onClick={handleRestart}>
+        <p className="text-sm whitespace-pre-wrap">{characterText}</p>
+        <Button variant="link" className="text-error" onClick={handleRestart}>
           restart
         </Button>
         <MessageLoading className="text-primary text-5xl size-10" />
@@ -94,7 +92,7 @@ const AiAgent = () => {
         </ChatBubble>
       </ScrollArea>
       <div className="border-t p-2 flex items-center justify-between">
-        <div className="flex-1 flex items-center gap-2 bg-gray-100 py-1 px-2 border-transparent focus-within:border-primary border-2 rounded-lg transition-all">
+        <div className="flex-1 flex items-center gap-2 bg-background py-1 px-2 border-transparent focus-within:border-primary border-2 rounded-lg transition-all">
           <Input
             placeholder="Query your files"
             className="py-0 px-1 h-auto bg-transparent text-sm border-transparent focus-visible:ring-0 focus-visible:outline-none shadow-none"

@@ -40,7 +40,7 @@ const ChartCard = () => {
           <TooltipTrigger asChild>
             <InfoIcon size={20} className="text-gray-400" />
           </TooltipTrigger>
-          <TooltipContent className="bg-white/10 backdrop-blur text-black border rounded-md">
+          <TooltipContent className="bg-white/10 backdrop-blur text-black border rounded-lg">
             <p>Chart information</p>
           </TooltipContent>
         </Tooltip>

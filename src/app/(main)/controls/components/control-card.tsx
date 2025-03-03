@@ -27,10 +27,10 @@ const ControlCard = () => {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <DropdownMenuItem className="h-auto py-2.5 px-2 text-sm bg-primary/20 text-primary font-medium rounded-md ">
+            <DropdownMenuItem className="h-auto py-2.5 px-2 text-sm bg-primary/20 text-primary font-medium rounded-lg ">
               Assist
             </DropdownMenuItem>
-            <DropdownMenuItem className="h-auto py-2.5 px-2 text-sm rounded-md font-medium">
+            <DropdownMenuItem className="h-auto py-2.5 px-2 text-sm rounded-lg font-medium">
               Delete Control Set
             </DropdownMenuItem>
           </DropdownMenuContent>

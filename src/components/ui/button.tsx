@@ -9,9 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-        destructive: "bg-red-500 text-white hover:bg-red-600 shadow-sm",
+        default: "bg-primary text-white shadow hover:bg-primary/90",
+        destructive: "bg-error-500 text-white hover:bg-error-600 shadow-sm",
         outline:
           "border border-border text-black bg-transparent shadow-sm hover:bg-black/10",
         secondary:
@@ -21,14 +20,14 @@ const buttonVariants = cva(
       },
       radius: {
         none: "rounded-none",
-        default: "rounded-md",
+        default: "rounded-lg",
         full: "rounded-full",
       },
       size: {
         default: "h-auto px-4 py-2.5",
         sm: "h-8 px-3 text-xs",
         lg: "h-10 px-8",
-        icon: "h-9 w-9",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {

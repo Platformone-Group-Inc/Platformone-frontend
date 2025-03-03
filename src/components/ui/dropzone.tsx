@@ -126,7 +126,7 @@ export const DropzoneContent = ({ children }: DropzoneContentProps) => {
 
   return (
     <>
-      <div className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
+      <div className="flex size-8 items-center justify-center rounded-lg bg-background text-muted-foreground">
         <UploadIcon size={16} />
       </div>
       <p className="my-2 w-full truncate font-medium text-sm">
@@ -136,7 +136,7 @@ export const DropzoneContent = ({ children }: DropzoneContentProps) => {
             )} and ${src.length - maxLabelItems} more`
           : new Intl.ListFormat("en").format(src.map((file) => file.name))}
       </p>
-      <p className="w-full text-muted-foreground text-xs">
+      <p className="w-full text-xs">
         <span className="font-semibold text-primary">Click here</span> or drag
         and drop
       </p>
@@ -176,7 +176,7 @@ export const DropzoneEmptyState = ({ children }: DropzoneEmptyStateProps) => {
 
   return (
     <>
-      <div className="flex p-2.5 items-center justify-center rounded-md border text-muted-foreground">
+      <div className="flex p-2.5 items-center justify-center rounded-lg border text-muted-foreground">
         {/* <UploadIcon size={16} /> */}
         <UploadCloudIcon size={20} />
       </div>

@@ -31,7 +31,7 @@ const FrameworkCard = () => {
           <TooltipTrigger asChild>
             <InfoCircle size={20} className="stroke-gray-400" />
           </TooltipTrigger>
-          <TooltipContent className="bg-white/10 backdrop-blur text-black border rounded-md">
+          <TooltipContent className="bg-white/10 backdrop-blur text-black border rounded-lg">
             <p>Chart information</p>
           </TooltipContent>
         </Tooltip>

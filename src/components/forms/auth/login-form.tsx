@@ -28,7 +28,7 @@ const LoginForm = ({
               id="email"
               type="email"
               placeholder="olivia@complianceone.com"
-              className="rounded-md md:h-11 px-3.5 py-2.5 text-sm md:text-base"
+              className="rounded-lg md:h-11 px-3.5 py-2.5 text-sm md:text-base"
               required
             />
           </div>
@@ -42,7 +42,7 @@ const LoginForm = ({
               id="password"
               placeholder="min 12 character"
               required
-              className="rounded-md md:h-11 px-3.5 py-2.5 text-sm md:text-base"
+              className="rounded-lg md:h-11 px-3.5 py-2.5 text-sm md:text-base"
             />
           </div>
           <div className="grid gap-2">
@@ -81,7 +81,7 @@ const LoginForm = ({
           <Button
             type="button"
             variant={"outline"}
-            className="w-full h-11 rounded-md px-3.5 py-2.5 mb-4"
+            className="w-full h-11 rounded-lg px-3.5 py-2.5 mb-4"
           >
             <GoogleIcon className="!size-6" />
             <span className="text-sm font-medium">Sign in with Google</span>
@@ -89,7 +89,7 @@ const LoginForm = ({
           <Button
             type="button"
             variant={"outline"}
-            className="w-full h-11 rounded-md px-3.5 py-2.5"
+            className="w-full h-11 rounded-lg px-3.5 py-2.5"
           >
             <MicrosoftIcon className="!size-6" />
             <span className="text-sm font-medium">Sign in with Microsoft</span>

@@ -21,19 +21,21 @@ const ControlsPage = () => {
         <div className="flex items-center gap-4">
           <Button
             variant={"outline"}
-            className="h-auto px-3.5 py-2.5 border-primary/20 rounded-lg hover:bg-black/10"
+            className="h-auto px-3.5 py-2.5 border-primary/20 rounded-lg hover:bg-primary/10"
           >
-            <Import className="size-5 stroke-gray-500" />
-            <span className="font-semibold text-sm text-gray-500">
+            <Import className="size-5 stroke-secondary-400" />
+            <span className="font-semibold text-sm text-secondary-400">
               Import from Library
             </span>
           </Button>
           <Button
             variant={"outline"}
-            className="h-auto px-3.5 py-2.5 border-primary/20 rounded-lg hover:bg-black/10"
+            className="h-auto px-3.5 py-2.5 border-primary/20 rounded-lg hover:bg-primary/10"
           >
-            <Filter className="size-5 stroke-gray-500" />
-            <span className="font-semibold text-sm text-gray-500">Filter</span>
+            <Filter className="size-5 stroke-secondary-400" />
+            <span className="font-semibold text-sm text-secondary-400">
+              Filter
+            </span>
           </Button>
           <Button className="h-auto px-3.5 py-2.5 rounded-lg">
             <PlusIcon className="size-5 stroke-white" />
