@@ -12,10 +12,10 @@ const buttonVariants = cva(
         default: "bg-primary text-white shadow hover:bg-primary/90",
         destructive: "bg-error-500 text-white hover:bg-error-600 shadow-sm",
         outline:
-          "border border-border text-black bg-transparent shadow-sm hover:bg-black/10",
+          "border border-border text-black bg-transparent shadow-sm hover:bg-primary-100",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-primary-100 hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       radius: {

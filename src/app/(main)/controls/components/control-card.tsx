@@ -7,14 +7,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { AnimatePresence, motion } from "motion/react";
+
 import { Button } from "@/components/ui/button";
 import { More } from "iconsax-react";
+import { useState } from "react";
+import { FaCaretDown } from "react-icons/fa";
+import { cn } from "@/lib/utils";
 
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ControlCard = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   return (
-    <div className="border border-primary/20 rounded-xl w-full p-4">
+    <motion.div className="border border-primary/20 rounded-xl w-full p-4">
       <div className="flex items-center justify-between mb-1">
         <h3 className="font-semibold truncate ">
           Fedramp (Rev5) Moderate Baseline
@@ -36,39 +42,64 @@ const ControlCard = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex items-center gap-2">
-        {/* <Avatar>
+      <AnimatePresence mode="sync">
+        <>
+          <div className="flex items-center gap-2">
+            {/* <Avatar>
            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> 
           <AvatarFallback className="bg-black">CN</AvatarFallback>
         </Avatar> */}
-        <div className="size-10 font-medium p-2 bg-primary/20 flex items-center justify-center rounded-full">
-          <p>LN</p>
-        </div>
-        <p>Lana Steiner</p>
-      </div>
-      <div className="mt-6 flex flex-col w-full">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="py-2 border-b last:border-b-0 flex items-center justify-between text-xs"
-          >
-            <div className="flex items-center gap-2">
-              <span className="size-2 aspect-square rounded-full bg-primary" />
-              <p>In Progress</p>
+            <div className="size-10 font-medium p-2 bg-primary/20 flex items-center justify-center rounded-full">
+              <p>LN</p>
             </div>
-            <p>0</p>
+            <p>Lana Steiner</p>
           </div>
-        ))}
-      </div>
-      <div className="mt-6 border-t pt-4">
-        <Button
-          variant={"outline"}
-          className="h-auto text-xs font-semibold w-full border-primary rounded-full py-1.5"
-        >
-          18 Controls Families
-        </Button>
-      </div>
-    </div>
+          {isCollapsed && (
+            <motion.div
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="mt-6 flex flex-col w-full"
+            >
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="py-2 border-b last:border-b-0 flex items-center justify-between text-xs"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="size-2 aspect-square rounded-full bg-primary" />
+                    <p>In Progress</p>
+                  </div>
+                  <p>0</p>
+                </div>
+              ))}
+            </motion.div>
+          )}
+          <motion.div layout className="mt-6 space-y-2 border-t pt-4">
+            <Button
+              variant={"outline"}
+              className="h-auto text-xs font-semibold w-full text-primary border-primary rounded-full py-1.5"
+            >
+              18 Controls Families
+            </Button>
+            <Button
+              variant={"ghost"}
+              onClick={() => setIsCollapsed((state) => !state)}
+              className="h-auto text-xs font-semibold w-full border-primary text-primary rounded-full py-1.5 "
+            >
+              <span>{isCollapsed ? "Hide" : "Show"} Detailed</span>
+              <FaCaretDown
+                className={cn(
+                  "transition-all",
+                  isCollapsed ? "rotate-180" : "rotate-0"
+                )}
+              />
+            </Button>
+          </motion.div>
+        </>
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
