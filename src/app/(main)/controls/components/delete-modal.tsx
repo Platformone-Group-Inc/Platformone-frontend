@@ -24,7 +24,7 @@ export const DeleteControlModal = () => {
       <AlertDialogContent className="max-w-[400px] space-y-4">
         <div className="flex flex-col gap-2 max-sm:items-center">
           <div
-            className="relative flex size-14 p-3 bg-red-500/20 text-red-500 shrink-0 items-center justify-center rounded-full"
+            className="relative flex size-14 p-3 bg-error-500/20 text-error-500 shrink-0 items-center justify-center rounded-full"
             aria-hidden="true"
           >
             <Trash2Icon size={24} strokeWidth={2} />
@@ -49,7 +49,7 @@ export const DeleteControlModal = () => {
           <AlertDialogAction asChild>
             <Button
               variant={"destructive"}
-              className="w-full bg-error text-white hover:bg-error-600"
+              className="w-full bg-error-600 text-white hover:bg-error-600"
             >
               Delete
             </Button>
