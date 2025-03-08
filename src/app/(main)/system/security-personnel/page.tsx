@@ -2,19 +2,19 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tag, TagInput } from "emblor";
-import { useState } from "react";
+// import { Tag, TagInput } from "emblor";
+// import { useState } from "react";
 
-const tags = [
-  {
-    id: "1",
-    text: "User 1",
-  },
-];
+// const tags = [
+//   {
+//     id: "1",
+//     text: "User 1",
+//   },
+// ];
 
 const SecurityPersonnel = () => {
-  const [exampleTags, setExampleTags] = useState<Tag[]>(tags);
-  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
+  // const [exampleTags, setExampleTags] = useState<Tag[]>(tags);
+  // const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   return (
     <>
       <div className="space-y-2">
@@ -29,7 +29,7 @@ const SecurityPersonnel = () => {
         <div className="space-y-1.5">
           <Label className="text-sm font-medium">Organization Details</Label>
           {/* TODO add user avatar */}
-          <TagInput
+          {/* <TagInput
             id="input-57"
             tags={exampleTags}
             setTags={(newTags) => {
@@ -49,7 +49,7 @@ const SecurityPersonnel = () => {
             }}
             activeTagIndex={activeTagIndex}
             setActiveTagIndex={setActiveTagIndex}
-          />
+          /> */}
         </div>
         <div className="space-y-1.5">
           <Label className="text-sm font-medium">Organization Details</Label>
