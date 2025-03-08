@@ -1,24 +1,13 @@
-"use client";
-import { useState } from "react";
-import { Content } from "@tiptap/react";
-import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
+import DemoEditorOne from "./demo-editor-one";
+import DemoEditorTwo from "./demo-editor-two";
 
-const App = () => {
-  const [value, setValue] = useState<Content>("");
-
+const Page = () => {
   return (
-    <MinimalTiptapEditor
-      value={value}
-      onChange={setValue}
-      className="w-full"
-      editorContentClassName="p-5"
-      output="html"
-      placeholder="Enter your content..."
-      autofocus={true}
-      editable={true}
-      editorClassName="focus:outline-none"
-    />
+    <div className="space-y-4 p-4">
+      <DemoEditorOne />
+      <DemoEditorTwo />
+    </div>
   );
 };
 
-export default App;
+export default Page;
