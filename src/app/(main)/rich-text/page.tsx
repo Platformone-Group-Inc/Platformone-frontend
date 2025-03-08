@@ -13,7 +13,7 @@ const App = () => {
       className="w-full"
       editorContentClassName="p-5"
       output="html"
-      placeholder="Enter your description..."
+      placeholder="Enter your content..."
       autofocus={true}
       editable={true}
       editorClassName="focus:outline-none"
