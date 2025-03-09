@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-2xl border transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center group rounded-2xl border transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
@@ -33,19 +33,42 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+    VariantProps<typeof badgeVariants> {
+  withDot?: boolean;
+}
 
 /**
  * Badge component that supports variant and size customizations.
  */
 const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ className, variant, size, withDot, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn(badgeVariants({ variant, size }), className)}
+        className={cn(
+          badgeVariants({ variant, size }),
+          withDot && "gap-1.5",
+          className
+        )}
         {...props}
-      />
+      >
+        {withDot && (
+          // TODO better logic i guess?
+          <span
+            className={cn(
+              "h-1.5 w-1.5 aspect-square rounded-full",
+              (variant === "default" || variant === undefined) &&
+                "bg-primary group-hover:bg-white",
+              variant === "secondary" && "bg-secondary",
+              variant === "success" && "bg-success group-hover:bg-white",
+              variant === "info" && "bg-info group-hover:bg-white",
+              variant === "error" && "bg-error group-hover:bg-white",
+              variant === "warn" && "bg-warn group-hover:bg-white"
+            )}
+          />
+        )}
+        {children}
+      </div>
     );
   }
 );

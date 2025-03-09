@@ -6,6 +6,7 @@ const sizes = ["default", "sm", "lg"];
 const Badges = () => {
   return (
     <div className="p-6 space-y-6">
+      <h2 className="text-2xl font-bold">Without dot</h2>
       {variants.map((variant) => (
         <div key={variant} className="space-y-2">
           <h2 className="text-lg font-bold capitalize">{variant} variant</h2>
@@ -14,6 +15,21 @@ const Badges = () => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               <Badge key={size} variant={variant} size={size}>
+                {`${variant} (${size})`}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      ))}
+      <h2 className="text-2xl font-bold">With dot</h2>
+      {variants.map((variant) => (
+        <div key={variant} className="space-y-2">
+          <h2 className="text-lg font-bold capitalize">{variant} variant</h2>
+          <div className="flex items-center space-x-4">
+            {sizes.map((size) => (
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              <Badge key={size} variant={variant} size={size} withDot>
                 {`${variant} (${size})`}
               </Badge>
             ))}
