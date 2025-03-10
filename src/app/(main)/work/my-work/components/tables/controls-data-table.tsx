@@ -725,7 +725,7 @@ function RowActions({}: { row: Row<Item> }) {
         <div className="flex justify-end">
           <Button
             size="icon"
-            variant="ghost"
+            variant="transparent"
             className="shadow-none"
             aria-label="Edit item"
           >

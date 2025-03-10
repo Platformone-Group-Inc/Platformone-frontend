@@ -84,7 +84,7 @@ const ControlCard = () => {
               18 Controls Families
             </Button>
             <Button
-              variant={"ghost"}
+              variant={"transparent"}
               onClick={() => setIsCollapsed((state) => !state)}
               className="h-auto text-xs font-semibold w-full border-primary text-primary rounded-full py-1.5 "
             >

@@ -14,9 +14,7 @@ const ControlsPage = () => {
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <h1 className="font-semibold text-xl">
           Control Set
-          <Badge variant={"outline"} className="ml-3.5">
-            2 Control Set
-          </Badge>
+          <Badge className="ml-3.5">2 Control Set</Badge>
         </h1>
         <div className="flex items-center gap-4">
           <Button

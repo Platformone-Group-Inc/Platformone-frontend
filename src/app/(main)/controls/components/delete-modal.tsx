@@ -48,7 +48,7 @@ export const DeleteControlModal = () => {
           </AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
-              variant={"destructive"}
+              variant={"error"}
               className="w-full bg-error-600 text-white hover:bg-error-600"
             >
               Delete

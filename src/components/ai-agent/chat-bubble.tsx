@@ -95,7 +95,7 @@ export function ChatBubbleAction({
 }: ChatBubbleActionProps) {
   return (
     <Button
-      variant="ghost"
+      variant="transparent"
       size="icon"
       className={cn("h-6 w-6", className)}
       onClick={onClick}

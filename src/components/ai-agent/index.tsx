@@ -56,10 +56,18 @@ const AiAgent = () => {
           Active Directory in accordance with the guidelines provided.
         </p>
         <div className="flex mt-4 gap-2 items-center">
-          <Button size={"icon"} variant={"ghost"} className="text-gray-700">
+          <Button
+            size={"icon"}
+            variant={"transparent"}
+            className="text-gray-700"
+          >
             <ThumbsUpIcon />
           </Button>
-          <Button size={"icon"} variant={"ghost"} className="text-gray-700">
+          <Button
+            size={"icon"}
+            variant={"transparent"}
+            className="text-gray-700"
+          >
             <ThumbsDownIcon />
           </Button>
         </div>
