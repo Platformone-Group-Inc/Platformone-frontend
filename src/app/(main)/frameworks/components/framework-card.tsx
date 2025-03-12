@@ -42,7 +42,7 @@ const FrameworkCard = () => {
         <Button
           variant={"outline"}
           radius={"full"}
-          className="rounded-full w-full text-xs"
+          className="rounded-full border-primary text-primary font-semibold w-full text-xs h-auto py-1.5"
         >
           Import Content
         </Button>
