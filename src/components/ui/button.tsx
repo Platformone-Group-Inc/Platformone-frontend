@@ -14,14 +14,14 @@ const buttonVariants = cva(
           "border border-border text-black bg-transparent shadow-sm hover:bg-primary-100",
         link: "text-primary underline-offset-4 hover:underline",
         secondary:
-          "bg-secondary-100 text-secondary shadow-sm hover:bg-secondary hover:text-white",
+          "bg-primary-100 hover:bg-primary-600 hover:text-white text-primary-600 ",
         primary: "bg-primary text-white shadow hover:bg-primary/90",
         success: "bg-success text-white shadow hover:bg-success/90",
         info: "bg-info text-white shadow hover:bg-info/90",
         error: "bg-error text-white shadow hover:bg-error/90",
         warn: "bg-warn text-white shadow hover:bg-warn/90",
         transparent:
-          "bg-transparent text-current shadow-none hover:bg-gray-100",
+          "bg-transparent text-current shadow-none hover:bg-primary-100 hover:text-primary outline-none  focus-visible:ring-none",
       },
       radius: {
         none: "rounded-none",

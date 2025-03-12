@@ -18,23 +18,23 @@ const DemoTableActionDropDown = () => {
           <More size={20} className="stroke-primary" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="w-[240px]">
         <DropdownMenuGroup className="p-1.5 space-y-1 rounded-lg">
-          <Button variant={"secondary"} color="">
-            hello
-          </Button>
           <DropdownMenuItem asChild>
-            <Button className="rounded-lg text-base font-medium px-2.5 py-2 shadow-none">
+            <Button
+              variant={"transparent"}
+              className=" text-base h-auto px-2 py-2.5 rounded-md w-full font-medium transition-all"
+            >
               Upload Document
             </Button>
-            {/* <button className="bg-primary-100 text-primary rounded-lg text-base font-medium px-2.5 py-2 shadow-none">
-              Upload Document
-            </button> */}
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <button className="w-full inline-flex items-center justify-center bg-transparent text-error hover:bg-error-100 rounded-full text-base font-medium px-2.5 py-2 shadow-none">
+            <Button
+              variant={"transparent"}
+              className=" text-base h-auto text-error hover:bg-error-100 hover:text-error border-none px-2 py-2.5 rounded-md w-full font-medium transition-all"
+            >
               Delete
-            </button>
+            </Button>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
