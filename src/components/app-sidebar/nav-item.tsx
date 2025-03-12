@@ -38,24 +38,20 @@ const NavItem: React.FC<Props> = ({ menu }) => {
             <SidebarMenuButton
               tooltip={menu.label}
               className={cn(
-                "rounded-full h-auto py-3 px-4 flex items-center gap-2 text-sm font-medium text-gray-600 transition-all group-focus:text-gray-800 hover:bg-primary/20 hover:text-primary hover:fill-primary",
-                isActive && "bg-primary/20 text-[#5E43D8] fill-primary"
+                "rounded-full h-auto py-3 px-4 flex items-center gap-2 text-sm font-medium text-white transition-all group-focus:text-gray-800 stroke-white hover:bg-white/20 hover:text-white hover:stroke-white",
+                isActive && "bg-white/20 text-white"
               )}
             >
-              <menu.icon size={20} color={isActive ? "#5E43D8" : "#64748B"} />
-
+              <menu.icon size={20} />
               <span>{menu.label}</span>
               <ChevronRight
-                className={cn(
-                  "ml-auto transition-transform duration-200",
-                  isActive && "rotate-90"
-                )}
+                className={cn("ml-auto transition-transform duration-200")}
               />
             </SidebarMenuButton>
           </CollapsibleTrigger>
 
           <CollapsibleContent>
-            <SidebarMenuSub>
+            <SidebarMenuSub className="space-y-2 py-2 border-white/30">
               {menu?.group?.map((subItem) => {
                 const isSubActive = path === subItem.href;
                 return (
@@ -64,18 +60,13 @@ const NavItem: React.FC<Props> = ({ menu }) => {
                       <Link
                         href={subItem.href as string}
                         className={cn(
-                          "flex items-center gap-2 text-sm px-2 py-1 transition-all",
-                          isSubActive
-                            ? "!text-primary"
-                            : "text-gray-600 hover:text-primary"
+                          "flex items-center gap-2 text-sm px-2 py-1 transition-all text-primary-200 stroke-primary-200 hover:bg-white/20",
+                          isSubActive && "text-white stroke-white "
+                          //   ? "!text-white"
+                          //   : "text-white hover:text-white"
                         )}
                       >
-                        {subItem.icon && (
-                          <subItem.icon
-                            size={18}
-                            color={isSubActive ? "#5E43D8" : "#90A3BF"}
-                          />
-                        )}
+                        {subItem.icon && <subItem.icon size={18} />}
                         <span>{subItem.label}</span>
                       </Link>
                     </SidebarMenuSubButton>
@@ -90,12 +81,12 @@ const NavItem: React.FC<Props> = ({ menu }) => {
           <SidebarMenuButton
             tooltip={menu.label}
             className={cn(
-              "rounded-full h-auto py-3 px-4 flex items-center gap-2 text-sm font-medium text-gray-600 transition-all group-focus:text-gray-800 hover:bg-primary/20 hover:text-primary hover:fill-primary",
-              isActive && "bg-primary/20 text-[#5E43D8] fill-primary"
+              "rounded-full h-auto py-3 px-4 flex items-center gap-2 text-sm font-medium text-primary-100 transition-all group-focus:text-gray-800 hover:bg-white/20 hover:text-white stroke-white",
+              isActive &&
+                "bg-white hover:bg-white stroke-primary text-primary hover:text-primary"
             )}
           >
-            <menu.icon size={20} color={isActive ? "#5E43D8" : "#90A3BF"} />
-
+            <menu.icon size={20} />
             <span>{menu.label}</span>
           </SidebarMenuButton>
         </Link>
