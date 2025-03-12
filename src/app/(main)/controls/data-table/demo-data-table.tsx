@@ -84,6 +84,64 @@ const data: Data[] = [
     priority: "med",
     action: "View",
   },
+  {
+    control: "1",
+    controlName: "Policy and Procedures",
+    owner: "John Doe",
+    image:
+      "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358071/avatar-40-02_upqrxi.jpg",
+    // status: "Active",
+    implemented: false,
+    evidence: "Audit logs",
+    controlFamily: "Security",
+    actionItem: "Review access rights",
+    priority: "high",
+    action: "Edit",
+  },
+  {
+    control: "2",
+    controlName: "Account Management",
+    owner: "Jane Smith",
+    image:
+      "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358073/avatar-40-01_ij9v7j.jpg",
+    // status: "Pending",
+    implemented: true,
+
+    evidence: "Backup schedule",
+    controlFamily: "Operations",
+    actionItem: "Confirm backup process",
+    priority: "med",
+    action: "View",
+  },
+  {
+    control: "1",
+    controlName: "Policy and Procedures",
+    owner: "John Doe",
+    image:
+      "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358071/avatar-40-02_upqrxi.jpg",
+    // status: "Active",
+    implemented: false,
+    evidence: "Audit logs",
+    controlFamily: "Security",
+    actionItem: "Review access rights",
+    priority: "high",
+    action: "Edit",
+  },
+  {
+    control: "2",
+    controlName: "Account Management",
+    owner: "Jane Smith",
+    image:
+      "https://res.cloudinary.com/dlzlfasou/image/upload/v1736358073/avatar-40-01_ij9v7j.jpg",
+    // status: "Pending",
+    implemented: true,
+
+    evidence: "Backup schedule",
+    controlFamily: "Operations",
+    actionItem: "Confirm backup process",
+    priority: "med",
+    action: "View",
+  },
   // Add more rows as needed...
 ];
 
@@ -106,7 +164,7 @@ const DemoDataTable = () => {
         </TableHeader>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow key={index} className="py-60 bg-background">
+            <TableRow key={index} className="py-60 odd:bg-background">
               <TableCell className="py-7">{row.control}</TableCell>
               <TableCell className="text-primary-600 font-medium">
                 {row.controlName}
