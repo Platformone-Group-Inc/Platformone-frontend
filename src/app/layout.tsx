@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 // Plus Jakarta Sans
-
+import ReduxProvider from "@/reducer/ReduxProvider";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
@@ -25,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${font.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <ReduxProvider>
+          <Providers>{children}</Providers>
+        </ReduxProvider>
       </body>
     </html>
   );
