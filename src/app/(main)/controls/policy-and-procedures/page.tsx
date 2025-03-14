@@ -2,6 +2,7 @@
 
 import CallToActionButtons from "./components/call-to-action-buttons";
 import PolicyAndProceduresBreadcrumb from "./components/policy-and-procedures-breadcrumb";
+import PolicyAndProceduresTabs from "./components/PolicyAndProceduresTabs";
 
 const PolicyAndProcedures = () => {
   return (
@@ -12,6 +13,7 @@ const PolicyAndProcedures = () => {
       </div>
 
       <PolicyAndProceduresBreadcrumb />
+      <PolicyAndProceduresTabs />
     </div>
   );
 };
