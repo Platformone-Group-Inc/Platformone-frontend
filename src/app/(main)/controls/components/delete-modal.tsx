@@ -19,7 +19,7 @@ export const DeleteControlModal = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">Alert dialog with icon</Button>
+        <Button variant="outline">Delete dialog</Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-[400px] space-y-4">
         <div className="flex flex-col gap-2 max-sm:items-center">

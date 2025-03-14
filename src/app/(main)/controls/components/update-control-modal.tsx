@@ -17,6 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+
+interface Props {
+  open?: boolean;
+  onOpenChange?: () => void;
+}
 
 function StatusDot({ className }: { className?: string }) {
   return (
@@ -37,11 +43,14 @@ function StatusDot({ className }: { className?: string }) {
 import { XIcon } from "lucide-react";
 import { useId } from "react";
 
-const UpdateControlModal = () => {
+const UpdateControlModal: React.FC<Props> = ({ open, onOpenChange }) => {
   const id = useId();
 
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Update dialog</Button>
+      </DialogTrigger>
       {/* <DialogClose /> */}
       <DialogContent className="flex flex-col gap-0 p-6 space-y-6 sm:rounded-none sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:hidden">
         <div className="space-y-4">
