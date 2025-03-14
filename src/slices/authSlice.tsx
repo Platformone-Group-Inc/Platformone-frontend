@@ -1,3 +1,5 @@
+// TODO remove any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
@@ -40,5 +42,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setSignupData, setLoading, setToken, setUserData } = authSlice.actions;
+export const { setSignupData, setLoading, setToken, setUserData } =
+  authSlice.actions;
 export default authSlice.reducer;
