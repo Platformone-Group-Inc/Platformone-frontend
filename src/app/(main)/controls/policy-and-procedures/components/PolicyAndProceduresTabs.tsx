@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { JSX, ReactElement } from "react";
 import Requirements from "./tab-content/requirements";
+import Implementation from "./tab-content/implementation";
 
 // Requirements
 // Implementation
@@ -25,11 +26,7 @@ const tabData: {
   {
     value: "implementation",
     label: "Implementation",
-    content: (
-      <p className="p-4 text-center text-xs text-muted-foreground">
-        Content for Implementation
-      </p>
-    ),
+    content: <Implementation />,
   },
   {
     value: "policies",
