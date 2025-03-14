@@ -1,7 +1,8 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReactElement } from "react";
+import { JSX, ReactElement } from "react";
+import Requirements from "./tab-content/requirements";
 
 // Requirements
 // Implementation
@@ -14,16 +15,12 @@ import { ReactElement } from "react";
 const tabData: {
   value: string;
   label: string;
-  content: ReactElement;
+  content: ReactElement | JSX.Element;
 }[] = [
   {
     value: "requirements",
     label: "Requirements",
-    content: (
-      <p className="p-4 text-center text-xs text-muted-foreground">
-        Content for Requirements
-      </p>
-    ),
+    content: <Requirements />,
   },
   {
     value: "implementation",
@@ -83,7 +80,7 @@ const tabData: {
 
 function PolicyAndProceduresTabs() {
   return (
-    <Tabs defaultValue={tabData[0].value}>
+    <Tabs defaultValue={tabData[0].value} className="space-y-6">
       <TabsList className="h-auto w-full justify-start rounded-none bg-info border-b border-border bg-transparent p-0">
         {tabData?.map((tab) => (
           <TabsTrigger
