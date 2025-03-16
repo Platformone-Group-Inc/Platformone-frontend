@@ -2,14 +2,14 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentsDataTable from "./tables/documents-data-table";
-import ControlsDataTable from "./tables/controls-data-table";
+// import ControlsDataTable from "./tables/controls-data-table";
 import EvidenceDataTable from "./tables/evidence-table";
 
 export const tabData = [
   {
     label: "Documents",
     value: "documents",
-    table: () => <ControlsDataTable />,
+    table: () => <EvidenceDataTable />,
   },
   {
     label: "Controls",
@@ -19,7 +19,8 @@ export const tabData = [
   {
     label: "Evidence",
     value: "evidence",
-    table: () => <EvidenceDataTable />,
+    // table: () => <ControlsDataTable />,
+    table: () => <p>Data Table for Actions Item </p>,
   },
   {
     label: "Action Items",
