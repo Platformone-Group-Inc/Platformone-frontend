@@ -6,11 +6,15 @@ import ControlCard from "./components/control-card";
 import { Badge } from "@/components/ui/badge";
 
 import { DeleteControlModal } from "./components/delete-modal";
+import UpdateControlModal from "./components/update-control-modal";
 
 const ControlsPage = () => {
   return (
     <div className="p-6 w-full">
-      <DeleteControlModal />
+      <div className="flex gap-4">
+        <DeleteControlModal />
+        <UpdateControlModal />
+      </div>
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <h1 className="font-semibold text-xl">
           Control Set

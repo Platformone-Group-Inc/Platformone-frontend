@@ -85,7 +85,7 @@ const data: Data[] = [
     action: "View",
   },
   {
-    control: "1",
+    control: "3",
     controlName: "Policy and Procedures",
     owner: "John Doe",
     image:
@@ -99,7 +99,7 @@ const data: Data[] = [
     action: "Edit",
   },
   {
-    control: "2",
+    control: "4",
     controlName: "Account Management",
     owner: "Jane Smith",
     image:
@@ -114,7 +114,7 @@ const data: Data[] = [
     action: "View",
   },
   {
-    control: "1",
+    control: "5",
     controlName: "Policy and Procedures",
     owner: "John Doe",
     image:
@@ -128,7 +128,7 @@ const data: Data[] = [
     action: "Edit",
   },
   {
-    control: "2",
+    control: "6",
     controlName: "Account Management",
     owner: "Jane Smith",
     image:
@@ -165,8 +165,8 @@ const DemoDataTable = () => {
         <TableBody>
           {data.map((row, index) => (
             <TableRow key={index} className="py-60 odd:bg-background">
-              <TableCell className="py-7">{row.control}</TableCell>
-              <TableCell className="text-primary-600 font-medium">
+              <TableCell className="py-7">{index + 1}</TableCell>
+              <TableCell className="text-primary-600 font-medium hover:underline">
                 {row.controlName}
               </TableCell>
               <TableCell>
@@ -188,6 +188,7 @@ const DemoDataTable = () => {
                 <Badge
                   size={"sm"}
                   variant={row.implemented ? "success" : "error"}
+                  className="text-xs"
                 >
                   {row.implemented ? "Implemented" : "Not Implemented"}
                 </Badge>

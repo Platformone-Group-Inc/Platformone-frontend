@@ -113,7 +113,7 @@ const NotificationPopover = () => {
     <Popover>
       <PopoverTrigger asChild>
         <button
-          className="relative h-auto w-auto bg-primary/10 rounded-full p-2.5 hover:bg-primary/20 border border-transparent hover:border-black/10 transition-all"
+          className="relative h-auto w-auto bg-s rounded-full p-2.5 hover:bg-primary/20 bg-white border border-border hover:border-black/10 transition-all"
           aria-label="Open notifications"
         >
           <Bell size={24} strokeWidth={2} aria-hidden="true" />

@@ -32,7 +32,7 @@ const AiAgent = () => {
   return (
     <motion.div
       layout
-      className="flex-shrink-0 flex flex-col rounded-xl bg-white w-[380px] h-[calc(100dvh-120px)]"
+      className="flex-shrink-0 flex flex-col rounded-xl bg-white shadow-md w-[380px] h-[calc(100dvh-120px)]"
     >
       <div className="p-4 w-full border-b flex items-center justify-between">
         <div className="flex items-center gap-2">
