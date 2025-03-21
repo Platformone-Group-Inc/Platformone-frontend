@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/dialog";
 import { PlusIcon } from "lucide-react";
 
-const AddFrameworkModal = () => {
+const AddFrameworkModal = ({ title }: { title: string }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className="h-auto gap-1.5 py-2.5 px-5">
           <PlusIcon className="text-xl" />
-          <span className="font-medium">Add Framework</span>
+          <span className="font-medium">Add {title}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:hidden">

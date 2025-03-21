@@ -16,9 +16,9 @@ interface Props {
   onOpenChange?: () => void;
 }
 
-const NewRiskModal: React.FC<Props> = ({ onOpenChange }) => {
+const NewRiskModal: React.FC<Props> = ({ open, onOpenChange }) => {
   return (
-    <Dialog open onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex bg-white flex-col gap-0 p-6 space-y-6  sm:max-w-lg [&>button:last-child]:hidden">
         <div className="space-y-4">
           <DialogHeader className="flex flex-row items-start gap-3">
