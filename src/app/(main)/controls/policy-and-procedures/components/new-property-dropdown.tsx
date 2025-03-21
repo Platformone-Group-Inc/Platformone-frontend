@@ -12,6 +12,7 @@ import {
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import NewPropertyModal from "./modals/new-property-modal";
 import { useState } from "react";
+import NewRiskModal from "./modals/new-risk-modal";
 
 const NewPropertyDropdown = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -78,6 +79,7 @@ const NewPropertyDropdown = () => {
         open={openModal}
         onOpenChange={() => setOpenModal(false)}
       />
+      <NewRiskModal />
     </>
   );
 };
