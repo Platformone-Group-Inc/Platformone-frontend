@@ -28,7 +28,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       }}
       {...props}
     >
-      <div className="absolute inset-0 bg-black/40 z-[-1]" />
+      <div className="absolute inset-0 bg-black/20 z-[-1]" />
       {/* <div className="bg-black/10 z-[-1] h-full w-full" /> */}
       {/* Sidebar Header */}
       <Link href={"/"}>
