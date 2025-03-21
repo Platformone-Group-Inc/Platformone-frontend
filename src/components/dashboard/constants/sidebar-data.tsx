@@ -67,15 +67,15 @@ export const sidebarData: SidebarItem[] = [
     group: [],
   },
   { label: "Technologies", icon: Cpu, href: "/technologies" },
-  {
-    label: "Risks",
-    icon: Cpu,
-    group: [
-      { label: "Assets", icon: CpuSetting, href: "/risks/assets" },
-      { label: "Vendors", icon: UserSquare, href: "/risks/vendors" },
-      { label: "Risk Register", icon: Security, href: "/risks/risk-register" },
-    ],
-  },
+  // {
+  //   label: "Risks",
+  //   icon: Cpu,
+  //   group: [
+  //     { label: "Assets", icon: CpuSetting, href: "/risks/assets" },
+  //     { label: "Vendors", icon: UserSquare, href: "/risks/vendors" },
+  //     { label: "Risk Register", icon: Security, href: "/risks/risk-register" },
+  //   ],
+  // },
   {
     label: "AI ATO Documents",
     icon: SecuritySafe,
