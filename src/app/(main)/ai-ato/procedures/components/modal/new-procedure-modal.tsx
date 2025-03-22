@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label";
 
 const NewProcedureModal: React.FC<ModalProps> = ({ open, onOpenChange }) => {
   return (
-    <Dialog defaultOpen open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className=" flex bg-white flex-col gap-0 p-6 space-y-6 rounded-none sm:max-w-lg [&>button:last-child]:hidden">
         <div className="space-y-4">
           <DialogHeader className="flex flex-row items-start gap-3">
