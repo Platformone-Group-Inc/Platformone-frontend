@@ -163,7 +163,7 @@ export function TableColumnHeader<TData, TValue>({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
+            variant="transparent"
             size="sm"
             className="-ml-3 h-8 data-[state=open]:bg-accent"
           >
