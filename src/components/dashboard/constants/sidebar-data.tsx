@@ -83,7 +83,7 @@ export const sidebarData: SidebarItem[] = [
       { label: "Policies", icon: CpuSetting, href: "/ai-ato/policies" },
       { label: "Procedures", icon: UserSquare, href: "/ai-ato/procedures" },
       { label: "Governance", icon: Security, href: "/ai-ato/governance" },
-      { label: "SSP Builder", icon: Security, href: "/ai-ato/ssp-builder" },
+      // { label: "SSP", icon: Security, href: "/ai-ato/ssp-builder" },
     ],
   },
   {

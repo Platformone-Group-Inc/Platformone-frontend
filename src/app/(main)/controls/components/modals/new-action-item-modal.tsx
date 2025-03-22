@@ -76,9 +76,9 @@ const tabData = [
   },
 ];
 
-const NewActionItemModal: React.FC<ModalProps> = ({ onOpenChange }) => {
+const NewActionItemModal: React.FC<ModalProps> = ({ open, onOpenChange }) => {
   return (
-    <Dialog open onOpenChange={onOpenChange}>
+    <Dialog defaultOpen open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex bg-white sm:rounded-none flex-col gap-0 p-6 space-y-6 sm:max-h-[min(640px,80vh)] overflow-y-scroll sm:max-w-2xl [&>button:last-child]:hidden">
         <div className="space-y-4">
           <DialogHeader className="flex flex-row items-start gap-3">
