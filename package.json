@@ -52,6 +52,7 @@
     "date-fns-tz": "^3.2.0",
     "emblor": "^1.4.7",
     "iconsax-react": "^0.0.8",
+    "input-otp": "^1.4.2",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.477.0",
     "motion": "^12.4.1",
