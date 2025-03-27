@@ -5,6 +5,7 @@ import { JSX, ReactElement } from "react";
 import InfrastructureTabContent from "./tab-content/infrastructure-tab-content";
 import SystemMGTTabContent from "./tab-content/systems-mgt-tab-content";
 import AccessIDTabContent from "./tab-content/access-id-mgt-tab-content";
+import LoggingTabContent from "./tab-content/logging-tab-content";
 
 const tabData: {
   value: string;
@@ -29,7 +30,7 @@ const tabData: {
   {
     value: "logging",
     label: "Logging",
-    content: <div>Content for Logging</div>,
+    content: <LoggingTabContent />,
   },
   {
     value: "monitoring",
