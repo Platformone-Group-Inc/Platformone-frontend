@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { JSX, ReactElement } from "react";
 import InfrastructureTabContent from "./tab-content/infrastructure-tab-content";
+import SystemMGTTabContent from "./tab-content/systems-mgt-tab-content";
 
 const tabData: {
   value: string;
@@ -17,7 +18,7 @@ const tabData: {
   {
     value: "systems-mgt",
     label: "Systems/Mgt",
-    content: <div>Content for Systems/Mgt</div>,
+    content: <SystemMGTTabContent />,
   },
   {
     value: "access-id-mgt",
