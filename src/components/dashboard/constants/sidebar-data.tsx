@@ -67,15 +67,15 @@ export const sidebarData: SidebarItem[] = [
     group: [],
   },
   { label: "Technologies", icon: Cpu, href: "/technologies" },
-  {
-    label: "Risks",
-    icon: Cpu,
-    group: [
-      { label: "Assets", icon: CpuSetting, href: "/risks/assets" },
-      { label: "Vendors", icon: UserSquare, href: "/risks/vendors" },
-      { label: "Risk Register", icon: Security, href: "/risks/risk-register" },
-    ],
-  },
+  // {
+  //   label: "Risks",
+  //   icon: Cpu,
+  //   group: [
+  //     { label: "Assets", icon: CpuSetting, href: "/risks/assets" },
+  //     { label: "Vendors", icon: UserSquare, href: "/risks/vendors" },
+  //     { label: "Risk Register", icon: Security, href: "/risks/risk-register" },
+  //   ],
+  // },
   {
     label: "AI ATO Documents",
     icon: SecuritySafe,
@@ -83,7 +83,7 @@ export const sidebarData: SidebarItem[] = [
       { label: "Policies", icon: CpuSetting, href: "/ai-ato/policies" },
       { label: "Procedures", icon: UserSquare, href: "/ai-ato/procedures" },
       { label: "Governance", icon: Security, href: "/ai-ato/governance" },
-      { label: "SSP Builder", icon: Security, href: "/ai-ato/ssp-builder" },
+      // { label: "SSP", icon: Security, href: "/ai-ato/ssp-builder" },
     ],
   },
   {

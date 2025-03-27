@@ -1,4 +1,5 @@
-import LoginForm from "@/components/forms/auth/login-form";
+import { Otp } from "@/components/auth/otp";
+// import LoginForm from "@/components/forms/auth/login-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +16,8 @@ const LoginPage = () => {
         Sign In to Compliance One
       </h2>
 
-      <LoginForm />
+      {/* <LoginForm /> */}
+      <Otp />
     </div>
   );
 };

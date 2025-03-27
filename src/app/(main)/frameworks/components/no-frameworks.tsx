@@ -15,7 +15,7 @@ const NoFrameworks = () => {
           dictum diam.
         </p>
       </div>
-      <AddFrameworkModal />
+      <AddFrameworkModal title="Framework" />
     </div>
   );
 };

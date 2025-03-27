@@ -98,6 +98,8 @@ module.exports = {
         800: "#080C19",
         900: "#040815",
       },
+
+      water: "water",
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
