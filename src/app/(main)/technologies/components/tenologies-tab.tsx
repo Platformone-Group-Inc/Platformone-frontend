@@ -5,6 +5,11 @@ import { JSX, ReactElement } from "react";
 import InfrastructureTabContent from "./tab-content/infrastructure-tab-content";
 import SystemMGTTabContent from "./tab-content/systems-mgt-tab-content";
 import AccessIDTabContent from "./tab-content/access-id-mgt-tab-content";
+import LoggingTabContent from "./tab-content/logging-tab-content";
+import MonitoringTabContent from "./tab-content/monitoring-tab-content";
+import ScanningTabContent from "./tab-content/scanning-tab-content";
+import SDLCTabContent from "./tab-content/sdlc-tab-content";
+import CorpSystemTabContent from "./tab-content/corp-systems-tab-content";
 
 const tabData: {
   value: string;
@@ -29,27 +34,27 @@ const tabData: {
   {
     value: "logging",
     label: "Logging",
-    content: <div>Content for Logging</div>,
+    content: <LoggingTabContent />,
   },
   {
     value: "monitoring",
     label: "Monitoring",
-    content: <div>Content for Monitoring</div>,
+    content: <MonitoringTabContent />,
   },
   {
     value: "scanning",
     label: "Scanning",
-    content: <div>Content for Scanning</div>,
+    content: <ScanningTabContent />,
   },
   {
     value: "sdlc",
     label: "SDLC",
-    content: <div>Content for SDLC</div>,
+    content: <SDLCTabContent />,
   },
   {
     value: "corp-systems",
     label: "Corp Systems",
-    content: <div>Content for Corp Systems</div>,
+    content: <CorpSystemTabContent />,
   },
 ];
 
