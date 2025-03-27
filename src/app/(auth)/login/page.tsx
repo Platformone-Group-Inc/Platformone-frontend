@@ -1,5 +1,5 @@
 import { Otp } from "@/components/auth/otp";
-import LoginForm from "@/components/forms/auth/login-form";
+// import LoginForm from "@/components/forms/auth/login-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

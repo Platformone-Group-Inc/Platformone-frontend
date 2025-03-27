@@ -8,14 +8,6 @@ import Policies from "./tab-content/policies";
 import { SearchNormal } from "iconsax-react";
 import AddFrameworkModal from "@/app/(main)/frameworks/components/modals/add-framework-modal";
 
-// Requirements
-// Implementation
-// Policies
-// Procedure
-// Evidence
-// Action Items
-// Risks
-
 const tabData: {
   value: string;
   label: string;
