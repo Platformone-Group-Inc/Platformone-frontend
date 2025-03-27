@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { JSX, ReactElement } from "react";
 import InfrastructureTabContent from "./tab-content/infrastructure-tab-content";
 import SystemMGTTabContent from "./tab-content/systems-mgt-tab-content";
+import AccessIDTabContent from "./tab-content/access-id-mgt-tab-content";
 
 const tabData: {
   value: string;
@@ -23,7 +24,7 @@ const tabData: {
   {
     value: "access-id-mgt",
     label: "Access & ID Mgt",
-    content: <div>Content for Access & ID Mgt</div>,
+    content: <AccessIDTabContent />,
   },
   {
     value: "logging",
