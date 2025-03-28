@@ -16,6 +16,7 @@ import NewRiskModal from "./modals/new-risk-modal";
 
 const NewPropertyDropdown = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [showNewRiskModal, setShowNewRiskModal] = useState(false);
   return (
     <>
       <DropdownMenu>
@@ -36,7 +37,7 @@ const NewPropertyDropdown = () => {
           <DropdownMenuItem asChild>
             <Button
               variant={"transparent"}
-              onClick={() => setOpenModal(true)}
+              onClick={() => setShowNewRiskModal(true)}
               className="px-3 w-full justify-normal rounded-lg cursor-pointer"
             >
               Risk
@@ -79,7 +80,10 @@ const NewPropertyDropdown = () => {
         open={openModal}
         onOpenChange={() => setOpenModal(false)}
       />
-      <NewRiskModal />
+      <NewRiskModal
+        open={showNewRiskModal}
+        onOpenChange={() => setShowNewRiskModal(false)}
+      />
     </>
   );
 };

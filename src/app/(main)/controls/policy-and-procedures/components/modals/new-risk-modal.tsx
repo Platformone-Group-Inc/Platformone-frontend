@@ -23,7 +23,7 @@ const NewRiskModal: React.FC<Props> = ({ open, onOpenChange }) => {
         <div className="space-y-4">
           <DialogHeader className="flex flex-row items-start gap-3">
             <DialogTitle className="text-xl font-semibold">
-              Fedramp (Rev5) Moderate Baseline
+              Create Risk
             </DialogTitle>
             <DialogClose className="ml-auto">
               <XIcon className=" text-placeholder" />
