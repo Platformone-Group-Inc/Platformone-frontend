@@ -42,13 +42,12 @@ export function Otp() {
           Check your email
         </h2>
         <p className="w-full text-secondary-400 text-base">
-          We sent a verification link to
+          We sent a verification link to{" "}
           <b className="text-secondary font-medium">olivia@complianceone.com</b>
         </p>
       </div>
       <OTPInput
         id={id}
-        type="number"
         containerClassName="flex items-center gap-3 has-[:disabled]:opacity-50"
         maxLength={4}
         render={({ slots }) => (
@@ -59,7 +58,12 @@ export function Otp() {
           </div>
         )}
       />
-
+      {isError && (
+        <p className="text-xs text-error-500">
+          The OTP you entered is incorrect. Please try again.
+        </p>
+      )}
+      <button onClick={() => setIsError(!isError)}>Toggle Error</button>
       <Button
         type="button"
         onClick={handleVerify}
