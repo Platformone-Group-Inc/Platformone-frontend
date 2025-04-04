@@ -1,11 +1,12 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ActionItemsContent from "./tab-contents/action-items-content";
 
 const tabData = [
   {
     value: "action-items",
     label: "Action Items",
-    content: () => <p>Action Items Content</p>,
+    content: ActionItemsContent,
   },
   {
     value: "plan-milestones",
