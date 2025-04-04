@@ -1,6 +1,7 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ActionItemsContent from "./tab-contents/action-items-content";
+import PlanMilestonesContent from "./tab-contents/plan-milestones-content";
 
 const tabData = [
   {
@@ -11,27 +12,35 @@ const tabData = [
   {
     value: "plan-milestones",
     label: "Plan & Milestones",
-    content: () => <p>Plan & Milestones Content</p>,
+    content: PlanMilestonesContent,
   },
   {
     value: "mappings",
     label: "Mappings",
-    content: () => <p>Mappings Content</p>,
+    content: function MappingsContent() {
+      return <p>Mappings Content</p>;
+    },
   },
   {
     value: "documents",
     label: "Documents",
-    content: () => <p>Documents Content</p>,
+    content: function DocumentsContent() {
+      return <p>Documents Content</p>;
+    },
   },
   {
     value: "comments",
     label: "Comments",
-    content: () => <p>Comments Content</p>,
+    content: function CommentsContent() {
+      return <p>Comments Content</p>;
+    },
   },
   {
     value: "activities",
     label: "Activities",
-    content: () => <p>Activities Content</p>,
+    content: function ActivitiesContent() {
+      return <p>Activities Content</p>;
+    },
   },
 ];
 

@@ -29,8 +29,8 @@ const NewActionModal: React.FC<ModalProps> = ({ open, onOpenChange }) => {
             </DialogClose>
           </DialogHeader>
         </div>
-        <div className="space-y-6 px-3 ">
-          <ScrollArea className="max-h-[600px] overflow-y-scroll">
+        <div className="space-y-6 ">
+          <ScrollArea className="px-3 max-h-[600px] overflow-y-scroll">
             <NewActionModalTab />
           </ScrollArea>
           <div className="w-full flex items-center justify-end">
