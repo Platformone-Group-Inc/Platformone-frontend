@@ -2,6 +2,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ActionItemsContent from "./tab-contents/action-items-content";
 import PlanMilestonesContent from "./tab-contents/plan-milestones-content";
+import MappingsContent from "./tab-contents/mappings-content";
 
 const tabData = [
   {
@@ -17,9 +18,7 @@ const tabData = [
   {
     value: "mappings",
     label: "Mappings",
-    content: function MappingsContent() {
-      return <p>Mappings Content</p>;
-    },
+    content: MappingsContent,
   },
   {
     value: "documents",
