@@ -59,6 +59,12 @@ export const sidebarData: SidebarItem[] = [
     href: "/ai-assessment",
     badge: "new",
   },
+  {
+    label: "AI Reports",
+    icon: DocumentText,
+    href: "/ai-reports",
+    badge: "new",
+  },
   { label: "Frameworks", icon: Ram2, href: "/frameworks" },
   {
     label: "Controls",
