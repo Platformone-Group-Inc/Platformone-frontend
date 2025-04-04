@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import NewActionModal from "./components/modals/new-action-modal";
 
 const Page = () => {
   return (
@@ -100,6 +101,7 @@ const Page = () => {
           </div>
         ))}
       </div>
+      <NewActionModal />
     </div>
   );
 };
