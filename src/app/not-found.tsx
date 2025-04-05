@@ -20,7 +20,14 @@ const NotFound = () => {
         Here are some helpful links:
       </p>
       <div className="flex items-center gap-3 mt-12">
-        <Button variant={"outline"} className="md:py-7" onClick={router.back}>
+        <Button
+          variant={"outline"}
+          className="md:py-7"
+          onClick={() => {
+            console.log("Go back");
+            router.back();
+          }}
+        >
           <ChevronLeftIcon /> Go Back
         </Button>
         <Link href={"/"} className={cn(buttonVariants(), "md:py-7")}>
