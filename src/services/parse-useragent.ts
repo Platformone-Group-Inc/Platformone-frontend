@@ -1,4 +1,4 @@
-import UAParser from "ua-parser-js";
+import * as UAParser from "ua-parser-js";
 import { format, formatDistanceToNowStrict, isPast } from "date-fns";
 import { Laptop, LucideIcon, Smartphone } from "lucide-react";
 
@@ -16,7 +16,7 @@ export const parseUserAgent = (
   userAgent: string,
   createdAt: string
 ): AgentType => {
-  const parser = new UAParser(userAgent);
+  const parser = new UAParser.UAParser(userAgent); // ✅
   const result = parser.getResult();
 
   const deviceType = result.device.type || "Desktop";
