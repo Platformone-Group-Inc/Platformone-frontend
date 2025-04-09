@@ -12,9 +12,11 @@ import {
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import NewPropertyModal from "./modals/new-property-modal";
 import { useState } from "react";
+import NewRiskModal from "./modals/new-risk-modal";
 
 const NewPropertyDropdown = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [showNewRiskModal, setShowNewRiskModal] = useState(false);
   return (
     <>
       <DropdownMenu>
@@ -35,7 +37,7 @@ const NewPropertyDropdown = () => {
           <DropdownMenuItem asChild>
             <Button
               variant={"transparent"}
-              onClick={() => setOpenModal(true)}
+              onClick={() => setShowNewRiskModal(true)}
               className="px-3 w-full justify-normal rounded-lg cursor-pointer"
             >
               Risk
@@ -77,6 +79,10 @@ const NewPropertyDropdown = () => {
       <NewPropertyModal
         open={openModal}
         onOpenChange={() => setOpenModal(false)}
+      />
+      <NewRiskModal
+        open={showNewRiskModal}
+        onOpenChange={() => setShowNewRiskModal(false)}
       />
     </>
   );

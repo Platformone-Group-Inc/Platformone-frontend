@@ -26,3 +26,30 @@ body {
 .login-gradient {
   background: linear-gradient(135deg, #868cff 0%, #4318ff 100%);
 }
+
+/* custom */
+.bg-water::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url("/images/water.jpeg");
+  background-position: 2218.85px -214px;
+  background-size: 2734.85px 1620.44px;
+  border-radius: 11.12px;
+  transform: rotate(-180deg);
+  z-index: -2;
+}
+.bg-water::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: hwb(0 0% 100% 0.2);
+  background-repeat: no-repeat;
+  z-index: -1;
+}

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { DeleteControlModal } from "./components/delete-modal";
 import UpdateControlModal from "./components/update-control-modal";
+import NewActionItemModal from "./components/modals/new-action-item-modal";
 
 const ControlsPage = () => {
   return (
@@ -14,6 +15,7 @@ const ControlsPage = () => {
       <div className="flex gap-4">
         <DeleteControlModal />
         <UpdateControlModal />
+        <NewActionItemModal />
       </div>
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <h1 className="font-semibold text-xl">
