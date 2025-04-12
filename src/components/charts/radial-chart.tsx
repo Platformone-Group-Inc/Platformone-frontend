@@ -9,28 +9,41 @@ import {
 } from "recharts";
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-const chartData = [
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-];
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-blue)",
-  },
-} satisfies ChartConfig;
+interface Props {
+  number?: number;
+}
 
-const RadialChart = () => {
+const RadialChart: React.FC<Props> = ({ number = 0 }) => {
+  const fill = "var(--color-safari)";
+  const color =
+    number < 10
+      ? "var(--chart-red)"
+      : number < 50
+      ? "var(--chart-yellow)"
+      : number < 80
+      ? "var(--chart-blue)"
+      : "var(--chart-green)";
+
+  const chartData = [{ browser: "safari", visitors: number, fill }];
+
+  // change labels
+  const chartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    safari: {
+      label: "Safari",
+      color,
+    },
+  } satisfies ChartConfig;
   return (
     <div className="flex flex-col justify-center items-center gap-2">
       <ChartContainer config={chartConfig} className="h-[108px] aspect-square">
         <RadialBarChart
           data={chartData}
           startAngle={0}
-          endAngle={250}
+          endAngle={(number / 100) * 360} // Calculate angle based on percentage
           innerRadius={48}
           outerRadius={72}
         >
@@ -42,7 +55,12 @@ const RadialChart = () => {
             polarRadius={[50]}
           />
 
-          <RadialBar dataKey="visitors" background cornerRadius={10} />
+          <RadialBar
+            dataKey="visitors"
+            // background
+            // className="bg-error-500"
+            cornerRadius={10}
+          />
 
           <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
             <Label
@@ -60,7 +78,7 @@ const RadialChart = () => {
                         y={viewBox.cy}
                         className="fill-foreground text-xl font-medium"
                       >
-                        {chartData[0].visitors.toLocaleString()}
+                        {chartData[0].visitors.toLocaleString()} %
                       </tspan>
                     </text>
                   );
