@@ -80,10 +80,10 @@ const Page = () => {
                 <Checkbox />
                 <Label>No</Label>
               </div>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Checkbox />
                 <Label>Partially</Label>
-              </div>
+              </div> */}
               <div className="flex items-center gap-2">
                 <Checkbox />
                 <Label>N/A</Label>
