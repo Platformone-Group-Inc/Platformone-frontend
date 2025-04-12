@@ -1,19 +1,19 @@
 "use client";
 
 import {
-  Chart2,
+  // Chart2,
+  // Hierarchy2,
+  // Monitor,
+  // Setting,
   Cpu,
   CpuSetting,
   DocumentText,
   ElementPlus,
-  Hierarchy2,
   Icon,
   Logout,
-  Monitor,
   Ram2,
   Security,
   SecuritySafe,
-  Setting,
   Setting4,
   UserSquare,
 } from "iconsax-react";
@@ -59,6 +59,12 @@ export const sidebarData: SidebarItem[] = [
     href: "/ai-assessment",
     badge: "new",
   },
+  // {
+  //   label: "AI Reports",
+  //   icon: DocumentText,
+  //   href: "/ai-reports",
+  //   badge: "new",
+  // },
   { label: "Frameworks", icon: Ram2, href: "/frameworks" },
   {
     label: "Controls",
@@ -86,33 +92,33 @@ export const sidebarData: SidebarItem[] = [
       // { label: "SSP", icon: Security, href: "/ai-ato/ssp-builder" },
     ],
   },
-  {
-    label: "Monitoring",
-    icon: Monitor,
-    group: [
-      { label: "Evidence", icon: CpuSetting, href: "/monitoring/evidence" },
-      { label: "Systems", icon: UserSquare, href: "/monitoring/systems" },
-      { label: "People", icon: Security, href: "/monitoring/people" },
-    ],
-  },
-  { label: "Integrations", icon: Hierarchy2, href: "/integrations" },
-  { label: "Audits", icon: DocumentText, href: "/audits" },
-  { label: "AI Report", icon: Chart2, href: "/audits" },
+  // {
+  //   label: "Monitoring",
+  //   icon: Monitor,
+  //   group: [
+  //     { label: "Evidence", icon: CpuSetting, href: "/monitoring/evidence" },
+  //     { label: "Systems", icon: UserSquare, href: "/monitoring/systems" },
+  //     { label: "People", icon: Security, href: "/monitoring/people" },
+  //   ],
+  // },
+  // { label: "Integrations", icon: Hierarchy2, href: "/integrations" },
+  // { label: "Audits", icon: DocumentText, href: "/audits" },
+  // { label: "AI Report", icon: Chart2, href: "/audits" },
   {
     label: "Security Settings",
     icon: SecuritySafe,
     group: [
-      {
-        label: "Change Framework",
-        icon: CpuSetting,
-        href: "/security/change-framework",
-      },
+      // {
+      //   label: "Change Framework",
+      //   icon: CpuSetting,
+      //   href: "/security/change-framework",
+      // },
       { label: "Users", icon: UserSquare, href: "/security/users" },
-      {
-        label: "Security Roles",
-        icon: Security,
-        href: "/security/security-roles",
-      },
+      // {
+      //   label: "Security Roles",
+      //   icon: Security,
+      //   href: "/security/security-roles",
+      // },
       {
         label: "Security Groups",
         icon: Security,
@@ -120,6 +126,6 @@ export const sidebarData: SidebarItem[] = [
       },
     ],
   },
-  { label: "Settings", icon: Setting, href: "/settings" },
+  // { label: "Settings", icon: Setting, href: "/settings" },
   { label: "Log Out", icon: Logout, href: "/logout" },
 ];

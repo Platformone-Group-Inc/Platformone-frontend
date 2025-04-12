@@ -9,21 +9,21 @@ import {
 } from "recharts";
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-const chartData = [
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-];
-
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-blue)",
-  },
-} satisfies ChartConfig;
 
 const RadialChart = () => {
+  const chartData = [
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  ];
+
+  const chartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    safari: {
+      label: "Safari",
+      color: "var(--chart-blue)",
+    },
+  } satisfies ChartConfig;
   return (
     <div className="flex flex-col justify-center items-center gap-2">
       <ChartContainer config={chartConfig} className="h-[108px] aspect-square">

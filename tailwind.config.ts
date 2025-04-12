@@ -13,7 +13,7 @@ module.exports = {
   theme: {
     colors: {
       background: "#F6F7F9",
-      border: "#E0E9F4",
+      border: "#EAECF0",
       placeholder: "#717680",
       inherit: "inherit",
       current: "currentColor",
