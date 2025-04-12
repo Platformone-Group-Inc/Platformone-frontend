@@ -10,31 +10,18 @@ import {
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 
-interface Props {
-  number?: number;
-}
+const RadialChart = () => {
+  const chartData = [
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  ];
 
-const RadialChart: React.FC<Props> = ({ number = 0 }) => {
-  const fill = "var(--color-safari)";
-  const color =
-    number < 10
-      ? "var(--chart-red)"
-      : number < 50
-      ? "var(--chart-yellow)"
-      : number < 80
-      ? "var(--chart-blue)"
-      : "var(--chart-green)";
-
-  const chartData = [{ browser: "safari", visitors: number, fill }];
-
-  // change labels
   const chartConfig = {
     visitors: {
       label: "Visitors",
     },
     safari: {
       label: "Safari",
-      color,
+      color: "var(--chart-blue)",
     },
   } satisfies ChartConfig;
   return (
@@ -43,7 +30,7 @@ const RadialChart: React.FC<Props> = ({ number = 0 }) => {
         <RadialBarChart
           data={chartData}
           startAngle={0}
-          endAngle={(number / 100) * 360} // Calculate angle based on percentage
+          endAngle={250}
           innerRadius={48}
           outerRadius={72}
         >
@@ -55,12 +42,7 @@ const RadialChart: React.FC<Props> = ({ number = 0 }) => {
             polarRadius={[50]}
           />
 
-          <RadialBar
-            dataKey="visitors"
-            // background
-            // className="bg-error-500"
-            cornerRadius={10}
-          />
+          <RadialBar dataKey="visitors" background cornerRadius={10} />
 
           <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
             <Label
@@ -78,7 +60,7 @@ const RadialChart: React.FC<Props> = ({ number = 0 }) => {
                         y={viewBox.cy}
                         className="fill-foreground text-xl font-medium"
                       >
-                        {chartData[0].visitors.toLocaleString()} %
+                        {chartData[0].visitors.toLocaleString()}
                       </tspan>
                     </text>
                   );
