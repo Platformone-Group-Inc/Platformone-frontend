@@ -22,19 +22,14 @@ import Link from "next/link";
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   return (
     <div
-      className="rounded-xl"
-      style={{
-        backgroundImage: "url('/images/water.jpeg')",
-        backgroundSize: "2000px 1290px",
-        backgroundPosition: "-250px -450px",
-        backgroundRepeat: "no-repeat",
-      }}
+      
+      
     >
       <Sidebar
-        className="bg-primary-500/50 backdrop-blur rounded-r-xl overflow-hidden"
+        className="bg-gradient-to-b from-[#8562ed] to-[#5b21b6] rounded-r-xl overflow-hidden"
         {...props}
       >
-        <div className="absolute inset-0 bg-black/30 z-[-1]" />
+        {/* <div className="absolute inset-0 bg-black/30 z-[-1]" /> */}
         {/* <div className="bg-black/10 z-[-1] h-full w-full" /> */}
         {/* Sidebar Header */}
         <Link href={"/"}>
