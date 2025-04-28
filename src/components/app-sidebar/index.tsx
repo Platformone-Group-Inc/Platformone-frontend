@@ -16,7 +16,16 @@ export function AppSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <motion.div
-      className="relative bg-gradient-to-b p-4 from-[#8562ed] to-[#5b21b6] rounded-r-xl shadow"
+      className={cn(
+        "relative  p-4 rounded-r-xl shadow",
+        "bg-gradient-to-b from-[#623ad9] to-[#5b21b6]"
+      )}
+      style={{
+        // backgroundImage: "url(/images/sidebar.png)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
       animate={{
         width: isCollapsed ? "300px" : "auto",
       }}
@@ -38,7 +47,9 @@ export function AppSidebar() {
         <BrandLogo />
         {isCollapsed && (
           <motion.span
-            animate={{ transition: { delay: 0.8 } }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.4 } }}
+            exit={{ opacity: 0 }}
             className="text-2xl font-bold"
           >
             {BRAND_NAME}
