@@ -1,80 +1,75 @@
-"use client";
+import { useEffect, useState } from "react";
 
-import {
-  Label,
-  PolarGrid,
-  PolarRadiusAxis,
-  RadialBar,
-  RadialBarChart,
-} from "recharts";
+interface Props {
+  value?: number; // Value between 0 and 100
+  size?: number; // Diameter of the chart in pixels
+}
 
-import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+const RadialChart: React.FC<Props> = ({ value = 0, size = 100 }) => {
+  const strokeWidth = 10;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
 
-const RadialChart = () => {
-  const chartData = [
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  ];
+  const [animatedProgress, setAnimatedProgress] = useState(0);
 
-  const chartConfig = {
-    visitors: {
-      label: "Visitors",
-    },
-    safari: {
-      label: "Safari",
-      color: "var(--chart-blue)",
-    },
-  } satisfies ChartConfig;
+  useEffect(() => {
+    // Animate the progress
+    const timeout = setTimeout(() => {
+      setAnimatedProgress((value / 100) * circumference);
+    }, 100); // Delay to ensure smooth animation
+    return () => clearTimeout(timeout);
+  }, [value, circumference]);
+
+  // Determine the color based on the value
+  const getColor = () => {
+    if (value >= 75) return "#9cd323"; // Green
+    if (value >= 50) return "#54a6ff"; // Blue
+    if (value >= 25) return "#ffc73a"; // Yellow
+    return "#ff4423"; // Orange
+  };
+
+  const progressColor = getColor();
+
   return (
-    <div className="flex flex-col justify-center items-center gap-2">
-      <ChartContainer config={chartConfig} className="h-[108px] aspect-square">
-        <RadialBarChart
-          data={chartData}
-          startAngle={0}
-          endAngle={250}
-          innerRadius={48}
-          outerRadius={72}
-        >
-          <PolarGrid
-            gridType="circle"
-            radialLines={true}
-            stroke="none"
-            className="first:fill-muted last:fill-background"
-            polarRadius={[50]}
-          />
-
-          <RadialBar dataKey="visitors" background cornerRadius={10} />
-
-          <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-            <Label
-              content={({ viewBox }) => {
-                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                  return (
-                    <text
-                      x={viewBox.cx}
-                      y={viewBox.cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                    >
-                      <tspan
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        className="fill-foreground text-xl font-medium"
-                      >
-                        {chartData[0].visitors.toLocaleString()}
-                      </tspan>
-                    </text>
-                  );
-                }
-              }}
-            />
-          </PolarRadiusAxis>
-        </RadialBarChart>
-      </ChartContainer>
-
-      <p>
-        <span className="text-base font-semibold">1</span>
-        <span className="text-sm font-medium">/5</span>
-      </p>
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
+      <svg
+        className="transform -rotate-90"
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+      >
+        {/* Background Circle */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="#e5e7eb" // Tailwind gray-200
+          strokeWidth={strokeWidth}
+          fill="transparent"
+        />
+        {/* Progress Circle */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={progressColor}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference - animatedProgress}
+          strokeLinecap="round"
+          style={{
+            transition: "stroke-dashoffset 1s ease-in-out", // Smooth animation
+          }}
+        />
+      </svg>
+      {/* Center Value */}
+      <span className="absolute text-lg font-semibold text-gray-800">
+        {Math.round(value)}%
+      </span>
     </div>
   );
 };
