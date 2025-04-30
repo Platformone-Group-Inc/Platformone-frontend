@@ -46,7 +46,12 @@ const ChartCard = () => {
         </Tooltip>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <RadialChart />
+        <div className="flex flex-col items-center justify-center gap-2 w-full">
+          <RadialChart value={65} size={110} arcWidth={12} />
+          <p className="text-sm font-medium">
+            <b className="text-base font-semibold">137</b> /420
+          </p>
+        </div>
         <div className="flex flex-col gap-3 w-full">
           {[30, 40, 20, 72, 10].map((i) => (
             <div key={i}>
