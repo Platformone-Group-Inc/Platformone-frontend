@@ -1,20 +1,26 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
+import { InfoIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
-import AvailableFrameworksList from "./available-frameworks-list";
-import MyFrameworksList from "./my-frameworks-list";
 
 const MyFrameworks = () => {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b my-6 pb-6">
+      <div className="border-b pb-6 flex items-center justify-between">
         <div className="space-y-1">
-          <h1 className="font-medium text-xl">Frameworks already setup</h1>
-          <p className="text-sm text-gray-500">
-            Content for these frameworks has already been imported and setup.
+          <h1 className="font-semibold inline-flex items-center gap-2 text-xl">
+            My Frameworks
+            <InfoIcon className="" size={16} />
+            <Badge className="rounded-md" variant={"secondary"}>
+              3 Framework
+            </Badge>
+          </h1>
+
+          <p className="text-sm text-secondary-400">
+            Keep track of vendor and their security ratings.
           </p>
         </div>
         <Link href={"/frameworks/new"} className={cn(buttonVariants())}>
@@ -22,8 +28,6 @@ const MyFrameworks = () => {
           Add Framework
         </Link>
       </div>
-      <MyFrameworksList />
-      <AvailableFrameworksList />
     </div>
   );
 };
