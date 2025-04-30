@@ -47,7 +47,7 @@ export function AppSidebar() {
       </Button>
 
       <Link href={"/"} className="flex text-white my-4 items-center gap-2">
-        <BrandLogo />
+        <BrandLogo className="fill-white" />
         {isCollapsed && (
           <motion.span
             initial={{ opacity: 0 }}
