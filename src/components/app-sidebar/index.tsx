@@ -17,14 +17,17 @@ export function AppSidebar() {
   return (
     <motion.div
       className={cn(
-        "relative  p-4 rounded-r-xl shadow",
-        "bg-gradient-to-b from-[#623ad9] to-[#5b21b6]"
+        "relative  p-4 rounded-r-xl shadow"
+        // "bg-gradient-to-b from-[#581FB5]  to-[#592EB4]"
       )}
       style={{
         // backgroundImage: "url(/images/sidebar.png)",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        // background: "#581FB5",
+        background:
+          "linear-gradient(180deg,rgba(88, 31, 181, 1) 0%, rgba(127, 76, 173, 1) 86%, rgba(89, 46, 180, 1) 100%)",
       }}
       animate={{
         width: isCollapsed ? "300px" : "auto",
