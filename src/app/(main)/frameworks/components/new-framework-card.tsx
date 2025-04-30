@@ -14,7 +14,7 @@ import AddedFrameworkBadge from "./added-framework-badge";
 interface Props {
   added?: boolean;
 }
-const FrameworkCard: React.FC<Props> = ({ added }) => {
+const NewFrameworkCard: React.FC<Props> = ({ added }) => {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   return (
     <>
@@ -56,4 +56,4 @@ const FrameworkCard: React.FC<Props> = ({ added }) => {
   );
 };
 
-export default FrameworkCard;
+export default NewFrameworkCard;

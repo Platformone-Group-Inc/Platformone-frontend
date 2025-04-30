@@ -1,4 +1,4 @@
-import FrameworkCard from "./framework-card";
+import NewFrameworkCard from "./new-framework-card";
 // import FrameworkInfoModal from "./modals/framework-info-modal";
 
 const FrameworksGrid = () => {
@@ -6,7 +6,7 @@ const FrameworksGrid = () => {
     <>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-6">
         {Array.from({ length: 5 }).map((_, i) => (
-          <FrameworkCard key={i} />
+          <NewFrameworkCard key={i} />
         ))}
       </div>
     </>
