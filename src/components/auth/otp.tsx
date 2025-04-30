@@ -6,6 +6,7 @@ import { useId } from "react";
 import { MailIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import { motion } from "motion/react";
 function Slot(props: SlotProps & { isError: boolean }) {
   return (
     <div
@@ -33,7 +34,12 @@ export function Otp() {
   };
 
   return (
-    <div className="flex flex-col text-center items-center space-y-6">
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      className="flex flex-col text-center items-center space-y-6"
+    >
       <span className="p-2 rounded-lg border border-secondary-200">
         <MailIcon className="size-7" />
       </span>
@@ -75,6 +81,6 @@ export function Otp() {
         Didn&apos;t receive the email?{" "}
         <button className="font-semibold text-primary">Click to resend</button>
       </p>
-    </div>
+    </motion.div>
   );
 }
