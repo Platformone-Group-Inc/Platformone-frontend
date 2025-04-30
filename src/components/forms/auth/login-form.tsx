@@ -26,7 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Loader2Icon, LoaderIcon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Otp } from "@/components/auth/otp";

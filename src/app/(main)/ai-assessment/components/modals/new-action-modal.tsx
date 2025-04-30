@@ -17,7 +17,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const NewActionModal: React.FC<ModalProps> = ({ open, onOpenChange }) => {
   return (
-    <Dialog open={open} defaultOpen onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className=" flex bg-white flex-col gap-0 p-3 space-y-6 sm:rounded-none sm:max-w-4xl [&>button:last-child]:hidden">
         <div className="space-y-4 px-3">
           <DialogHeader className="flex flex-row items-start gap-3">

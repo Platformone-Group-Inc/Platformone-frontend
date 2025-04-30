@@ -1,8 +1,12 @@
 "use client";
-
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { InfoCircle, MessageText } from "iconsax-react";
-import { EllipsisVerticalIcon, ListFilterIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  EllipsisVerticalIcon,
+  ListFilterIcon,
+} from "lucide-react";
 
 import {
   Select,
@@ -12,19 +16,47 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+
 import NewActionModal from "./components/modals/new-action-modal";
+import AssessmentTable from "./components/assesment-table";
 
 const Page = () => {
   return (
     <div className="p-6 w-full">
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
-        <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
-          CMMS GAP Assessment
-          <InfoCircle className="stroke-secondary size-4" />
-          {/* <Badge className="ml-3.5">Showing 1 Document</Badge> */}
-        </h1>
+        <div className="space-y-3">
+          <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
+            CMMS GAP Assessment
+            <InfoCircle className="stroke-secondary size-4" />
+            {/* <Badge className="ml-3.5">Showing 1 Document</Badge> */}
+          </h1>
+          <div className="text-sm space-y-3">
+            <div className="flex items-center gap-3">
+              <ArrowLeftIcon size={16} />
+              Showing 1-50 Questions
+            </div>
+            <div className="relative w-full bg-border rounded-full h-3 overflow-hidden">
+              <motion.div
+                className="absolute left-0 h-full bg-primary-600 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "60%" }}
+              />
+              <motion.div
+                className="absolute left-0 h-full bg-error rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "50%" }}
+              />
+              <motion.div
+                className="absolute left-0 h-full bg-info rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "40%" }}
+              />
+            </div>
+            <p className="font-medium">
+              Answered- 24 of 107 (Yes - 18, No - 1, Partially - 1, NA - 4)
+            </p>
+          </div>
+        </div>
         <div className="flex items-center gap-4">
           <Select>
             <SelectTrigger className="gap-1 rounded-lg px-3.5 font-semibold text-sm">
@@ -60,47 +92,7 @@ const Page = () => {
           </Button>
         </div>
       </div>
-      <div className="w-full space-y-10 mt-8">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="flex items-center border-b pb-4 gap-4 ">
-            <Checkbox />
-            <div className="text-sm font-medium hover:underline text-info-600 px-4 flex-grow">
-              Q-AST-04.1: Does the organization determine cybersecurity and
-              privacy control applicability by identifying, assigning and
-              documenting the appropriate asset scope categorization for all
-              systems, applications, services and personnel (internal and
-              third-parties)?
-            </div>
-            <div className="flex items-center flex-shrink-0 gap-4">
-              <div className="flex items-center gap-2">
-                <Checkbox defaultChecked />
-                <Label>Yes</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Checkbox />
-                <Label>No</Label>
-              </div>
-              {/* <div className="flex items-center gap-2">
-                <Checkbox />
-                <Label>Partially</Label>
-              </div> */}
-              <div className="flex items-center gap-2">
-                <Checkbox />
-                <Label>N/A</Label>
-              </div>
-            </div>
-            <div className="text-xs flex-shrink-0">
-              <p>CA.L2-3.12.3</p>
-            </div>
-            <Button variant={"transparent"} size={"icon"}>
-              <EllipsisVerticalIcon className="size-5" />
-            </Button>
-            <Button variant={"transparent"} size={"icon"}>
-              <MessageText className="stroke-secondary size-5" />
-            </Button>
-          </div>
-        ))}
-      </div>
+      <AssessmentTable />
       <NewActionModal />
     </div>
   );
