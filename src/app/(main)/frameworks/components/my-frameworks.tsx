@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { InfoIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
+import FrameworksCard from "./frameworks-card";
 
 const MyFrameworks = () => {
   return (
@@ -27,6 +28,11 @@ const MyFrameworks = () => {
           <PlusIcon size={20} />
           Add Framework
         </Link>
+      </div>
+      <div className="grid gap-6 grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <FrameworksCard key={i} />
+        ))}
       </div>
     </div>
   );

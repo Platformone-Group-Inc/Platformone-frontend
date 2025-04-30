@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 interface Props {
   value?: number; // Value between 0 and 100
   size?: number; // Diameter of the chart in pixels
+  arcWidth?: number; // Width of the progress arc
 }
 
-const RadialChart: React.FC<Props> = ({ value = 0, size = 100 }) => {
-  const strokeWidth = 10;
+const RadialChart: React.FC<Props> = ({
+  value = 0,
+  size = 100,
+  arcWidth = 10,
+}) => {
+  const strokeWidth = arcWidth; // Use arcWidth as the stroke width
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
