@@ -8,8 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { TickCircle } from "iconsax-react";
+
 import { XIcon } from "lucide-react";
+import AddedFrameworkBadge from "../added-framework-badge";
 
 interface Props {
   open?: boolean;
@@ -68,10 +69,7 @@ const FrameworkInfoModal: React.FC<Props> = ({ open, onOpenChange }) => {
             </div>
           </div>
           <hr className="my-4" />
-          <div className="border border-success-600 bg-success-600/10 rounded-full p-2 inline-flex items-center gap-2">
-            <TickCircle className="size-4 stroke-success-600" />
-            <span className="text-xs font-medium">Added in frameworks</span>
-          </div>
+          <AddedFrameworkBadge />
         </div>
         <p className="text-xs text-secondary-400">
           * % mapped indicates the percentage of requirements in Fedramp (Rev5)
