@@ -11,6 +11,7 @@ import {
 
 import { XIcon } from "lucide-react";
 import AddedFrameworkBadge from "../added-framework-badge";
+import RadialChart from "@/components/charts/radial-chart";
 
 interface Props {
   open?: boolean;
@@ -57,7 +58,8 @@ const FrameworkInfoModal: React.FC<Props> = ({ open, onOpenChange }) => {
         </div>
         <div className="border border-border rounded p-4">
           <div className="flex gap-4 ">
-            <div className="size-[64] rounded-full bg-success flex-shrink-0 "></div>
+            {/* <div className="size-[64] rounded-full bg-success flex-shrink-0 "></div> */}
+            <RadialChart value={100} size={88} />
             <div>
               <p className="font-semibold text-sm text-secondary">
                 FedRAMP Moderate (800-53 Rev. 5)
