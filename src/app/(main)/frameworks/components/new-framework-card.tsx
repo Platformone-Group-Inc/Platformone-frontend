@@ -6,9 +6,15 @@ import { Button } from "@/components/ui/button";
 import { InfoCircle } from "iconsax-react";
 import { useState } from "react";
 import FrameworkInfoModal from "./modals/framework-info-modal";
+import ImportFrameworkModal from "./modals/import-framework-modal";
+
+import AddedFrameworkBadge from "./added-framework-badge";
 
 // TODO: add framework props
-const FrameworkCard = () => {
+interface Props {
+  added?: boolean;
+}
+const NewFrameworkCard: React.FC<Props> = ({ added }) => {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   return (
     <>
@@ -39,13 +45,8 @@ const FrameworkCard = () => {
           330 requirements in 13 families to be implemented
         </p>
         <hr className="mb-4" />
-        <Button
-          variant={"outline"}
-          radius={"full"}
-          className="rounded-full border-primary text-primary font-semibold w-full text-xs h-auto py-1.5"
-        >
-          Import Content
-        </Button>
+        {/* TODO add framework props */}
+        {added ? <AddedFrameworkBadge /> : <ImportFrameworkModal />}
       </div>
       <FrameworkInfoModal
         open={openInfoModal}
@@ -55,4 +56,4 @@ const FrameworkCard = () => {
   );
 };
 
-export default FrameworkCard;
+export default NewFrameworkCard;

@@ -1,13 +1,18 @@
 "use client";
 
+import BrandLogo from "@/components/icons/brand-logo";
+import { Button } from "@/components/ui/button";
 import {
   Dropzone,
   DropzoneContent,
   DropzoneEmptyState,
 } from "@/components/ui/dropzone";
 import { Input } from "@/components/ui/input";
+import { TrashIcon } from "lucide-react";
+import { useState } from "react";
 
 const Organization = () => {
+  const [open, setOpen] = useState(false);
   return (
     <>
       <div className="space-y-2">
@@ -30,31 +35,41 @@ const Organization = () => {
           various reports requiring this information.
         </p>
 
-        <Dropzone
-          maxSize={1024 * 1024 * 10}
-          minSize={1024}
-          maxFiles={10}
-          accept={{ "image/*": [] }}
-          onError={console.error}
-          className="w-full max-w-[550px] h-52"
-        >
-          <DropzoneEmptyState />
-          <DropzoneContent />
-        </Dropzone>
-        {/* <div className="border p-4 rounded-lg flex gap-3 max-w-[550px]">
-          <BrandLogo />
-          <div className="flex-grow">
-            <p className="font-medium text-sm">Logo.png</p>
-            <p className="text-gray-400 text-sm">200 KB - 100% uploaded</p>
-          </div>
-          <Button
-            variant={"ghost"}
-            size={"icon"}
-            className="text-red-500 hover:text-red-600"
+        {!open ? (
+          <Dropzone
+            maxSize={1024 * 1024 * 10}
+            minSize={1024}
+            maxFiles={10}
+            accept={{ "image/*": [] }}
+            onDrop={() => {
+              setOpen(true);
+            }}
+            onError={console.error}
+            className="w-full max-w-[550px] h-52"
           >
-            <TrashIcon />
-          </Button>
-        </div> */}
+            <DropzoneEmptyState />
+            <DropzoneContent />
+          </Dropzone>
+        ) : (
+          <div className="border p-4 rounded-lg flex gap-3 max-w-[550px]">
+            <BrandLogo fill="#7C5CFC" />
+            <div className="flex-grow">
+              <p className="font-medium text-sm">Logo.png</p>
+              <p className="text-gray-400 text-sm">200 KB - 100% uploaded</p>
+            </div>
+            <Button
+              variant={"transparent"}
+              size={"icon"}
+              onClick={() => {
+                console.log("hello");
+                setOpen(false);
+              }}
+              className="text-error-500 hover:text-error-600"
+            >
+              <TrashIcon />
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

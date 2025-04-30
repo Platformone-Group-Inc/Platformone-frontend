@@ -768,7 +768,7 @@ function RowActions({}: { row: Row<Item> }) {
           <DropdownMenuItem>Add to favorites</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem className="text-error focus:text-error">
           <span>Delete</span>
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
