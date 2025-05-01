@@ -19,6 +19,8 @@ import {
 
 import NewActionModal from "./components/modals/new-action-modal";
 import AssessmentTable from "./components/assesment-table";
+import FilterModal from "./components/modals/filter-modal";
+import AssessmentTableAction from "./components/table-actions";
 
 const Page = () => {
   return (
@@ -79,17 +81,9 @@ const Page = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
+          <AssessmentTableAction />
 
-          <Button
-            variant={"outline"}
-            className="h-auto px-4 py-2.5 border-primary/20 rounded-lg hover:bg-primary/10"
-          >
-            <ListFilterIcon className="size-5 stroke-secondary-400" />
-
-            <span className="font-semibold text-sm text-secondary-400">
-              Filter
-            </span>
-          </Button>
+          <FilterModal />
         </div>
       </div>
       <AssessmentTable />
