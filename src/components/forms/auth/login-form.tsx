@@ -28,8 +28,10 @@ import {
 } from "@/components/ui/form";
 import { Loader2Icon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Otp } from "@/components/auth/otp";
+import { useLogin } from "@/services/mutations/Auth";
+import { useRouter } from "next/navigation";
 
 const loginFormSchema = z.object({
   email: z
@@ -57,15 +59,31 @@ React.ComponentPropsWithoutRef<"div">) => {
       keepLoggedIn: false,
     },
   });
-
-  const [showOTP, setShowOTP] = useState(false);
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: loginMutationFn,
+  const router = useRouter();
+  const { mutate: login, isPending } = useLogin({
+    redirectTo: '/',
+    onSuccess: (data) => {
+      // You can add additional logic here if needed
+      // For example, if you need to store the keepLoggedIn preference
+      const keepLoggedIn = form.getValues("keepLoggedIn");
+      if (keepLoggedIn) {
+        // Set cookie expiration longer or store in localStorage
+        localStorage.setItem("preferredAuth", "login");
+      }
+      
+      // Check if email verification is required
+      if (data.data.user && !data.data.user.isEmailVerified) {
+        // setEmailForOTP(form.getValues("email"));
+        // setShowOTP(true);
+      }
+    }
   });
 
   const handleSubmit = (values: LoginFormValues) => {
-    console.log(values);
+    login({
+      email: values.email,
+      password: values.password
+    });
   };
 
   const handleSocialLogin = async (provider: "google" | "microsoft") => {
@@ -75,7 +93,7 @@ React.ComponentPropsWithoutRef<"div">) => {
   return (
     <AnimatePresence>
       <>
-        {showOTP ? (
+        {false ? (
           <Otp />
         ) : (
           <motion.div
@@ -215,10 +233,10 @@ React.ComponentPropsWithoutRef<"div">) => {
         <button
           className="w-full text-center text-error"
           onClick={() => {
-            setShowOTP((s) => !s);
+            // setShowOTP((s) => !s);
           }}
         >
-          {showOTP ? "hide" : "show"} otp
+          {false ? "hide" : "show"} otp
         </button>
       </>
     </AnimatePresence>

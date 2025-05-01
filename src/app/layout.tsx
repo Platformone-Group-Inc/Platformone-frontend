@@ -5,6 +5,9 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
 import QueryProvider from "@/context/query-provider";
+import { AuthProvider } from "@/context/auth-provider";
+import  { Toaster } from 'react-hot-toast';
+
 const font = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
@@ -27,7 +30,10 @@ export default function RootLayout({
       <body className={`${font.variable} antialiased`}>
         <QueryProvider>
         <ReduxProvider>
+          <AuthProvider>
+            <Toaster />
           <Providers>{children}</Providers>
+          </AuthProvider>
         </ReduxProvider>
         </QueryProvider>
       </body>
