@@ -3,15 +3,16 @@
 import useAuth from "@/hooks/use-auth";
 import React, { createContext, useContext } from "react";
 
+
 type UserType = {
-  name: string;
+  fullname: string;
   email: string;
-  isEmailVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  userPreferences: {
-    enable2FA: boolean;
-  };
+  id: string;
+  isActive: boolean;
+  isSuperAdmin: boolean;
+  lastLogin: Date | any;
+  organization: string;
+  role: any
 };
 
 type AuthContextType = {
