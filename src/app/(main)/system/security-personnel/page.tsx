@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Input } from "@/components/ui/input";
@@ -29,7 +30,7 @@ const SecurityPersonnel = () => {
         <div className="space-y-1.5">
           <Label className="text-sm font-medium">Organization Details</Label>
           {/* TODO add user avatar */}
-          <TagInput
+          {/* <TagInput
             id="input-57"
             tags={exampleTags}
             setTags={(newTags) => {
@@ -49,7 +50,7 @@ const SecurityPersonnel = () => {
             }}
             activeTagIndex={activeTagIndex}
             setActiveTagIndex={setActiveTagIndex}
-          />
+          /> */}
         </div>
         <div className="space-y-1.5">
           <Label className="text-sm font-medium">Organization Details</Label>
