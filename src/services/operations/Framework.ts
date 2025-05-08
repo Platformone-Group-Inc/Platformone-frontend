@@ -6,7 +6,7 @@ export const getFrameworksQueryFn = async () => {
    console.log(response)
 };
 
-export const getFrameworksByOrganizationQueryFn = async (organizationId: string) => {
+export const getFrameworksByOrganizationQueryFn = async (organizationId: any) => {
    const response = await API.get(`/frameworks/organization/${organizationId}`) 
    return response?.data
 };
