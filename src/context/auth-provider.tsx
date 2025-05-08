@@ -42,6 +42,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuthContext = () => {
   const conext = useContext(AuthContext);
+  // console.log("Auth context state:", conext);
+
   if (!conext) {
     throw new Error("useAuthContext must be used within a AuthProvider");
   }

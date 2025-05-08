@@ -7,8 +7,10 @@ import Link from "next/link";
 import { PlusIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
+// import { useAuthContext } from "@/context/auth-provider";
 const NewFrameworkPage = () => {
+  //   const { user,isLoading: authLoading } = useAuthContext();
+  // console.log(user, "server")
   return (
     // <div className="p-6 w-full">
     //   <div className="space-y-1 border-b pb-6">

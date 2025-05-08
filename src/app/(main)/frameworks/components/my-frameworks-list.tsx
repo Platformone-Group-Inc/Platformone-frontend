@@ -6,7 +6,7 @@ import { useAuthContext } from "@/context/auth-provider";
 import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
 
 const MyFrameworksList = () => {
-  const { user } = useAuthContext();
+  const { user,isLoading: authLoading } = useAuthContext();
   const { data: frameworks, isLoading, error } = useQuery({
     queryKey: ["frameworks", user?.organization],
     queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
@@ -14,7 +14,7 @@ const MyFrameworksList = () => {
   });
  
   console.log(frameworks)
-  if (isLoading) {
+  if (authLoading) {
     return <div>Loading frameworks...</div>;
   }
 

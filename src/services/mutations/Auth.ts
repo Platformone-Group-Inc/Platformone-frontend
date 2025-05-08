@@ -88,12 +88,9 @@ export function useLogin(options: {
       toast.success("Login successful",{
         icon: '👏'
       });
-      queryClient.setQueryData(["authUser"], data.data);
-
       if (options.onSuccess) {
         options.onSuccess(data);
       }
-
       if (redirectTo) {
         router.push(redirectTo);
       }

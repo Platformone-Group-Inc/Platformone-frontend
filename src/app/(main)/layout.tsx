@@ -8,12 +8,12 @@ import { AppSidebarShell } from "@/components/app-sidebar";
 import Header from "@/components/dashboard/header";
 import { useAiChat } from "@/store/useAiChatStore";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useAuthContext } from "@/context/auth-provider";
+import { AuthProvider } from "@/context/auth-provider";
 const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   const { isOpen } = useAiChat();
-  const { isLoading, user } = useAuthContext();
-console.log(user)
+ 
   return (
+    <AuthProvider> 
     <AppSidebarShell>
       <div className="rounded-lg bg-primary-100 h-full flex-1 mx-auto ">
         <Header />
@@ -32,6 +32,7 @@ console.log(user)
         </div>
       </div>
     </AppSidebarShell>
+    </AuthProvider>
   );
 };
 
