@@ -13,8 +13,9 @@ import AddedFrameworkBadge from "./added-framework-badge";
 // TODO: add framework props
 interface Props {
   added?: boolean;
+  framework?: any
 }
-const NewFrameworkCard: React.FC<Props> = ({ added }) => {
+const NewFrameworkCard: React.FC<Props> = ({ added,framework }) => {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   return (
     <>
@@ -29,7 +30,8 @@ const NewFrameworkCard: React.FC<Props> = ({ added }) => {
             />
 
             <p className="font-semibold text-sm">
-              Fedramp (Rev5) Moderate Baseline
+              {/* Fedramp (Rev5) Moderate Baseline */}
+              {framework?.name}
             </p>
           </div>
 
@@ -42,7 +44,8 @@ const NewFrameworkCard: React.FC<Props> = ({ added }) => {
           </Button>
         </div>
         <p className="text-xs text-gray-700 py-6 w-full">
-          330 requirements in 13 families to be implemented
+          {/* 330 requirements in 13 families to be implemented */}
+          {framework?.description}
         </p>
         <hr className="mb-4" />
         {/* TODO add framework props */}

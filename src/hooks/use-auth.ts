@@ -8,6 +8,8 @@ const useAuth = () => {
     queryKey: ["authUser"],
     queryFn: getUserSessionQueryFn,
     staleTime: Infinity,
+    retry: 5,
+    gcTime: 1000 * 60 * 60,
   });
   return query;
 };
