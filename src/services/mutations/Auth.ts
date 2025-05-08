@@ -124,9 +124,9 @@ export function useRegister(options: {
     },
     onSuccess: (data) => {
       toast.dismiss();
-      toast.success("Account created successfully!", {
-        description: "Please verify your email to continue.",
-      });
+      // toast.success("Account created successfully!", {
+      //   description: "Please verify your email to continue.",
+      // });
       
       // Update auth user in the query cache
       queryClient.setQueryData(["authUser"], data.data);
@@ -143,10 +143,10 @@ export function useRegister(options: {
     },
     onError: (error) => {
       toast.dismiss();
-      const errorMessage = error.response?.data?.message || "Registration failed. Please try again.";
-      toast.error("Registration failed", {
-        description: errorMessage,
-      });
+      // const errorMessage = error.response?.data?.message || "Registration failed. Please try again.";
+      // toast.error("Registration failed", {
+      //   description: errorMessage,
+      // });
       
       if (options.onError) {
         options.onError(error);
@@ -156,134 +156,134 @@ export function useRegister(options: {
 }
 
 // Forgot password hook
-export function useForgotPassword(options: {
-  onSuccess?: () => void;
-  onError?: (error: AxiosError) => void;
-} = {}): UseMutationResult<AxiosResponse<any>, AxiosError, ForgotPasswordCredentials> {
-  return useMutation({
-    mutationFn: authAPI.forgotPassword,
-    onMutate: () => {
-      toast.loading("Sending reset link...");
-    },
-    onSuccess: () => {
-      toast.dismiss();
-      toast.success("Reset link sent", {
-        description: "Please check your email for the password reset link",
-      });
+// export function useForgotPassword(options: {
+//   onSuccess?: () => void;
+//   onError?: (error: AxiosError) => void;
+// } = {}): UseMutationResult<AxiosResponse<any>, AxiosError, ForgotPasswordCredentials> {
+//   return useMutation({
+//     mutationFn: authAPI.forgotPassword,
+//     onMutate: () => {
+//       toast.loading("Sending reset link...");
+//     },
+//     onSuccess: () => {
+//       toast.dismiss();
+//       toast.success("Reset link sent", {
+//         description: "Please check your email for the password reset link",
+//       });
       
-      if (options.onSuccess) {
-        options.onSuccess();
-      }
-    },
-    onError: (error) => {
-      toast.dismiss();
-      const errorMessage = error.response?.data?.message || "Failed to send reset link. Please try again.";
-      toast.error("Failed to send reset link", {
-        description: errorMessage,
-      });
+//       if (options.onSuccess) {
+//         options.onSuccess();
+//       }
+//     },
+//     onError: (error) => {
+//       toast.dismiss();
+//       const errorMessage = error.response?.data?.message || "Failed to send reset link. Please try again.";
+//       toast.error("Failed to send reset link", {
+//         description: errorMessage,
+//       });
       
-      if (options.onError) {
-        options.onError(error);
-      }
-    },
-  });
-}
+//       if (options.onError) {
+//         options.onError(error);
+//       }
+//     },
+//   });
+// }
 
 // OTP verification hook
-export function useVerifyOtp(options: {
-  onSuccess?: (data: AxiosResponse<AuthResponse>) => void;
-  onError?: (error: AxiosError) => void;
-  redirectTo?: string;
-} = {}): UseMutationResult<AxiosResponse<AuthResponse>, AxiosError, OTPCredentials> {
-  const queryClient = useQueryClient();
-  const router = useRouter();
-  const { redirectTo } = options;
+// export function useVerifyOtp(options: {
+//   onSuccess?: (data: AxiosResponse<AuthResponse>) => void;
+//   onError?: (error: AxiosError) => void;
+//   redirectTo?: string;
+// } = {}): UseMutationResult<AxiosResponse<AuthResponse>, AxiosError, OTPCredentials> {
+//   const queryClient = useQueryClient();
+//   const router = useRouter();
+//   const { redirectTo } = options;
 
-  return useMutation({
-    mutationFn: authAPI.verifyOtp,
-    onMutate: () => {
-      toast.loading("Verifying code...");
-    },
-    onSuccess: (data) => {
-      toast.dismiss();
-      toast.success("Email verified successfully!", {
-        description: "You can now access your account.",
-      });
+//   return useMutation({
+//     mutationFn: authAPI.verifyOtp,
+//     onMutate: () => {
+//       toast.loading("Verifying code...");
+//     },
+//     onSuccess: (data) => {
+//       toast.dismiss();
+//       toast.success("Email verified successfully!", {
+//         description: "You can now access your account.",
+//       });
       
-      // Update auth user in the query cache
-      queryClient.setQueryData(["authUser"], data.data);
+//       // Update auth user in the query cache
+//       queryClient.setQueryData(["authUser"], data.data);
       
-      if (options.onSuccess) {
-        options.onSuccess(data);
-      }
+//       if (options.onSuccess) {
+//         options.onSuccess(data);
+//       }
       
-      if (redirectTo) {
-        router.push(redirectTo);
-      }
-    },
-    onError: (error) => {
-      toast.dismiss();
-      const errorMessage = error.response?.data?.message || "Invalid verification code. Please try again.";
-      toast.error("Verification failed", {
-        description: errorMessage,
-      });
+//       if (redirectTo) {
+//         router.push(redirectTo);
+//       }
+//     },
+//     onError: (error) => {
+//       toast.dismiss();
+//       const errorMessage = error.response?.data?.message || "Invalid verification code. Please try again.";
+//       toast.error("Verification failed", {
+//         description: errorMessage,
+//       });
       
-      if (options.onError) {
-        options.onError(error);
-      }
-    },
-  });
-}
+//       if (options.onError) {
+//         options.onError(error);
+//       }
+//     },
+//   });
+// }
 
 // Logout hook
-export function useLogout(options: {
-  onSuccess?: () => void;
-  onError?: (error: AxiosError) => void;
-  redirectTo?: string;
-} = {}): UseMutationResult<AxiosResponse<any>, AxiosError, void> {
-  const queryClient = useQueryClient();
-  const router = useRouter();
-  const { redirectTo } = options;
+// export function useLogout(options: {
+//   onSuccess?: () => void;
+//   onError?: (error: AxiosError) => void;
+//   redirectTo?: string;
+// } = {}): UseMutationResult<AxiosResponse<any>, AxiosError, void> {
+//   const queryClient = useQueryClient();
+//   const router = useRouter();
+//   const { redirectTo } = options;
 
-  return useMutation({
-    mutationFn: authAPI.logout,
-    onMutate: () => {
-      toast.loading("Logging out...");
-    },
-    onSuccess: () => {
-      toast.dismiss();
-      toast.success("Logged out successfully");
+//   return useMutation({
+//     mutationFn: authAPI.logout,
+//     onMutate: () => {
+//       toast.loading("Logging out...");
+//     },
+//     onSuccess: () => {
+//       toast.dismiss();
+//       toast.success("Logged out successfully");
       
-      // Clear all queries from the cache
-      queryClient.clear();
+//       // Clear all queries from the cache
+//       queryClient.clear();
       
-      if (options.onSuccess) {
-        options.onSuccess();
-      }
+//       if (options.onSuccess) {
+//         options.onSuccess();
+//       }
       
-      if (redirectTo) {
-        router.push(redirectTo);
-      }
-    },
-    onError: (error) => {
-      toast.dismiss();
-      const errorMessage = error.response?.data?.message || "Logout failed.";
-      toast.error("Logout failed", {
-        description: errorMessage,
-      });
+//       if (redirectTo) {
+//         router.push(redirectTo);
+//       }
+//     },
+//     onError: (error) => {
+//       toast.dismiss();
+//       const errorMessage = error.response?.data?.message || "Logout failed.";
+//       toast.error("Logout failed", {
+//         description: errorMessage,
+//       });
       
-      if (options.onError) {
-        options.onError(error);
-      }
+//       if (options.onError) {
+//         options.onError(error);
+//       }
       
-      // Force logout on frontend even if API fails
-      queryClient.clear();
-      if (redirectTo) {
-        router.push(redirectTo);
-      }
-    },
-  });
-}
+//       // Force logout on frontend even if API fails
+//       queryClient.clear();
+//       if (redirectTo) {
+//         router.push(redirectTo);
+//       }
+//     },
+//   });
+// }
 
 // Export all API functions separately as well
 export const authService = authAPI;
