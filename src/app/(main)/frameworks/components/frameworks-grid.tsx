@@ -1,13 +1,28 @@
+'use client';
+
+import { useQuery } from "@tanstack/react-query";
 import NewFrameworkCard from "./new-framework-card";
 // import FrameworkInfoModal from "./modals/framework-info-modal";
-
+import { getFrameworksQueryFn } from "@/services/operations/Framework";
 const FrameworksGrid = () => {
+  const { data: availableFrameworks, isLoading, error } = useQuery({
+    queryKey: ["availableFrameworks"],
+    queryFn: () => getFrameworksQueryFn(),
+  });
+
+  console.log(availableFrameworks, "availableFrameworks");
   return (
     <>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-6">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {/* Temp any once frameworks schema is ready then add type */}
+        {
+          availableFrameworks?.map((framework: any) => (
+            <NewFrameworkCard key={framework._id} framework={framework} />
+          ))
+        }
+        {/* {Array.from({ length: 5 }).map((_, i) => (
           <NewFrameworkCard key={i} />
-        ))}
+        ))} */}
       </div>
     </>
   );

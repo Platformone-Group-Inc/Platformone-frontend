@@ -12,10 +12,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { useAuthContext } from "@/context/auth-provider";
+import { useCloneFramework } from "@/services/mutations/Framework";
 
 import { XIcon } from "lucide-react";
 
-const ImportFrameworkModal = () => {
+const ImportFrameworkModal = ({ framework }: any) => {
+  const { user, isLoading: authLoading } = useAuthContext();
+  const { mutate: cloneFramework } = useCloneFramework({
+    redirectTo: '/frameworks',
+    onSuccess: (data) => {
+      console.log('Framework cloned:', data);
+    }
+  });
+
+  const handleCloneClick = () => {
+  cloneFramework({
+    organizationId: user?.organization || '',
+    frameworkId: framework?._id
+  });
+};
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -65,7 +81,7 @@ const ImportFrameworkModal = () => {
             <DialogClose asChild>
               <Button variant={"outline"}>Cancel</Button>
             </DialogClose>
-            <Button>Start Import</Button>
+            <Button onClick={handleCloneClick}>Start Import</Button>
           </DialogFooter>
         </div>
       </DialogContent>

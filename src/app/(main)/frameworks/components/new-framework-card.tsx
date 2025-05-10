@@ -49,7 +49,7 @@ const NewFrameworkCard: React.FC<Props> = ({ added,framework }) => {
         </p>
         <hr className="mb-4" />
         {/* TODO add framework props */}
-        {added ? <AddedFrameworkBadge /> : <ImportFrameworkModal />}
+        {added ? <AddedFrameworkBadge /> : <ImportFrameworkModal framework={framework} />}
       </div>
       <FrameworkInfoModal
         open={openInfoModal}

@@ -1,76 +1,74 @@
 import { useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import API from "../axios-client";
-import { toast } from "react-hot-toast"
+import { toast } from "react-hot-toast";
 import { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
 
-// Define common types
-export type LoginCredentials = {
-  email: string;
-  password: string;
+// Types for the clone framework operation
+export type CloneFrameworkParams = {
+  organizationId: string;
+  frameworkId: string;
 };
 
-
-export type AuthResponse = {
-  token: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    isEmailVerified: boolean;
-  };
+export type CloneFrameworkResponse = {
+  // Add the specific response properties based on your API
+  success: boolean;
+  message: string;
+  data: any; // Replace with your specific data type
 };
 
-// API functions - centralize all auth API calls
-const frameworkAPI = {
-  login: (data: LoginCredentials) =>
-    API.post<AuthResponse>("/users/login", data)
+// API function for cloning framework
+const cloneFullFrameworkQueryFn = async (params: CloneFrameworkParams) => {
+  return await API.post('/frameworks/cloneFullFramework', {
+    organizationId: params.organizationId,
+    framework: params.frameworkId
+  });
 };
 
-// // Login mutation hook
-// export function useLogin(options: {
-//   onSuccess?: (data: AxiosResponse<AuthResponse>) => void;
-//   onError?: (error: AxiosError) => void;
-//   redirectTo?: string;
-// } = {}): UseMutationResult<AxiosResponse<AuthResponse>, AxiosError, LoginCredentials> {
-//   const queryClient = useQueryClient();
-//   const router = useRouter();
-//   const { redirectTo } = options;
+// Mutation hook for cloning a framework
+export function useCloneFramework(options: {
+  onSuccess?: (data: AxiosResponse<CloneFrameworkResponse>) => void;
+  onError?: (error: AxiosError) => void;
+  redirectTo?: string;
+} = {}): UseMutationResult<AxiosResponse<CloneFrameworkResponse>, AxiosError, CloneFrameworkParams> {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { redirectTo } = options;
 
-//   return useMutation({
-//     mutationFn: authAPI.login,
-//     onMutate: () => {
-//       const toastId = toast.loading("Logging in...");
-//       return toastId;
-//     },
+  return useMutation({
+    mutationFn: cloneFullFrameworkQueryFn,
 
-//     onSuccess: (data, _variables, context) => {
-//       toast.dismiss(context);
-//       toast.success("Login successful", {
-//         icon: '👏'
-//       });
-//       queryClient.setQueryData(["authUser"], data.data);
+    onMutate: () => {
+      const toastId = toast.loading("Cloning framework...");
+      return toastId;
+    },
 
-//       if (options.onSuccess) {
-//         options.onSuccess(data);
-//       }
+    onSuccess: (data, _variables, context) => {
+      toast.dismiss(context);
+      toast.success("Framework cloned successfully", {
+        icon: '👏'
+      });
 
-//       if (redirectTo) {
-//         router.push(redirectTo);
-//       }
-//     },
+      // Invalidate queries related to frameworks to refresh data
+      queryClient.invalidateQueries({ queryKey: ['frameworks'] });
 
-//     onError: (error, _variables, context) => {
-//       toast.dismiss(context);
-//       toast.error("Login failed. Please try again.");
-//       if (options.onError) {
-//         options.onError(error);
-//       }
-//     },
-//   });
-// }
+      if (options.onSuccess) {
+        options.onSuccess(data);
+      }
 
+      if (redirectTo) {
+        router.push(redirectTo);
+      }
+    },
 
+    onError: (error, _variables, context) => {
+      toast.dismiss(context);
+      const errorMessage =  "Failed to clone framework. Please try again.";
+      toast.error(errorMessage);
+      if (options.onError) {
+        options.onError(error);
+      }
+    },
+  });
+}
 
-// Export all API functions separately as well
-export const frameworkService = frameworkAPI;
