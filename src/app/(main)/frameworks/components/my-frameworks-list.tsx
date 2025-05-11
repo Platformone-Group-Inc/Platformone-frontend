@@ -10,10 +10,14 @@ const MyFrameworksList = () => {
   const { data: frameworks, isLoading, error } = useQuery({
     queryKey: ["frameworks", user?.organization],
     queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
-    enabled: !!user?.organization
+    enabled: !!user?.organization,
+    staleTime: 300000, // Consider data fresh for 5 minutes (in milliseconds)
+    refetchOnWindowFocus: false, // Prevent refetch on window focus
+    refetchOnMount: false, // Prevent refetch when component mounts again
+    refetchOnReconnect: false // Prevent refetch when reconnecting
   });
 
-  console.log(frameworks)
+  // console.log(frameworks)
   if (authLoading) {
     return <div>Loading frameworks...</div>;
   }
