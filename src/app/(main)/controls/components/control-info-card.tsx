@@ -9,16 +9,15 @@ import {
 
 import { AnimatePresence, motion } from "motion/react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { More } from "iconsax-react";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const ControlCard = () => {
+const ControlInfoCard = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   return (
     <motion.div className="border border-primary/20 rounded-xl w-full p-4">
@@ -78,18 +77,12 @@ const ControlCard = () => {
             </motion.div>
           )}
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
-            <Link
-              href={"/controls/info"}
-              // variant={"outline"}
-              className={cn(
-                buttonVariants({
-                  variant: "outline",
-                }),
-                "h-auto text-xs font-semibold w-full text-primary hover:text-primary-500 border-primary rounded-full py-1.5"
-              )}
+            <Button
+              variant={"outline"}
+              className="h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
             >
               18 Controls Families
-            </Link>
+            </Button>
             <Button
               variant={"transparent"}
               onClick={() => setIsCollapsed((state) => !state)}
@@ -110,4 +103,4 @@ const ControlCard = () => {
   );
 };
 
-export default ControlCard;
+export default ControlInfoCard;
