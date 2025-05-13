@@ -11,13 +11,14 @@ import { sidebarData } from "../dashboard/constants/sidebar-data";
 import NavItem from "./nav-item";
 import { ChevronLeftIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function AppSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <motion.div
       className={cn(
-        "relative  p-4 rounded-r-xl shadow"
+        "relative rounded-r-xl shadow"
         // "bg-gradient-to-b from-[#581FB5]  to-[#592EB4]"
       )}
       style={{
@@ -46,32 +47,34 @@ export function AppSidebar() {
         />
       </Button>
 
-      <Link href={"/"} className="flex text-white my-4 items-center gap-2">
-        <BrandLogo className="fill-white" />
-        {isCollapsed && (
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { delay: 0.4 } }}
-            exit={{ opacity: 0 }}
-            className="text-2xl font-bold"
-          >
-            {BRAND_NAME}
-          </motion.span>
-        )}
-      </Link>
-      <div className="space-y-2">
-        {isCollapsed && <div className="text-white text-sm">Main Menu</div>}
-        <div className="space-y-4">
-          {sidebarData.map((item, i) => (
-            <NavItem
-              key={i}
-              menu={item}
-              isCollapsed={isCollapsed}
-              close={() => setIsCollapsed(true)}
-            />
-          ))}
+      <ScrollArea className="p-4 max-h-screen overflow-y-scroll">
+        <Link href={"/"} className="flex text-white my-4 items-center gap-2">
+          <BrandLogo className="fill-white" />
+          {isCollapsed && (
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: 0.4 } }}
+              exit={{ opacity: 0 }}
+              className="text-2xl font-bold"
+            >
+              {BRAND_NAME}
+            </motion.span>
+          )}
+        </Link>
+        <div className="space-y-2">
+          {isCollapsed && <div className="text-white text-sm">Main Menu</div>}
+          <div className="space-y-4">
+            {sidebarData.map((item, i) => (
+              <NavItem
+                key={i}
+                menu={item}
+                isCollapsed={isCollapsed}
+                close={() => setIsCollapsed(true)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </ScrollArea>
     </motion.div>
   );
 }
