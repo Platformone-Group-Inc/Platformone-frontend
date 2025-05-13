@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { InfoIcon } from "lucide-react";
+import { Globe, InfoIcon } from "lucide-react";
 import RadialChart from "../charts/radial-chart";
 import { Progress } from "../ui/progress";
 import { FaShoppingBag } from "react-icons/fa";
@@ -40,8 +40,25 @@ const ChartCard = () => {
           <TooltipTrigger asChild>
             <InfoIcon size={20} className="text-gray-400" />
           </TooltipTrigger>
-          <TooltipContent className="bg-white/10 backdrop-blur text-black border rounded-lg">
-            <p>Chart information</p>
+
+          <TooltipContent className=" py-3">
+            <div className="flex gap-3">
+              <Globe
+                className="mt-0.5 shrink-0 opacity-60"
+                size={16}
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+              <div className="space-y-1">
+                <p className="text-[13px] font-medium">Tooltip</p>
+                <p className="text-xs text-muted-foreground">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Numquam eligendi cupiditate, libero totam iure fuga
+                  perspiciatis nemo placeat, esse porro dolores! Enim nostrum
+                  itaque quibusdam! Sequi aspernatur ipsam esse ipsum.
+                </p>
+              </div>
+            </div>
           </TooltipContent>
         </Tooltip>
       </div>
