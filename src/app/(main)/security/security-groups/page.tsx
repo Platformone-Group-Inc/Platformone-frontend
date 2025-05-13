@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Label } from "@/components/ui/label";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { InfoCircle } from "iconsax-react";
 
 import UsersTab from "./components/users-tab";
@@ -23,7 +23,7 @@ const SecurityUsers = () => {
         <UsersTab />
       </div>
 
-      <div className="bg-white flex-shrink-0 w-[300px] p-4 rounded-2xl shadow space-y-4 divide-y">
+      {/* <div className="bg-white flex-shrink-0 w-[300px] p-4 rounded-2xl shadow space-y-4 divide-y">
         <h2 className="text-lg font-semibold mb-4">Sign in Setting</h2>
         <div className="py-4 space-y-6">
           <div className=" space-y-3 rounded-lg">
@@ -93,7 +93,7 @@ const SecurityUsers = () => {
         <div className="flex items-center justify-end pt-6">
           <Button>Update Settings</Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
