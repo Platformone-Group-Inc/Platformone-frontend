@@ -2,8 +2,8 @@
 
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { motion } from "motion/react";
-import { usePathname } from "next/navigation";
+// import { motion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 
 import {
   Collapsible,
@@ -23,6 +23,7 @@ interface Props {
 
 const NavItem: React.FC<Props> = ({ menu, isCollapsed, close = () => {} }) => {
   const path = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const hasSubItems = menu.group && menu.group.length > 0;
   const isActive =
@@ -37,7 +38,7 @@ const NavItem: React.FC<Props> = ({ menu, isCollapsed, close = () => {} }) => {
 
   return (
     <Collapsible open={open} onOpenChange={setOpen} className="relative">
-      {isActive && (
+      {/* {isActive && (
         <motion.div
           layoutId="active-menu"
           className={cn(
@@ -46,18 +47,22 @@ const NavItem: React.FC<Props> = ({ menu, isCollapsed, close = () => {} }) => {
             hasSubItems ? "bg-white/10" : "bg-white"
           )}
         />
-      )}
+      )} */}
       {hasSubItems ? (
         <>
           <CollapsibleTrigger asChild>
             <button
               className={cn(
                 "rounded-full h-auto flex items-center gap-2 text-sm font-medium text-white transition-all group-focus:text-gray-800 stroke-white  w-full",
-                "hover:bg-white/20 hover:text-white hover:stroke-white",
-                isCollapsed ? " py-3 px-4  " : " p-3 aspect-square "
+                " hover:bg-white/20 hover:text-white hover:stroke-white",
+                isCollapsed ? " py-3 px-4  " : " p-3 aspect-square ",
+                isActive && "bg-white text-primary stroke-primary"
               )}
               onClick={() => {
                 close();
+                if (!menu.href?.startsWith(path) && menu.group?.[0]?.href) {
+                  router.push(menu.group[0].href);
+                }
                 setOpen((s) => !s);
               }}
             >
@@ -83,7 +88,7 @@ const NavItem: React.FC<Props> = ({ menu, isCollapsed, close = () => {} }) => {
                     <Link
                       href={subItem.href as string}
                       className={cn(
-                        "flex items-center gap-2 text-sm px-2 py-1 transition-all text-primary-200 stroke-primary-200 hover:bg-white/20 rounded-l-md",
+                        "flex items-center gap-2 text-sm px-2 py-1 transition-all text-primary-200 stroke-primary-200 hover:bg-white/20 rounded-xl",
                         isSubActive && "text-white stroke-white bg-white/10 "
                         //   ? "!text-white"
                         //   : "text-white hover:text-white"
@@ -104,7 +109,7 @@ const NavItem: React.FC<Props> = ({ menu, isCollapsed, close = () => {} }) => {
             className={cn(
               "rounded-full h-auto flex items-center gap-2 text-sm font-medium text-primary-100 transition-all group-focus:text-gray-800 hover:bg-white/20 hover:text-white stroke-white w-full",
               isActive &&
-                "text-primary stroke-primary hover:text-primary hover:stroke-primary",
+                "bg-white text-primary stroke-primary hover:text-white hover:stroke-white",
               isCollapsed ? " py-3 px-4  " : " p-3 aspect-square "
             )}
           >
