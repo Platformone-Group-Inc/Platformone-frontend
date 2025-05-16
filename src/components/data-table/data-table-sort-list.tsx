@@ -99,25 +99,25 @@ export function DataTableSortList<TData>({
       onSortingChange((prevSorting) => {
         if (!prevSorting) return prevSorting;
         return prevSorting.map((sort) =>
-          sort.id === sortId ? { ...sort, ...updates } : sort,
+          sort.id === sortId ? { ...sort, ...updates } : sort
         );
       });
     },
-    [onSortingChange],
+    [onSortingChange]
   );
 
   const onSortRemove = React.useCallback(
     (sortId: string) => {
       onSortingChange((prevSorting) =>
-        prevSorting.filter((item) => item.id !== sortId),
+        prevSorting.filter((item) => item.id !== sortId)
       );
     },
-    [onSortingChange],
+    [onSortingChange]
   );
 
   const onSortingReset = React.useCallback(
     () => onSortingChange(table.initialState.sorting),
-    [onSortingChange, table.initialState.sorting],
+    [onSortingChange, table.initialState.sorting]
   );
 
   React.useEffect(() => {
@@ -163,7 +163,7 @@ export function DataTableSortList<TData>({
         onSortingReset();
       }
     },
-    [sorting.length, onSortingReset],
+    [sorting.length, onSortingReset]
   );
 
   return (
@@ -175,7 +175,7 @@ export function DataTableSortList<TData>({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" onKeyDown={onTriggerKeyDown}>
-            <ArrowDownUp />
+            <ArrowDownUp size={16} />
             Sort
             {sorting.length > 0 && (
               <Badge
@@ -201,7 +201,7 @@ export function DataTableSortList<TData>({
               id={descriptionId}
               className={cn(
                 "text-muted-foreground text-sm",
-                sorting.length > 0 && "sr-only",
+                sorting.length > 0 && "sr-only"
               )}
             >
               {sorting.length > 0
@@ -307,7 +307,7 @@ function DataTableSortItem({
         onSortRemove(sort.id);
       }
     },
-    [sort.id, showFieldSelector, showDirectionSelector, onSortRemove],
+    [sort.id, showFieldSelector, showDirectionSelector, onSortRemove]
   );
 
   return (
@@ -330,7 +330,7 @@ function DataTableSortItem({
               className="w-44 justify-between rounded font-normal"
             >
               <span className="truncate">{columnLabels.get(sort.id)}</span>
-              <ChevronsUpDown className="opacity-50" />
+              <ChevronsUpDown size={16} className="opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -388,7 +388,7 @@ function DataTableSortItem({
           className="size-8 shrink-0 rounded"
           onClick={() => onSortRemove(sort.id)}
         >
-          <Trash2 />
+          <Trash2 size={16} />
         </Button>
         <SortableItemHandle asChild>
           <Button
@@ -396,7 +396,7 @@ function DataTableSortItem({
             size="icon"
             className="size-8 shrink-0 rounded"
           >
-            <GripVertical />
+            <GripVertical size={16} />
           </Button>
         </SortableItemHandle>
       </div>

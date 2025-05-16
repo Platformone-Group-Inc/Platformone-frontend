@@ -28,7 +28,7 @@ const buttonVariants = cva(
         full: "rounded-full",
       },
       size: {
-        sm: "h-8 px-3 text-xs",
+        sm: "h-8 px-2 text-xs",
         md: "h-9 px-4 text-sm",
         default: "h-10 px-5 text-sm",
         lg: "h-11 px-6 text-base",

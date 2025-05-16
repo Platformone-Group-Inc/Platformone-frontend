@@ -1,7 +1,13 @@
 "use client";
 
 import type { Table } from "@tanstack/react-table";
-import { Check, ChevronsUpDown, Settings2 } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  ChevronsUpDownIcon,
+  Columns3Icon,
+  Settings2,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,9 +39,9 @@ export function DataTableViewOptions<TData>({
         .getAllColumns()
         .filter(
           (column) =>
-            typeof column.accessorFn !== "undefined" && column.getCanHide(),
+            typeof column.accessorFn !== "undefined" && column.getCanHide()
         ),
-    [table],
+    [table]
   );
 
   return (
@@ -46,14 +52,14 @@ export function DataTableViewOptions<TData>({
           role="combobox"
           variant="outline"
           size="sm"
-          className="ml-auto hidden h-8 lg:flex"
+          className="ml-auto hidden lg:flex"
         >
-          <Settings2 />
-          View
-          <ChevronsUpDown className="ml-auto opacity-50" />
+          <Columns3Icon size={18} />
+          Columns
+          <ChevronsUpDownIcon size={18} className="ml-auto opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-44 p-0">
+      <PopoverContent align="end" className="w-52 p-0 text-xs">
         <Command>
           <CommandInput placeholder="Search columns..." />
           <CommandList>
@@ -66,13 +72,13 @@ export function DataTableViewOptions<TData>({
                     column.toggleVisibility(!column.getIsVisible())
                   }
                 >
-                  <span className="truncate">
+                  <span className="truncate text-sm">
                     {column.columnDef.meta?.label ?? column.id}
                   </span>
                   <Check
                     className={cn(
                       "ml-auto size-4 shrink-0",
-                      column.getIsVisible() ? "opacity-100" : "opacity-0",
+                      column.getIsVisible() ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

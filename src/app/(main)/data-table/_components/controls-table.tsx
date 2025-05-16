@@ -14,6 +14,8 @@ import { EllipsisIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
 
 interface Control {
   id: string;
@@ -50,7 +52,6 @@ const ControlsTable = () => {
   const columns: ColumnDef<Control>[] = [
     {
       id: "select",
-
       header: ({ table }) => (
         <Checkbox
           checked={table.getIsSomeRowsSelected()}
@@ -76,16 +77,23 @@ const ControlsTable = () => {
           }}
         />
       ),
+
       enableSorting: false,
     },
 
     {
       accessorKey: "controlCode",
       header: "Code",
+      meta: {
+        label: "Code",
+      },
     },
     {
       accessorKey: "controlName",
       header: "Control Name",
+      meta: {
+        label: "Control Name",
+      },
       cell: ({ row }) => (
         <Link
           href="#"
@@ -114,6 +122,9 @@ const ControlsTable = () => {
           </span>
         </div>
       ),
+      meta: {
+        label: "Owner",
+      },
     },
     {
       accessorKey: "status",
@@ -129,10 +140,16 @@ const ControlsTable = () => {
           </Badge>
         </div>
       ),
+      meta: {
+        label: "Status",
+      },
     },
     {
       accessorKey: "evidence",
       header: "Evidence",
+      meta: {
+        label: "Evidence",
+      },
       cell: ({ row }) => (
         <div className="flex justify-center ">
           <Badge
@@ -148,19 +165,31 @@ const ControlsTable = () => {
     },
     {
       accessorKey: "controlFamily",
-      header: "ControlFamily",
+      header: "Control Family",
+      meta: {
+        label: "Control Family",
+      },
     },
     {
       accessorKey: "actionItems",
-      header: "ActionItem",
+      header: "Action Items",
+      meta: {
+        label: "Actins Items",
+      },
     },
     {
       accessorKey: "document",
       header: "Document",
+      meta: {
+        label: "Document",
+      },
     },
     {
       accessorKey: "priorities",
       header: "Priorities",
+      meta: {
+        label: "Priorities",
+      },
       cell: ({ row }) => (
         <div className="flex justify-center ">
           <Badge
@@ -214,7 +243,11 @@ const ControlsTable = () => {
       <DataTable
         table={table}
         // actionBar={<TasksTableActionBar table={table} />}
-      ></DataTable>
+      >
+        <DataTableToolbar table={table}>
+          <DataTableSortList table={table} align="end" />
+        </DataTableToolbar>
+      </DataTable>
     </>
   );
 };
