@@ -1,3 +1,4 @@
+// TODO pagination
 "use client";
 
 import { useDataTable } from "@/hooks/use-data-table";
@@ -10,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ArrowUpDownIcon, EllipsisIcon } from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
@@ -31,7 +32,7 @@ interface Control {
   actionItems: string | null;
   createdAt: Date;
 }
-const data: Control[] = Array.from({ length: 30 }).map((_, i) => ({
+const data: Control[] = Array.from({ length: 300 }).map((_, i) => ({
   id: crypto.randomUUID(),
   controlCode: "AC-" + faker.string.alphanumeric({ length: 5 }),
   controlFamily: `AC-${i + 1}`,
@@ -48,6 +49,9 @@ const data: Control[] = Array.from({ length: 30 }).map((_, i) => ({
 
 const ControlsTable = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+  //  const searchParams = await props.searchParams;
+  // const search = searchParamsCache.parse(searchParams);
 
   const columns: ColumnDef<Control>[] = [
     {
@@ -275,11 +279,15 @@ const ControlsTable = () => {
     },
   ];
 
-  const { table } = useDataTable({
-    data,
-    columns,
-    pageCount: 0,
+  const [page, setPage] = useState(1);
+  const perPage = 10;
 
+  const paginated = data.slice((page - 1) * perPage, page * perPage);
+
+  const { table } = useDataTable({
+    data: paginated,
+    columns,
+    pageCount: Math.ceil(data.length / perPage),
     shallow: false,
     clearOnDefault: true,
   });

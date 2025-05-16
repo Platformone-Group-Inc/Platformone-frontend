@@ -40,7 +40,7 @@ export function DataTable<TData>({
                   <TableHead
                     key={header.id}
                     colSpan={header.colSpan}
-                    className="text-center"
+                    className="text-center py-4"
                     style={{
                       ...getCommonPinningStyles({ column: header.column }),
                     }}
