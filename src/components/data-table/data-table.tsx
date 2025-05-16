@@ -33,13 +33,14 @@ export function DataTable<TData>({
       {children}
       <div className="overflow-hidden rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="sticky top-0">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="sticky top-0">
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
                     colSpan={header.colSpan}
+                    className="text-center"
                     style={{
                       ...getCommonPinningStyles({ column: header.column }),
                     }}
@@ -65,6 +66,7 @@ export function DataTable<TData>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      className="text-center"
                       style={{
                         ...getCommonPinningStyles({ column: cell.column }),
                       }}
