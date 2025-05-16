@@ -38,19 +38,19 @@ export function DataTableColumnHeader<TData, TValue>({
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "-ml-1.5 flex h-8 items-center gap-1.5 rounded-md px-2 py-1.5 hover:bg-accent focus:outline-none focus:ring-1 focus:ring-ring data-[state=open]:bg-accent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
-          className,
+          "-ml-1.5 flex items-center truncate mx-auto gap-1.5 rounded-md px-2 py-1.5 hover:bg-accent focus:outline-none focus:ring-1 focus:ring-ring data-[state=open]:bg-accent [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
+          className
         )}
         {...props}
       >
         {title}
         {column.getCanSort() &&
           (column.getIsSorted() === "desc" ? (
-            <ChevronDown />
+            <ChevronDown size={16} />
           ) : column.getIsSorted() === "asc" ? (
-            <ChevronUp />
+            <ChevronUp size={16} />
           ) : (
-            <ChevronsUpDown />
+            <ChevronsUpDown size={16} />
           ))}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-28">
@@ -89,8 +89,8 @@ export function DataTableColumnHeader<TData, TValue>({
             checked={!column.getIsVisible()}
             onClick={() => column.toggleVisibility(false)}
           >
-            <EyeOff />
-            Hide
+            <EyeOff size={16} />
+            <span className="ml-2">Hide</span>
           </DropdownMenuCheckboxItem>
         )}
       </DropdownMenuContent>

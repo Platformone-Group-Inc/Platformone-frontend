@@ -10,12 +10,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { EllipsisIcon } from "lucide-react";
+import { ArrowUpDownIcon, EllipsisIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 
 interface Control {
   id: string;
@@ -54,15 +54,12 @@ const ControlsTable = () => {
       id: "select",
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsSomeRowsSelected()}
-          onCheckedChange={(val) => {
-            const ids = data.map((u) => u.id);
-            setSelectedRows((prev) =>
-              val
-                ? [...new Set([...prev, ...ids])]
-                : prev.filter((id) => !ids.includes(id))
-            );
-          }}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
         />
       ),
       cell: ({ row }) => (
@@ -79,21 +76,33 @@ const ControlsTable = () => {
       ),
 
       enableSorting: false,
+      enableHiding: false,
     },
 
     {
       accessorKey: "controlCode",
-      header: "Code",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Code" />
+      ),
       meta: {
         label: "Code",
       },
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
     },
     {
       accessorKey: "controlName",
-      header: "Control Name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Control Name" />
+      ),
       meta: {
         label: "Control Name",
       },
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       cell: ({ row }) => (
         <Link
           href="#"
@@ -110,25 +119,33 @@ const ControlsTable = () => {
     },
     {
       accessorKey: "owner",
-      header: "Owner",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Owner" />
+      ),
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <Avatar className="aspect-square size-10 rounded-full border">
             <AvatarImage src={row.original.ownerAvatar} />
             <AvatarFallback>{row.original.ownerName.charAt(0)}</AvatarFallback>
           </Avatar>
-          <span className="font-medium truncate text-base">
+          <span className="font-medium truncate text-sm">
             {row.original.ownerName}
           </span>
         </div>
       ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Owner",
       },
     },
     {
       accessorKey: "status",
-      header: "Status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
       cell: ({ row }) => (
         <div className="flex justify-center ">
           <Badge
@@ -140,13 +157,23 @@ const ControlsTable = () => {
           </Badge>
         </div>
       ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Status",
       },
     },
     {
       accessorKey: "evidence",
-      header: "Evidence",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Evidence" />
+      ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Evidence",
       },
@@ -165,28 +192,52 @@ const ControlsTable = () => {
     },
     {
       accessorKey: "controlFamily",
-      header: "Control Family",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Control Family" />
+      ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Control Family",
       },
     },
     {
       accessorKey: "actionItems",
-      header: "Action Items",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Action Items" />
+      ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Actins Items",
       },
     },
     {
       accessorKey: "document",
-      header: "Document",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Document" />
+      ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Document",
       },
     },
     {
       accessorKey: "priorities",
-      header: "Priorities",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Priorities" />
+      ),
+
+      enableSorting: true,
+      enableColumnFilter: true,
+      enableHiding: true,
       meta: {
         label: "Priorities",
       },
@@ -224,18 +275,13 @@ const ControlsTable = () => {
     },
   ];
 
-  const { table, shallow, debounceMs, throttleMs } = useDataTable({
+  const { table } = useDataTable({
     data,
     columns,
-
     pageCount: 0,
-    // initialState: {
-    //   sorting: [{ id: "id", desc: false }],
-    //   columnPinning: { right: ["actions"] },
-    // },
-    // getRowId: (originalRow) => originalRow.id,
-    // shallow: false,
-    // clearOnDefault: true,
+
+    shallow: false,
+    clearOnDefault: true,
   });
 
   return (
@@ -244,9 +290,7 @@ const ControlsTable = () => {
         table={table}
         // actionBar={<TasksTableActionBar table={table} />}
       >
-        <DataTableToolbar table={table}>
-          <DataTableSortList table={table} align="end" />
-        </DataTableToolbar>
+        <DataTableToolbar table={table} />
       </DataTable>
     </>
   );
