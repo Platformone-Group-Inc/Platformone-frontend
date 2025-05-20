@@ -1,0 +1,122 @@
+[
+  {
+    "id": "14d77c0b-c9bd-469b-a089-2c0d75eea4d7",
+    "controlCode": "AC-1",
+    "controlFamily": "Tremblay - Larson",
+    "controlName": "Bins - Moen",
+    "document": "Leannon - Littel",
+    "evidence": "Crist LLC",
+    "owner": "Jacobi - Cormier",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Frami, Osinski and Abshire"
+  },
+  {
+    "id": "ee16c58b-ec9e-4a83-baeb-fd095d18f479",
+    "controlCode": "AC-2",
+    "controlFamily": "Schuster, Beier and Zemlak",
+    "controlName": "Nolan - Hickle",
+    "document": "Kunde - Ebert",
+    "evidence": "Lind, Goyette and Cartwright",
+    "owner": "Little, Zieme and Rau",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Windler - Hirthe"
+  },
+  {
+    "id": "4e6cca5d-1776-41b2-9efc-705155fcfc1d",
+    "controlCode": "AC-3",
+    "controlFamily": "McKenzie, Stiedemann and Blanda",
+    "controlName": "Balistreri, Koelpin and Gislason",
+    "document": "Barton Inc",
+    "evidence": "Rowe LLC",
+    "owner": "Russel Inc",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Douglas Group"
+  },
+  {
+    "id": "2a4a6e2a-0ce0-4ace-a1b4-3d2df0b6f49e",
+    "controlCode": "AC-4",
+    "controlFamily": "Marks - Gerlach",
+    "controlName": "McDermott LLC",
+    "document": "Abshire, Maggio and Lowe",
+    "evidence": "Rogahn Group",
+    "owner": "Keeling - Ruecker",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Kassulke - Kertzmann"
+  },
+  {
+    "id": "61a1749e-b0ed-4c89-af5a-6683b79171a3",
+    "controlCode": "AC-5",
+    "controlFamily": "Lubowitz, Fahey and Mitchell",
+    "controlName": "Murphy, Kuhn and Labadie",
+    "document": "Mann, Torphy and Reichert",
+    "evidence": "Medhurst Group",
+    "owner": "Kohler - Abernathy",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Bruen Group"
+  },
+  {
+    "id": "b29eb264-3be8-487b-8036-6ae76240bb90",
+    "controlCode": "AC-6",
+    "controlFamily": "Gusikowski, Block and Cruickshank",
+    "controlName": "Crist - Kerluke",
+    "document": "Hills - Witting",
+    "evidence": "Blanda LLC",
+    "owner": "Jast - McDermott",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Torp - Windler"
+  },
+  {
+    "id": "259cfe09-8b1d-4f57-a821-2c7e8ffc8720",
+    "controlCode": "AC-7",
+    "controlFamily": "Russel, Goodwin and Corkery",
+    "controlName": "Gibson - Lemke",
+    "document": "Lind Group",
+    "evidence": "Moen - Bahringer",
+    "owner": "Thiel - Hilpert",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Kutch - Larkin"
+  },
+  {
+    "id": "d91d1bb1-a3f3-488c-a9d9-23379e2ac25e",
+    "controlCode": "AC-8",
+    "controlFamily": "Schuppe - Goyette",
+    "controlName": "Mills Inc",
+    "document": "Satterfield, Bashirian and Effertz",
+    "evidence": "Trantow - Thompson",
+    "owner": "Bernhard and Sons",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Hettinger - Prohaska"
+  },
+  {
+    "id": "1e298c8d-8c4b-4178-914f-d139242aceee",
+    "controlCode": "AC-9",
+    "controlFamily": "Tromp LLC",
+    "controlName": "Kihn, Douglas and Terry",
+    "document": "Swaniawski - Hane",
+    "evidence": "Wisozk LLC",
+    "owner": "Williamson - Ziemann",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Prohaska, Harber and Schimmel"
+  },
+  {
+    "id": "b2a8cf7b-4052-465b-9015-93dd106a8e9d",
+    "controlCode": "AC-10",
+    "controlFamily": "Ratke - Waelchi",
+    "controlName": "Gutkowski - Weimann",
+    "document": "Bernhard Inc",
+    "evidence": "Macejkovic, Treutel and Kemmer",
+    "owner": "Morissette LLC",
+    "priorities": "high",
+    "status": "active",
+    "actionItems": "Schuppe, Gulgowski and Wilderman"
+  }
+]
