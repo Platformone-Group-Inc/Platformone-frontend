@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 import { Filter } from "iconsax-react";
 
-import DemoDataTable from "../../controls/data-table/demo-data-table";
+import DemoDataTable from "../../controls/control-old/demo-data-table";
 import SelectProcedureTemplateModal from "./components/modal/select-procedure-template-modal";
 import NewProcedureModal from "./components/modal/new-procedure-modal";
 

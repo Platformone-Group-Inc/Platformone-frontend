@@ -1,3 +1,4 @@
+'use client';
 import { Button } from "@/components/ui/button";
 import { Filter, Import } from "iconsax-react";
 // import { PlusIcon } from "lucide-react";
@@ -9,8 +10,23 @@ import { Badge } from "@/components/ui/badge";
 // import UpdateControlModal from "./components/update-control-modal";
 // import NewActionItemModal from "./components/modals/new-action-item-modal";
 import NewControlSetModal from "./components/modals/new-control-set-modal";
+import { useAuthContext } from "@/context/auth-provider";
+import { useQuery } from "@tanstack/react-query";
+import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
+import MyFrameworks from "../frameworks/components/my-frameworks";
 
 const ControlsPage = () => {
+   const { user, isLoading: authLoading } = useAuthContext();
+    
+    const { 
+      data: myFrameworks, 
+      isLoading: myFrameworksLoading,
+      error: myFrameworksError
+    } = useQuery({
+      queryKey: ["frameworks", user?.organization],
+      queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
+      enabled: !!user?.organization
+    });
   return (
     <div className="p-6 w-full">
       {/* <div className="flex gap-4">
@@ -47,8 +63,8 @@ const ControlsPage = () => {
         </div>
       </div>
       <div className="min-h-dvh flex items-start gap-6 w-full mt-8">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <ControlCard key={i} />
+        {myFrameworks?.frameworks?.map((framework: any) => (
+          <ControlCard key={framework?._id} framework={framework} />
         ))}
       </div>
 

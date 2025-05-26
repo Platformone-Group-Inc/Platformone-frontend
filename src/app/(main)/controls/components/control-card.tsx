@@ -18,13 +18,13 @@ import Link from "next/link";
 
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const ControlCard = () => {
+const ControlCard = ({framework}:any) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   return (
     <motion.div className="border border-primary/20 rounded-xl w-full p-4">
       <div className="flex items-center justify-between mb-1">
         <h3 className="font-semibold truncate ">
-          Fedramp (Rev5) Moderate Baseline
+       {framework?.name}
         </h3>
 
         <DropdownMenu>
@@ -79,7 +79,7 @@ const ControlCard = () => {
           )}
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
             <Link
-              href={"/controls/info"}
+              href={"/controls/info?id=" + framework?._id}
               // variant={"outline"}
               className={cn(
                 buttonVariants({

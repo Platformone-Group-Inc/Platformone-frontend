@@ -1,4 +1,4 @@
-import DataTable from "../../../data-table/page";
+import DataTable from "../../../control-old/page";
 
 const Policies = () => {
   return (

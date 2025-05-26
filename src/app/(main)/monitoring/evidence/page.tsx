@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Export, Filter } from "iconsax-react";
 import { PlusIcon } from "lucide-react";
-import DemoDataTable from "../../controls/data-table/demo-data-table";
+import DemoDataTable from "../../controls/control-old/demo-data-table";
 
 const EvidencePage = () => {
   return (

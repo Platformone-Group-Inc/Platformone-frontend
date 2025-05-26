@@ -1,26 +1,40 @@
-// import { Button } from "@/components/ui/button";
-import DemoDataTable from "./demo-data-table";
+"use client";
 
-const DataTable = () => {
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
+import { Shell } from "@/components/ui/shell";
+import ControlsTable from "./_components/controls-table";
+import { useEffect, useState } from "react";
+
+const DataTablePage = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="p-4">
-      {/* <div className="border rounded-xl shadow w-[200px] p-1.5 space-y-1.5">
-        <Button
-          variant={"secondary"}
-          className=" text-base h-auto px-2 py-2.5 rounded-md w-full font-medium transition-all"
-        >
-          Dashboard
-        </Button>
-        <Button
-          variant={"transparent"}
-          className=" text-base h-auto px-2 py-2.5 rounded-md w-full font-medium transition-all"
-        >
-          Dashboard
-        </Button>
-      </div> */}
-      <DemoDataTable />
-    </div>
+    <Shell className="p-4 gap-2">
+      {loading ? (
+        <DataTableSkeleton
+          columnCount={10}
+          filterCount={0}
+          cellWidths={[
+            "10rem",
+            "30rem",
+            "10rem",
+            "10rem",
+            "6rem",
+            "6rem",
+            "6rem",
+          ]}
+          shrinkZero
+        />
+      ) : (
+        <ControlsTable />
+      )}
+    </Shell>
   );
 };
 
-export default DataTable;
+export default DataTablePage;

@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import DataTable from "../../controls/data-table/page";
+import DataTable from "../../controls/control-old/page";
 import NewReportContent from "./tab-content/new-report-content";
 
 const tabData = [

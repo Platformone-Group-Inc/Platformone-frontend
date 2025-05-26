@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ControlsInfoAction from "./components/controls-info-actions";
 import { Button } from "@/components/ui/button";
 import { Grid3X3Icon, Rows3Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import DemoDataTable from "../data-table/demo-data-table";
+import DemoDataTable from "../control-old/demo-data-table";
 import ControlInfoCard from "../components/control-info-card";
+import { getControlFamiliesByOrganizationQueryFn } from "@/services/operations/Control";
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import {
   Breadcrumb,
@@ -16,9 +18,33 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useAuthContext } from "@/context/auth-provider";
+import { useQuery } from "@tanstack/react-query";
 
 const ControlInfoPage = () => {
   const [view, setView] = useState<"grid" | "table">("grid");
+  const { user, isLoading: authLoading } = useAuthContext();
+  const searchParams = useSearchParams()
+  const router = useRouter();
+  const cloneFrameworkId = searchParams.get('id')
+
+useEffect(() => {
+  if (!cloneFrameworkId && !authLoading) {
+    router.push('/controls');
+  }
+}, [cloneFrameworkId, authLoading, router]);
+  const {
+    data: controlFamiliesByOrg,
+    isLoading: controlFamiliesByOrgLoading,
+    error: controlFamiliesByOrgError
+  } = useQuery({
+    queryKey: ["controlFamilies", user?.organization, cloneFrameworkId],
+    queryFn: () => getControlFamiliesByOrganizationQueryFn(cloneFrameworkId),
+    enabled: !!cloneFrameworkId
+  });
+
+
+
   return (
     <div className="p-6 space-y-6 min-h-screen overflow-y-scroll">
       <div className="flex items-center justify-between">
@@ -72,8 +98,8 @@ const ControlInfoPage = () => {
       </div>
       {view === "grid" && (
         <div className=" grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <ControlInfoCard key={i} />
+          {controlFamiliesByOrg?.map((controlFamily:any) => (
+            <ControlInfoCard key={controlFamily?._id} controlFamily={controlFamily} />
           ))}
         </div>
       )}
