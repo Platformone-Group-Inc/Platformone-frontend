@@ -80,11 +80,12 @@ const ControlInfoCard = ({controlFamily}:any) => {
           )}
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
             <Button
+            disabled={controlFamily?.controls?.length === 0}
             onClick={()=> router.push('/controls/control')}
               variant={"outline"}
               className="h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
             >
-              18 Controls
+            {controlFamily?.controls?.length > 1 ? ` ${controlFamily?.controls?.length} Controls` :   ` ${controlFamily?.controls?.length} Control`} 
             </Button>
             <Button
               variant={"transparent"}

@@ -79,7 +79,7 @@ const ControlCard = ({framework}:any) => {
           )}
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
             <Link
-              href={"/controls/info?id=" + framework?._id}
+              href={"/controls/info?id=" + framework?._id + "&name=" + framework?.name} 
               // variant={"outline"}
               className={cn(
                 buttonVariants({

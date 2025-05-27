@@ -27,6 +27,7 @@ const ControlInfoPage = () => {
   const searchParams = useSearchParams()
   const router = useRouter();
   const cloneFrameworkId = searchParams.get('id')
+  const cloneFrameworkName = searchParams.get('name')
 
 useEffect(() => {
   if (!cloneFrameworkId && !authLoading) {
@@ -50,7 +51,8 @@ useEffect(() => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-semibold text-lg">
-            FedRAMP Moderate (800-53 Rev. 5)
+            {/* FedRAMP Moderate (800-53 Rev. 5) */}
+            {cloneFrameworkName}
           </h1>
           <Breadcrumb>
             <BreadcrumbList>
@@ -64,7 +66,8 @@ useEffect(() => {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage>
-                  FedRAMP Moderate (800-53 Rev. 5)
+                  {/* FedRAMP Moderate (800-53 Rev. 5) */}
+                  {cloneFrameworkName}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
