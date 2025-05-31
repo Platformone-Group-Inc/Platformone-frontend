@@ -9,11 +9,12 @@ import {
 
 import { AnimatePresence, motion } from "motion/react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { More } from "iconsax-react";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -77,12 +78,15 @@ const ControlInfoCard = () => {
             </motion.div>
           )}
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
-            <Button
-              variant={"outline"}
-              className="h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
+            <Link
+              href={"/controls/info/asfsdf"}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
+              )}
             >
               18 Controls Families
-            </Button>
+            </Link>
             <Button
               variant={"transparent"}
               onClick={() => setIsCollapsed((state) => !state)}
