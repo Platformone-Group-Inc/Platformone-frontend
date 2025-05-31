@@ -4,7 +4,7 @@
 
 body {
   font-family: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", sans-serif;
-  @apply bg-background text-secondary;
+  @apply bg-background text-secondary dark:bg-dark-900 dark:text-white;
 }
 
 @layer base {
@@ -18,7 +18,7 @@ body {
     --chart-yellow : #FFC73A; */
   }
   * {
-    @apply border-border;
+    @apply border-border dark:border-dark-border;
   }
 }
 
