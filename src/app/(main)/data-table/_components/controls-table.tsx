@@ -48,11 +48,6 @@ const data: Control[] = Array.from({ length: 300 }).map((_, i) => ({
 }));
 
 const ControlsTable = () => {
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
-
-  //  const searchParams = await props.searchParams;
-  // const search = searchParamsCache.parse(searchParams);
-
   const columns: ColumnDef<Control>[] = [
     {
       id: "select",
@@ -64,18 +59,15 @@ const ControlsTable = () => {
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
+          className="translate-y-0.5"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
-          checked={selectedRows.includes(row.original.id)}
-          onCheckedChange={(val) => {
-            setSelectedRows((prev) =>
-              val
-                ? [...prev, row.original.id]
-                : prev.filter((id) => id !== row.original.id)
-            );
-          }}
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-0.5"
         />
       ),
 
@@ -294,10 +286,7 @@ const ControlsTable = () => {
 
   return (
     <>
-      <DataTable
-        table={table}
-        // actionBar={<TasksTableActionBar table={table} />}
-      >
+      <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
     </>
