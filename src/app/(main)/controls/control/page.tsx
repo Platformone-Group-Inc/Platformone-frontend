@@ -6,10 +6,11 @@ import ControlsTable from "./_components/controls-table";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getControlByControlFamiliesQueryFn } from "@/services/operations/Control";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const DataTablePage = () => {
   const searchParams = useSearchParams()
+    const router = useRouter();
   const controlFamilyId = searchParams.get('id')
   const controlFamilyName = searchParams.get('name')
   const rowperPage = searchParams.get('perPage')
@@ -30,6 +31,11 @@ const DataTablePage = () => {
   //   return () => clearTimeout(timer);
   // }, []);
 
+      const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`?${params.toString()}`);
+  };
   return (
     <Shell className="p-4 gap-2">
       {controlByControlFamiliesLoading ? (
@@ -48,7 +54,7 @@ const DataTablePage = () => {
           shrinkZero
         />
       ) : (
-        <ControlsTable controlByControlFamilies={controlByControlFamilies} />
+        <ControlsTable controlByControlFamilies={controlByControlFamilies} onPageChange={handlePageChange} />
       )}
     </Shell>
   );
