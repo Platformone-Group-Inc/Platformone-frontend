@@ -81,7 +81,7 @@ const ControlInfoCard = ({controlFamily}:any) => {
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
             <Button
             disabled={controlFamily?.controls?.length === 0}
-            onClick={()=> router.push('/controls/control')}
+            onClick={()=> router.push('/controls/control?id='+controlFamily?._id+'&name='+controlFamily?.identifier)}
               variant={"outline"}
               className="h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
             >

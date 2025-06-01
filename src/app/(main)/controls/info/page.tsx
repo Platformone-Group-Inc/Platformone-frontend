@@ -7,7 +7,7 @@ import { Grid3X3Icon, Rows3Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DemoDataTable from "../control-old/demo-data-table";
 import ControlInfoCard from "../components/control-info-card";
-import { getControlFamiliesByOrganizationQueryFn } from "@/services/operations/Control";
+import { getControlByControlFamiliesQueryFn, getControlFamiliesByOrganizationQueryFn } from "@/services/operations/Control";
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import {
@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { useAuthContext } from "@/context/auth-provider";
 import { useQuery } from "@tanstack/react-query";
+import ControlsTable from "../control/_components/controls-table";
+import { get } from "http";
 
 const ControlInfoPage = () => {
   const [view, setView] = useState<"grid" | "table">("grid");
@@ -28,12 +30,15 @@ const ControlInfoPage = () => {
   const router = useRouter();
   const cloneFrameworkId = searchParams.get('id')
   const cloneFrameworkName = searchParams.get('name')
+  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+  const rowPerPage = parseInt(searchParams.get("perPage") || "10", 10);
+  const currentPage = isNaN(pageParam) ? 1 : pageParam;
 
-useEffect(() => {
-  if (!cloneFrameworkId && !authLoading) {
-    router.push('/controls');
-  }
-}, [cloneFrameworkId, authLoading, router]);
+  useEffect(() => {
+    if (!cloneFrameworkId && !authLoading) {
+      router.push('/controls');
+    }
+  }, [cloneFrameworkId, authLoading, router]);
   const {
     data: controlFamiliesByOrg,
     isLoading: controlFamiliesByOrgLoading,
@@ -45,6 +50,28 @@ useEffect(() => {
   });
 
 
+  const {
+    data: getAllcontrol,
+    isLoading: getAllcontrolLoading,
+    error: getAllcontrolFamiliesError,
+  } = useQuery({
+    queryKey: ["getAllcontrol", cloneFrameworkId, currentPage, rowPerPage],
+    queryFn: () =>
+      getControlByControlFamiliesQueryFn(
+        null,
+        cloneFrameworkId,
+        true,
+        currentPage,
+        rowPerPage
+      ),
+    enabled: !!cloneFrameworkId,
+  });
+
+    const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <div className="p-6 space-y-6 min-h-screen overflow-y-scroll">
@@ -101,12 +128,14 @@ useEffect(() => {
       </div>
       {view === "grid" && (
         <div className=" grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {controlFamiliesByOrg?.map((controlFamily:any) => (
+          {controlFamiliesByOrg?.map((controlFamily: any) => (
             <ControlInfoCard key={controlFamily?._id} controlFamily={controlFamily} />
           ))}
         </div>
       )}
-      {view === "table" && <DemoDataTable />}
+      {view === "table" && <ControlsTable controlByControlFamilies={getAllcontrol}           onPageChange={handlePageChange}
+ />
+      }
     </div>
   );
 };
