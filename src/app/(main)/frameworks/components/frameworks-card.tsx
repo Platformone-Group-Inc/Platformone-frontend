@@ -30,7 +30,7 @@ const FrameworksCardActions = () => {
   );
 };
 
-const FrameworksCard = () => {
+const FrameworksCard = ({framework}:any) => {
   return (
     <div className="rounded-2xl flex flex-col justify-normal items-center gap-3 p-6 border">
       <div className="flex items-start justify-between w-full">
@@ -43,7 +43,7 @@ const FrameworksCard = () => {
           />
 
           <p className="font-semibold text-sm">
-            Fedramp (Rev5) Moderate Baseline
+           {framework?.name}
           </p>
         </div>
 
