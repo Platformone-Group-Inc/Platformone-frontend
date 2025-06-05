@@ -65,7 +65,7 @@ function DataTableActionBar<TData>({
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className={cn(
-            "fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm",
+            "flex flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm",
             className
           )}
           {...props}
@@ -135,10 +135,12 @@ function DataTableActionBarSelection<TData>({
     table.toggleAllRowsSelected(false);
   }, [table]);
 
+  const selectedRow = table.getFilteredSelectedRowModel().rows;
+
   return (
     <div className="flex h-7 items-center rounded-md border pr-1 pl-2.5">
       <span className="whitespace-nowrap text-xs">
-        {table.getFilteredSelectedRowModel().rows.length} selected
+        {selectedRow.length} selected
       </span>
       <Separator
         orientation="vertical"

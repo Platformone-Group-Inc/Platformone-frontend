@@ -18,6 +18,15 @@ import { useState } from "react";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+
 interface Control {
   id: string;
   controlCode: string;
@@ -287,7 +296,26 @@ const ControlsTable = () => {
   return (
     <>
       <DataTable table={table}>
-        <DataTableToolbar table={table} />
+        <div className="flex items-center justify-between">
+          <Breadcrumb className="w-full">
+            <BreadcrumbList className="">
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/controls">All Controls</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  FedRAMP Moderate (800-53 Rev. 5)
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <DataTableToolbar table={table} />
+        </div>
       </DataTable>
     </>
   );

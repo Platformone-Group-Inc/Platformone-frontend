@@ -6,12 +6,13 @@ import HeaderSearch from "./header-search";
 import NotificationPopover from "./notification-popover";
 import UserDropdownMenu from "./user-dropdown-menu";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "../theme-toggle";
 
 const Header = () => {
   const { toggleChat } = useAiChat();
 
   return (
-    <div className="sticky top-0 z-10 bg-white backdrop-blur flex items-center justify-between w-full border-b py-4 px-10">
+    <div className="sticky top-0 z-10 bg-white dark:bg-dark-900 backdrop-blur flex items-center justify-between w-full border-b py-4 px-10">
       <HeaderSearch />
       <div className="flex items-center gap-4">
         <button
@@ -24,6 +25,7 @@ const Header = () => {
         >
           <AiIcon />
         </button>
+        <ThemeToggle />
         <NotificationPopover />
         <UserDropdownMenu />
       </div>

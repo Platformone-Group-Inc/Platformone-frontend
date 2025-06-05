@@ -9,7 +9,7 @@ import {
 
 import { AnimatePresence, motion } from "motion/react";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { More } from "iconsax-react";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";

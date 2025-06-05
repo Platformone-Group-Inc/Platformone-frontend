@@ -20,7 +20,6 @@ interface DataTableProps<TData> extends React.ComponentProps<"div"> {
 
 export function DataTable<TData>({
   table,
-  actionBar,
   children,
   className,
   ...props
@@ -94,9 +93,6 @@ export function DataTable<TData>({
       </div>
       <div className="flex flex-col gap-2.5">
         <DataTablePagination table={table} />
-        {actionBar &&
-          table.getFilteredSelectedRowModel().rows.length > 0 &&
-          actionBar}
       </div>
     </div>
   );
