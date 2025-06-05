@@ -63,6 +63,7 @@ React.ComponentPropsWithoutRef<"div">) => {
   const { mutate: login, isPending } = useLogin({
     redirectTo: '/',
     onSuccess: (data) => {
+      router.push('/');
       // You can add additional logic here if needed
       // For example, if you need to store the keepLoggedIn preference
       const keepLoggedIn = form.getValues("keepLoggedIn");
