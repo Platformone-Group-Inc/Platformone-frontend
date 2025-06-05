@@ -88,6 +88,7 @@ export function useLogin(options: {
       toast.success("Login successful",{
         icon: '👏'
       });
+      router.push("/")
       if (options.onSuccess) {
         options.onSuccess(data);
       }
