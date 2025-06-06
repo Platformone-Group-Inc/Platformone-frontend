@@ -23,7 +23,7 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
                 key={"tab"}
                 className="rounded-xl flex-grow bg-white dark:bg-dark-700 shadow-md w-full h-full transition-all"
               >
-                <ScrollArea className="w-full overflow-y-scroll max-h-[calc(100vh-120px)]">
+                <ScrollArea className="w-full overflow-auto max-h-[calc(100vh-120px)]">
                   {children}
                 </ScrollArea>
               </div>

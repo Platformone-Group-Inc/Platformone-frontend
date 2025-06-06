@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 // import UpdateControlModal from "./components/update-control-modal";
 // import NewActionItemModal from "./components/modals/new-action-item-modal";
 import NewControlSetModal from "./components/modals/new-control-set-modal";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ControlsPage = () => {
   return (
@@ -46,11 +47,11 @@ const ControlsPage = () => {
           <NewControlSetModal />
         </div>
       </div>
-      <div className="min-h-dvh flex items-start gap-6 w-full mt-8">
-        {Array.from({ length: 3 }).map((_, i) => (
+      <ScrollArea className=" grid grid-cols-3 gap-6 w-full mt-8">
+        {Array.from({ length: 1 }).map((_, i) => (
           <ControlCard key={i} />
         ))}
-      </div>
+      </ScrollArea>
 
       {/* <NoFrameworks /> */}
       {/* <FrameworksGrid /> */}

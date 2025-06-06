@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentsDataTable from "./tables/documents-data-table";
 // import ControlsDataTable from "./tables/controls-data-table";
 import EvidenceDataTable from "./tables/evidence-table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const tabData = [
   {
@@ -43,11 +44,13 @@ const MyWorkTab = () => {
           </TabsTrigger>
         ))}
       </TabsList>
-      {tabData.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
-          <tab.table />
-        </TabsContent>
-      ))}
+      <ScrollArea className="h-[calc(100vh-100px)]">
+        {tabData.map((tab) => (
+          <TabsContent key={tab.value} value={tab.value}>
+            <tab.table />
+          </TabsContent>
+        ))}
+      </ScrollArea>
     </Tabs>
   );
 };

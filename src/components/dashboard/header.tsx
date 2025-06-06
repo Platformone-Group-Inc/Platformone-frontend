@@ -6,7 +6,7 @@ import HeaderSearch from "./header-search";
 import NotificationPopover from "./notification-popover";
 import UserDropdownMenu from "./user-dropdown-menu";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "../theme-toggle";
+// import { ThemeToggle } from "../theme-toggle";
 
 const Header = () => {
   const { toggleChat } = useAiChat();
@@ -25,7 +25,7 @@ const Header = () => {
         >
           <AiIcon />
         </button>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
         <NotificationPopover />
         <UserDropdownMenu />
       </div>

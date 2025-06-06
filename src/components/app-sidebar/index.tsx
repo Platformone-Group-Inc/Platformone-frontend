@@ -47,20 +47,20 @@ export function AppSidebar() {
         />
       </Button>
 
-      <ScrollArea className="p-4 max-h-screen overflow-y-scroll">
-        <Link href={"/"} className="flex text-white my-4 items-center gap-2">
-          <BrandLogo className="fill-white" />
-          {isCollapsed && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.4 } }}
-              exit={{ opacity: 0 }}
-              className="text-2xl font-bold"
-            >
-              {BRAND_NAME}
-            </motion.span>
-          )}
-        </Link>
+      <Link href={"/"} className="flex text-white my-4 px-4 items-center gap-2">
+        <BrandLogo className="fill-white" />
+        {isCollapsed && (
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.4 } }}
+            exit={{ opacity: 0 }}
+            className="text-2xl font-bold"
+          >
+            {BRAND_NAME}
+          </motion.span>
+        )}
+      </Link>
+      <ScrollArea className="p-4 h-[calc(100vh-100px)] overflow-auto">
         <div className="space-y-2">
           {isCollapsed && <div className="text-white text-sm">Main Menu</div>}
           <div className="space-y-4">

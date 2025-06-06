@@ -419,28 +419,26 @@ const EvidenceDataTable = () => {
   ];
 
   return (
-    <div className="max-h-[40vh] overflow-auto">
-      <TableProvider
-        columns={columns}
-        data={exampleFeatures}
-        className="border rounded-lg"
-      >
-        <TableHeader>
-          {({ headerGroup }) => (
-            <TableHeaderGroup key={headerGroup.id} headerGroup={headerGroup}>
-              {({ header }) => <TableHead key={header.id} header={header} />}
-            </TableHeaderGroup>
-          )}
-        </TableHeader>
-        <TableBody>
-          {({ row }) => (
-            <TableRow key={row.id} row={row}>
-              {({ cell }) => <TableCell key={cell.id} cell={cell} />}
-            </TableRow>
-          )}
-        </TableBody>
-      </TableProvider>
-    </div>
+    <TableProvider
+      columns={columns}
+      data={exampleFeatures}
+      className="border rounded-lg"
+    >
+      <TableHeader className="sticky top-0">
+        {({ headerGroup }) => (
+          <TableHeaderGroup key={headerGroup.id} headerGroup={headerGroup}>
+            {({ header }) => <TableHead key={header.id} header={header} />}
+          </TableHeaderGroup>
+        )}
+      </TableHeader>
+      <TableBody>
+        {({ row }) => (
+          <TableRow key={row.id} row={row}>
+            {({ cell }) => <TableCell key={cell.id} cell={cell} />}
+          </TableRow>
+        )}
+      </TableBody>
+    </TableProvider>
   );
 };
 
