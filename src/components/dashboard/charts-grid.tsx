@@ -1,21 +1,36 @@
 "use client";
-import { useAiChat } from "@/store/useAiChatStore";
+import { containerVariants } from "@/constants/variants";
 import ChartCard from "./chart-card";
 import { cn } from "@/lib/utils";
+import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
+import { useSideBarStore } from "@/store/useSidebarStore";
+
+import { motion } from "motion/react";
 
 const ChartsGrid = () => {
-  const { isOpen } = useAiChat();
+  const { isExpanded } = useSideBarStore();
+  const { isOpen } = useAiChatBoxStore();
+
   return (
-    <div
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      layout
+      // [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))]
       className={cn(
-        "grid grid-cols-1  gap-6 p-4",
-        isOpen ? "sm:grid-cols-2" : "sm:grid-cols-2 md:grid-cols-3"
+        "p-4 grid gap-4 ",
+        isExpanded || isOpen
+          ? isExpanded && isOpen
+            ? "grid-cols-2"
+            : "grid-cols-3"
+          : "grid-cols-4"
       )}
     >
       {Array.from({ length: 21 }).map((_, i) => (
         <ChartCard key={i} />
       ))}
-    </div>
+    </motion.div>
   );
 };
 

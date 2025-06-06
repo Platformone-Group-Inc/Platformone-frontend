@@ -2,19 +2,19 @@
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { TooltipProvider } from "../ui/tooltip";
-import { ThemeProvider } from "./theme-provider";
+// import { ThemeProvider } from "./theme-provider";
 
 const Providers = ({ children }: React.PropsWithChildren) => {
   return (
     <NuqsAdapter>
-      <ThemeProvider
+      {/* <ThemeProvider
         attribute="class"
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange
-      >
-        <TooltipProvider>{children}</TooltipProvider>
-      </ThemeProvider>
+      > */}
+      <TooltipProvider>{children}</TooltipProvider>
+      {/* </ThemeProvider> */}
     </NuqsAdapter>
   );
 };

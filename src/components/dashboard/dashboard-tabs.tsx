@@ -21,7 +21,7 @@ const tabData = [
 const DashboardTab = () => {
   return (
     <Tabs defaultValue="tab-1">
-      <TabsList className="h-auto w-full justify-start rounded-none border-b border-border bg-transparent p-0">
+      <TabsList className="h-auto sticky top-0 bg-white/40 backdrop-blur z-10 w-full justify-start rounded-none border-b border-border/80 p-0">
         {tabData.map((tab) => (
           <TabsTrigger
             key={tab.value}
