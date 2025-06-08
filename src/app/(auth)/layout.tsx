@@ -21,7 +21,7 @@ const AuthLayout = ({ children }: React.PropsWithChildren) => {
         {/* <div className="absolute inset-0 bg-black/30 backdrop-blur " /> */}
         <div className="absolute inset-0 h-full justify-center w-full flex flex-col items-center gap-8 max-w-sm mx-auto">
           <Image src={"/images/logo.svg"} alt="logo" height={150} width={180} />
-          <h1 className="text-5xl font-semibold">Compliance one</h1>
+          <h1 className="text-5xl font-semibold">Compliance One</h1>
           <p className="text-lg">
             Your single source for streamlined FedRAMP and CMMC compliance. Gain
             confidence in your security posture, ensure regulatory alignment,

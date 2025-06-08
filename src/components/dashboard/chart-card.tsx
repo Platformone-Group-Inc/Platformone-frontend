@@ -13,6 +13,7 @@ import RadialChart from "../charts/radial-chart";
 import { Progress } from "../ui/progress";
 import { FaShoppingBag } from "react-icons/fa";
 import { IconType } from "react-icons/lib";
+import { itemVariants } from "@/constants/variants";
 
 // TODO implement this
 export interface ChartCardProps {
@@ -27,7 +28,12 @@ export interface ChartCardProps {
 
 const ChartCard = () => {
   return (
-    <motion.div layout className="w-full border rounded-xl py-4 px-6">
+    <motion.div
+      layout
+      // layoutId={i.toString()}
+      variants={itemVariants}
+      className="w-full border rounded-xl py-4 px-6"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <div className="p-1.5 rounded-lg bg-primary/10 text-primary">

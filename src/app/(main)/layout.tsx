@@ -1,39 +1,39 @@
 "use client";
 
-import AiAgent from "@/components/ai-agent";
-import { AnimatePresence } from "motion/react";
+import AppSidebar from "@/components/app-sidebar";
+import AiChatBox from "@/components/ai-agent";
+import DashboardHeader from "@/components/dashboard/header";
+// import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
+import { motion, AnimatePresence } from "motion/react";
 
-import { AppSidebarShell } from "@/components/app-sidebar";
-
-import Header from "@/components/dashboard/header";
-import { useAiChat } from "@/store/useAiChatStore";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { AuthProvider } from "@/context/auth-provider";
-const DashboardLayout = ({ children }: React.PropsWithChildren) => {
-  const { isOpen } = useAiChat();
-
+const MainLayout = ({ children }: React.PropsWithChildren) => {
+  const { isOpen } = useAiChatBoxStore();
   return (
-    <AuthProvider>
-      <AppSidebarShell>
-        <div className="rounded-lg bg-primary-100 dark:bg-dark-900 h-full flex-1 mx-auto ">
-          <Header />
-          <div className="bg-primary-100 dark:bg-dark-900 w-full min-h-[calc(100vh-5.5rem)] p-4 flex items-stretch gap-4 overflow-y-auto">
-            <AnimatePresence mode="popLayout">
-              <div
-                key={"tab"}
-                className="rounded-xl flex-grow bg-white dark:bg-dark-700 shadow-md w-full h-full transition-all"
-              >
-                <ScrollArea className="w-full overflow-y-scroll max-h-[calc(100vh-120px)]">
-                  {children}
-                </ScrollArea>
-              </div>
-              {isOpen && <AiAgent key={"ai-agent"} />}
-            </AnimatePresence>
-          </div>
+    <div className="w-full h-dvh flex overflow-hidden">
+      <AppSidebar />
+
+      <div className="flex flex-col flex-1 h-full">
+        <DashboardHeader />
+
+        {/* <ScrollArea className="flex-1"> */}
+        <div className="flex flex-1 overflow-hidden bg-primary-100 p-4">
+          <main className="flex-1 max-w-[calc (100vw-800px)] overflow-y-auto bg-white rounded-2xl">
+            {children}
+          </main>
+
+          <motion.div
+            animate={{ width: isOpen ? 400 : 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="overflow-hidden border-l border-gray-200 h-full"
+          >
+            <AnimatePresence>{isOpen && <AiChatBox />}</AnimatePresence>
+          </motion.div>
         </div>
-      </AppSidebarShell>
-    </AuthProvider>
+        {/* </ScrollArea> */}
+      </div>
+    </div>
   );
 };
 
-export default DashboardLayout;
+export default MainLayout;
