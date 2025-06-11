@@ -26,6 +26,13 @@ API.interceptors.response.use(
         window.location.href = "/";
       }
     }
+    //
+    else if (data.errorCode === "ACCESS_UNAUTHORIZED" && status === 403) {
+      console.log("fuck you");
+
+      // await APIRefresh.get("/users/refresh-token");
+      // return APIRefresh(error.config);
+    }
     return Promise.reject({
       ...data,
     });

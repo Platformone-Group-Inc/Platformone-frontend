@@ -7,15 +7,15 @@ const tabData = [
     label: "All",
     content: () => <ChartsGrid />,
   },
-  {
-    value: "tab-2",
-    label: "Fedramp High",
-    content: () => (
-      <p className="p-4 text-center text-xs text-muted-foreground">
-        Content for Tab 2
-      </p>
-    ),
-  },
+  // {
+  //   value: "tab-2",
+  //   label: "Fedramp High",
+  //   content: () => (
+  //     <p className="p-4 text-center text-xs text-muted-foreground">
+  //       Content for Tab 2
+  //     </p>
+  //   ),
+  // },
 ];
 
 const DashboardTab = () => {
