@@ -1,12 +1,14 @@
-'use client'
+"use client";
 
 import MyFrameworksList from "../components/my-frameworks-list";
 import AvailableFrameworksList from "../components/available-frameworks-list";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/auth-provider";
-import { getFrameworksByOrganizationQueryFn, getFrameworksQueryFn } from "@/services/operations/Framework";
+import {
+  getFrameworksByOrganizationQueryFn,
+  getFrameworksQueryFn,
+} from "@/services/operations/Framework";
 import { useMemo } from "react";
-import { fi } from "date-fns/locale";
 
 const NewFrameworkPage = () => {
   const { user, isLoading: authLoading } = useAuthContext();
@@ -14,17 +16,17 @@ const NewFrameworkPage = () => {
   const {
     data: myFrameworks,
     isLoading: myFrameworksLoading,
-    error: myFrameworksError
+    error: myFrameworksError,
   } = useQuery({
     queryKey: ["frameworks", user?.organization],
     queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
-    enabled: !!user?.organization
+    enabled: !!user?.organization,
   });
 
   const {
     data: availableFrameworks,
     isLoading: availableFrameworksLoading,
-    error: availableFrameworksError
+    error: availableFrameworksError,
   } = useQuery({
     queryKey: ["availableFrameworks"],
     queryFn: getFrameworksQueryFn,

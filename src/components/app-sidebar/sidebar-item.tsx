@@ -3,7 +3,7 @@
 import { useSideBarStore } from "@/store/useSidebarStore";
 import { SideBarGroup, SideBarItem as ItemType } from "./sidebar-data";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
