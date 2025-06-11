@@ -27,7 +27,7 @@ const RadialChart: React.FC<Props> = ({
 
   // Determine the color based on the value
   const getColor = () => {
-    if (value >= 75) return "#9cd323"; // Green
+    if (value >= 75) return "#13A300"; // Green
     if (value >= 50) return "#54a6ff"; // Blue
     if (value >= 25) return "#ffc73a"; // Yellow
     return "#ff4423"; // Orange
