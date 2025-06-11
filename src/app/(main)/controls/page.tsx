@@ -1,6 +1,5 @@
-'use client';
-import { Button } from "@/components/ui/button";
-import { Filter, Import } from "iconsax-react";
+"use client";
+
 // import { PlusIcon } from "lucide-react";
 
 import ControlCard from "./components/control-card";
@@ -13,63 +12,39 @@ import NewControlSetModal from "./components/modals/new-control-set-modal";
 import { useAuthContext } from "@/context/auth-provider";
 import { useQuery } from "@tanstack/react-query";
 import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
-import MyFrameworks from "../frameworks/components/my-frameworks";
+
+import ControlCardSkeleton from "./components/control-card-sekeleton";
 
 const ControlsPage = () => {
-   const { user, isLoading: authLoading } = useAuthContext();
-    
-    const { 
-      data: myFrameworks, 
-      isLoading: myFrameworksLoading,
-      error: myFrameworksError
-    } = useQuery({
-      queryKey: ["frameworks", user?.organization],
-      queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
-      enabled: !!user?.organization
-    });
+  const { user } = useAuthContext();
+
+  const { data: myFrameworks, isLoading } = useQuery({
+    queryKey: ["frameworks", user?.organization],
+    queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
+    enabled: !!user?.organization,
+  });
+
   return (
-    <div className="p-6 w-full">
-      {/* <div className="flex gap-4">
-        <DeleteControlModal />
-        <UpdateControlModal />
-        <NewActionItemModal />
-      </div> */}
-      <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
+    <div className="@container">
+      <div className="sticky backdrop-blur top-0 z-10 border-b px-6 py-4 flex items-center justify-between ">
         <h1 className="font-semibold text-xl">
           Control Set
-          <Badge className="ml-3.5">2 Control Set</Badge>
+          {false && <Badge className="ml-3.5">2 Control Set</Badge>}
         </h1>
         <div className="flex items-center gap-4">
-          <Button
-            variant={"outline"}
-            className="h-auto px-3.5 py-2.5 border-primary/20 rounded-lg hover:bg-primary/10"
-          >
-            <Import className="size-5 stroke-secondary-400" />
-            <span className="font-semibold text-sm text-secondary-400">
-              Import from Library
-            </span>
-          </Button>
-          <Button
-            variant={"outline"}
-            className="h-auto px-3.5 py-2.5 border-primary/20 rounded-lg hover:bg-primary/10"
-          >
-            <Filter className="size-5 stroke-secondary-400" />
-            <span className="font-semibold text-sm text-secondary-400">
-              Filter
-            </span>
-          </Button>
-          {/* <NewActionItemModal /> */}
           <NewControlSetModal />
         </div>
       </div>
-      <div className="min-h-dvh flex items-start gap-6 w-full mt-8">
+      <div className="grid p-6 gap-4 grid-cols-1 @[550px]:grid-cols-2 @[800px]:grid-cols-3 @[1200px]:grid-cols-4 ">
+        {isLoading &&
+          Array.from({ length: 3 }).map((_, i) => (
+            <ControlCardSkeleton key={i} />
+          ))}
+
         {myFrameworks?.frameworks?.map((framework: any) => (
           <ControlCard key={framework?._id} framework={framework} />
         ))}
       </div>
-
-      {/* <NoFrameworks /> */}
-      {/* <FrameworksGrid /> */}
     </div>
   );
 };

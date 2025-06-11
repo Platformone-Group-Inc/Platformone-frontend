@@ -3,7 +3,7 @@
 import { useSideBarStore } from "@/store/useSidebarStore";
 import { SideBarGroup, SideBarItem as ItemType } from "./sidebar-data";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -170,6 +170,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
   const { isExpanded } = useSideBarStore();
   const pathname = usePathname();
 
+  const isActive =
+    (item.href === "/" && pathname === "/") ||
+    (item.href !== "/" &&
+      (pathname === item.href || pathname.startsWith(item.href + "/")));
+
   return item.subItems ? (
     <SidebarSubItems item={item} />
   ) : (
@@ -177,11 +182,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
       <Link
         href={item.href as string}
         className={cn(
-          "flex items-center text-sm gap-2 rounded-full stroke-white font-medium",
-          "hover:bg-white/20 transition ",
-          isExpanded ? " px-4 py-3" : "size-12 justify-center",
-          pathname === item.href &&
-            "bg-white hover:bg-white/80 text-primary-600 stroke-primary-600"
+          "flex items-center text-sm gap-2 rounded-full font-medium stroke-white transition hover:bg-white/20",
+          isExpanded ? "px-4 py-3" : "size-12 justify-center",
+          isActive &&
+            "bg-white text-primary-600 stroke-primary-600 hover:bg-white/80"
         )}
       >
         <item.icon className="size-5" />

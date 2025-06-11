@@ -1,41 +1,38 @@
+import { AnimatedContainer } from "@/components/animated/animated-container";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
-import Link from "next/link";
 
 const AuthLayout = ({ children }: React.PropsWithChildren) => {
   return (
-    <div className="h-dvh w-full flex items-center">
+    <div className="w-full h-dvh overflow-hidden grid grid-cols-1 lg:grid-cols-2">
       <div
-        className="hidden relative bg-primary h-full w-full lg:flex items-center justify-center rounded-br-[117px] text-white text-center overflow-hidden"
+        className="hidden relative bg-primary bg-no-repeat bg-cover h-full w-full lg:flex flex-col gap-6 items-center justify-center rounded-br-[117px] text-white text-center"
         style={{
-          backgroundImage: "url(./images/login-bg.png)",
+          backgroundImage: "url(/images/login-bg.png)",
         }}
       >
-        <Link href={"/"}>
-          {/* TODO change this */}
-          <img
-            src={"/images/platform-one.png"}
-            alt="asdfa"
-            className="absolute top-0 left-6 z-10  w-[150px]  "
-          />
-        </Link>
-        {/* <div className="absolute inset-0 bg-black/30 backdrop-blur " /> */}
-        <div className="absolute inset-0 h-full justify-center w-full flex flex-col items-center gap-8 max-w-sm mx-auto">
-          <Image src={"/images/logo.svg"} alt="logo" height={150} width={180} />
-          <h1 className="text-5xl font-semibold">Compliance One</h1>
-          <p className="text-lg">
-            Your single source for streamlined FedRAMP and CMMC compliance. Gain
-            confidence in your security posture, ensure regulatory alignment,
-            and drive operational excellence—all in one integrated platform.
-            <br />
-            <br />
-            Login to simplify compliance and safeguard your organization today.
+        <AnimatedContainer animation="fade" isOpen>
+          <Image src="/images/logo.svg" alt="logo" height={150} width={180} />
+        </AnimatedContainer>
+        <AnimatedContainer delay={0.2} isOpen className="text-lg max-w-xl">
+          Your single source for streamlined FedRAMP and CMMC compliance. Gain
+          confidence in your security posture, ensure regulatory alignment, and
+          drive operational excellence—all in one integrated platform.
+          <br />
+        </AnimatedContainer>
+        <AnimatedContainer delay={0.3} isOpen className="text-lg max-w-xl">
+          Login to simplify compliance and safeguard your organization today.
+        </AnimatedContainer>
+      </div>
+
+      <ScrollArea className="w-full h-full overflow-y-auto flex flex-col items-center justify-center">
+        <div className="max-w-lg mx-auto space-y-8 p-4">
+          {children}
+          <p className="text-sm font-semibold w-full text-center">
+            A product by Platform One Inc.
           </p>
         </div>
-      </div>
-      <div className="w-full flex flex-col items-center justify-center">
-        {children}
-        <p className="text-sm mt-7">A PlatformoneInc Product.</p>
-      </div>
+      </ScrollArea>
     </div>
   );
 };

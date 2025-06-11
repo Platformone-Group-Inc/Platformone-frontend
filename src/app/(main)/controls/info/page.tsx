@@ -7,8 +7,11 @@ import { Grid3X3Icon, Rows3Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DemoDataTable from "../control-old/demo-data-table";
 import ControlInfoCard from "../components/control-info-card";
-import { getControlByControlFamiliesQueryFn, getControlFamiliesByOrganizationQueryFn } from "@/services/operations/Control";
-import { useRouter, useSearchParams } from 'next/navigation'
+import {
+  getControlByControlFamiliesQueryFn,
+  getControlFamiliesByOrganizationQueryFn,
+} from "@/services/operations/Control";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   Breadcrumb,
@@ -26,29 +29,28 @@ import { get } from "http";
 const ControlInfoPage = () => {
   const [view, setView] = useState<"grid" | "table">("grid");
   const { user, isLoading: authLoading } = useAuthContext();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const cloneFrameworkId = searchParams.get('id')
-  const cloneFrameworkName = searchParams.get('name')
+  const cloneFrameworkId = searchParams.get("id");
+  const cloneFrameworkName = searchParams.get("name");
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
   const rowPerPage = parseInt(searchParams.get("perPage") || "10", 10);
   const currentPage = isNaN(pageParam) ? 1 : pageParam;
 
   useEffect(() => {
     if (!cloneFrameworkId && !authLoading) {
-      router.push('/controls');
+      router.push("/controls");
     }
   }, [cloneFrameworkId, authLoading, router]);
   const {
     data: controlFamiliesByOrg,
     isLoading: controlFamiliesByOrgLoading,
-    error: controlFamiliesByOrgError
+    error: controlFamiliesByOrgError,
   } = useQuery({
     queryKey: ["controlFamilies", user?.organization, cloneFrameworkId],
     queryFn: () => getControlFamiliesByOrganizationQueryFn(cloneFrameworkId),
-    enabled: !!cloneFrameworkId
+    enabled: !!cloneFrameworkId,
   });
-
 
   const {
     data: getAllcontrol,
@@ -67,7 +69,7 @@ const ControlInfoPage = () => {
     enabled: !!cloneFrameworkId,
   });
 
-    const handlePageChange = (newPage: number) => {
+  const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", newPage.toString());
     router.push(`?${params.toString()}`);
@@ -129,13 +131,19 @@ const ControlInfoPage = () => {
       {view === "grid" && (
         <div className=" grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {controlFamiliesByOrg?.map((controlFamily: any) => (
-            <ControlInfoCard key={controlFamily?._id} controlFamily={controlFamily} />
+            <ControlInfoCard
+              key={controlFamily?._id}
+              controlFamily={controlFamily}
+            />
           ))}
         </div>
       )}
-      {view === "table" && <ControlsTable controlByControlFamilies={getAllcontrol}           onPageChange={handlePageChange}
- />
-      }
+      {view === "table" && (
+        <ControlsTable
+          controlByControlFamilies={getAllcontrol}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

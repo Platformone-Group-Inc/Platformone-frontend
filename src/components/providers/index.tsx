@@ -9,7 +9,7 @@ const Providers = ({ children }: React.PropsWithChildren) => {
     <NuqsAdapter>
       {/* <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
       > */}

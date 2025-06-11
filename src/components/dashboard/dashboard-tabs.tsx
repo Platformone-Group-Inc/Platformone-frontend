@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChartsGrid from "./charts-grid";
+import { ScrollArea } from "../ui/scroll-area";
 
 const tabData = [
   {
@@ -7,15 +8,15 @@ const tabData = [
     label: "All",
     content: () => <ChartsGrid />,
   },
-  {
-    value: "tab-2",
-    label: "Fedramp High",
-    content: () => (
-      <p className="p-4 text-center text-xs text-muted-foreground">
-        Content for Tab 2
-      </p>
-    ),
-  },
+  // {
+  //   value: "tab-2",
+  //   label: "Fedramp High",
+  //   content: () => (
+  //     <p className="p-4 text-center text-xs text-muted-foreground">
+  //       Content for Tab 2
+  //     </p>
+  //   ),
+  // },
 ];
 
 const DashboardTab = () => {
@@ -32,11 +33,13 @@ const DashboardTab = () => {
           </TabsTrigger>
         ))}
       </TabsList>
-      {tabData.map((tab) => (
-        <TabsContent value={tab.value} key={tab.value}>
-          {<tab.content />}
-        </TabsContent>
-      ))}
+      <ScrollArea className="h-[calc(100vh-100px)]">
+        {tabData.map((tab) => (
+          <TabsContent value={tab.value} key={tab.value}>
+            {<tab.content />}
+          </TabsContent>
+        ))}
+      </ScrollArea>
     </Tabs>
   );
 };
