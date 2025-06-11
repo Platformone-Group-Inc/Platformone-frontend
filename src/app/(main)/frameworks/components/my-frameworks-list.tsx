@@ -1,26 +1,10 @@
 "use client";
 
 import NewFrameworkCard from "./new-framework-card";
-import { useQuery } from "@tanstack/react-query";
-import { useAuthContext } from "@/context/auth-provider";
-import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
 
-const MyFrameworksList = () => {
-  const { user, isLoading: authLoading } = useAuthContext();
-  const { data: frameworks, isLoading, error } = useQuery({
-    queryKey: ["frameworks", user?.organization],
-    queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
-    enabled: !!user?.organization
-  });
 
-  console.log(frameworks)
-  if (authLoading) {
-    return <div>Loading frameworks...</div>;
-  }
-
-  if (error) {
-    return <div></div>;
-  }
+const MyFrameworksList = ({frameworks}:any) => {
+  
 
   return (
     <>

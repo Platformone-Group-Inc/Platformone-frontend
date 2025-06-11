@@ -14,17 +14,18 @@ import { More } from "iconsax-react";
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-
+import { ro } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const ControlInfoCard = () => {
+const ControlInfoCard = ({controlFamily}:any) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const router = useRouter();
   return (
     <motion.div className="border border-primary/20 rounded-xl w-full p-4">
       <div className="flex items-center justify-between mb-1">
         <h3 className="font-semibold truncate ">
-          Fedramp (Rev5) Moderate Baseline
+          {controlFamily?.name}
         </h3>
 
         <DropdownMenu>
@@ -78,15 +79,14 @@ const ControlInfoCard = () => {
             </motion.div>
           )}
           <motion.div layout className="mt-6 space-y-2 border-t pt-4">
-            <Link
-              href={"/controls/info/asfsdf"}
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
-              )}
+            <Button
+            disabled={controlFamily?.controls?.length === 0}
+            onClick={()=> router.push('/controls/control?id='+controlFamily?._id+'&name='+controlFamily?.identifier)}
+              variant={"outline"}
+              className="h-auto text-xs font-semibold w-full text-primary hover:text-primary border-primary rounded-full py-1.5"
             >
-              18 Controls Families
-            </Link>
+            {controlFamily?.controls?.length > 1 ? ` ${controlFamily?.controls?.length} Controls` :   ` ${controlFamily?.controls?.length} Control`} 
+            </Button>
             <Button
               variant={"transparent"}
               onClick={() => setIsCollapsed((state) => !state)}

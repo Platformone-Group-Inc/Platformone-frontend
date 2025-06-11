@@ -6,8 +6,21 @@ import { cn } from "@/lib/utils";
 import { InfoIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import FrameworksCard from "./frameworks-card";
-
+import { useQuery } from "@tanstack/react-query";
+import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
+import { useAuthContext } from "@/context/auth-provider";
 const MyFrameworks = () => {
+  const { user, isLoading: authLoading } = useAuthContext();
+
+  const {
+    data: myFrameworks,
+    isLoading: myFrameworksLoading,
+    error: myFrameworksError
+  } = useQuery({
+    queryKey: ["frameworks", user?.organization],
+    queryFn: () => getFrameworksByOrganizationQueryFn(user?.organization),
+    enabled: !!user?.organization
+  });
   return (
     <div className="space-y-6">
       <div className="border-b pb-6 flex items-center justify-between">
@@ -16,7 +29,7 @@ const MyFrameworks = () => {
             My Frameworks
             <InfoIcon className="" size={16} />
             <Badge className="rounded-md" variant={"secondary"}>
-              3 Framework
+              {myFrameworks?.frameworks?.length} Framework
             </Badge>
           </h1>
 
@@ -30,9 +43,10 @@ const MyFrameworks = () => {
         </Link>
       </div>
       <div className="grid gap-6 grid-cols-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <FrameworksCard key={i} />
+         {myFrameworks?.frameworks?.map((framework: any) => (
+          <FrameworksCard key={framework?._id} framework={framework} />
         ))}
+       
       </div>
     </div>
   );

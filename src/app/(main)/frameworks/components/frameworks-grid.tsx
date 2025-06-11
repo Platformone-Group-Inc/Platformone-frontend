@@ -3,14 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import NewFrameworkCard from "./new-framework-card";
 // import FrameworkInfoModal from "./modals/framework-info-modal";
-import { getFrameworksQueryFn } from "@/services/operations/Framework";
-const FrameworksGrid = () => {
-  const { data: availableFrameworks, isLoading, error } = useQuery({
-    queryKey: ["availableFrameworks"],
-    queryFn: () => getFrameworksQueryFn(),
-  });
-
-  console.log(availableFrameworks, "availableFrameworks");
+const FrameworksGrid = ({availableFrameworks}:any) => {
+;
   return (
     <>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-6">

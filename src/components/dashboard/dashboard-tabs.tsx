@@ -8,21 +8,21 @@ const tabData = [
     label: "All",
     content: () => <ChartsGrid />,
   },
-  {
-    value: "tab-2",
-    label: "Fedramp High",
-    content: () => (
-      <p className="p-4 text-center text-xs text-muted-foreground">
-        Content for Tab 2
-      </p>
-    ),
-  },
+  // {
+  //   value: "tab-2",
+  //   label: "Fedramp High",
+  //   content: () => (
+  //     <p className="p-4 text-center text-xs text-muted-foreground">
+  //       Content for Tab 2
+  //     </p>
+  //   ),
+  // },
 ];
 
 const DashboardTab = () => {
   return (
     <Tabs defaultValue="tab-1">
-      <TabsList className="h-auto w-full justify-start sticky top-0 rounded-none border-b border-border bg-transparent p-0">
+      <TabsList className="h-auto sticky top-0 bg-white/40 backdrop-blur z-10 w-full justify-start rounded-none border-b border-border/80 p-0">
         {tabData.map((tab) => (
           <TabsTrigger
             key={tab.value}

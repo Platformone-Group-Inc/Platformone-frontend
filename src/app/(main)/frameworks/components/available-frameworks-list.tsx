@@ -2,7 +2,7 @@
 
 import FrameworksGrid from "./frameworks-grid";
 
-const AvailableFrameworksList = () => {
+const AvailableFrameworksList = ({availableFrameworks}:any) => {
   return (
     <div>
       <div className="space-y-1 border-b pb-6">
@@ -13,7 +13,7 @@ const AvailableFrameworksList = () => {
           controls to them.
         </p>
       </div>
-      <FrameworksGrid />
+      <FrameworksGrid availableFrameworks={availableFrameworks} />
     </div>
   );
 };

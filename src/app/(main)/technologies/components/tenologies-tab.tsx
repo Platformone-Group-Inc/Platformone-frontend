@@ -10,6 +10,7 @@ import MonitoringTabContent from "./tab-content/monitoring-tab-content";
 import ScanningTabContent from "./tab-content/scanning-tab-content";
 import SDLCTabContent from "./tab-content/sdlc-tab-content";
 import CorpSystemTabContent from "./tab-content/corp-systems-tab-content";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const tabData: {
   value: string;
@@ -61,7 +62,8 @@ const tabData: {
 function TechnologiesTab() {
   return (
     <Tabs defaultValue={tabData[0].value} className="space-y-6">
-      <TabsList className="h-auto w-full justify-start rounded-none bg-info border-b border-border bg-transparent p-0">
+      {/* TODO need fix */}
+      <TabsList className="h-auto max-w-[calc(100vw)] sticky top-0 z-10 justify-start overflow-x-auto rounded-none bg-white/20 backdrop-blur border-b border-black/10 p-0">
         {tabData?.map((tab) => (
           <TabsTrigger
             key={tab.value}

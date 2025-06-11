@@ -3,7 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import NewReportContent from "./tab-content/new-report-content";
-import DemoDataTable from "@/app/(main)/controls/data-table/demo-data-table";
+import DemoDataTable from "@/app/(main)/controls/control-old/demo-data-table";
 
 const tabData = [
   {
