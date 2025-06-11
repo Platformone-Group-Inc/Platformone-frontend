@@ -1,4 +1,6 @@
-import DashboardTab from "@/components/dashboard/dashboard-tabs";
+// import DashboardTab from "@/components/dashboard/dashboard-tabs";
+// import AddFramework from "./frameworks/components/add-framework";
+import NoFrameworks from "./frameworks/components/no-frameworks";
 
 const Dashboard = () => {
   return (
@@ -11,7 +13,11 @@ const Dashboard = () => {
     //   </motion.div>
     //   {isOpen && <AiAgent key={"ai-agent"} />}
     // </AnimatePresence>
-    <DashboardTab />
+    // <AddFramework />
+
+    <NoFrameworks />
+
+    // <DashboardTab />
   );
 };
 
