@@ -17,19 +17,21 @@ API.interceptors.response.use(
   },
   async (error) => {
     const { data, status } = error.response;
-    console.log(data, "data");
-    if (data.errorCode === "AUTH_TOKEN_NOT_FOUND" && status === 401) {
+    console.log("Error", data);
+    if (data.errorCode === "ACCESS_UNAUTHORIZED" && status === 401) {
+      console.log("Refresh token");
+
       try {
-        await APIRefresh.get("/users/refresh-token");
+        await APIRefresh.post("/users/refresh-token");
         return APIRefresh(error.config);
       } catch (error) {
-        window.location.href = "/";
+        // window.location.href = "/";
+
+        console.log(error);
       }
     }
     //
     else if (data.errorCode === "ACCESS_UNAUTHORIZED" && status === 403) {
-      console.log("fuck you");
-
       // await APIRefresh.get("/users/refresh-token");
       // return APIRefresh(error.config);
     }
