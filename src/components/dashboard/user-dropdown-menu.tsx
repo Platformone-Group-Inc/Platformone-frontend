@@ -3,36 +3,27 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuthContext } from "@/context/auth-provider";
 
 const UserDropdownMenu = () => {
+  const { logout } = useAuthContext();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-3">
-        <Avatar>
-          <AvatarImage
-            src="https://github.com/sahilverma-dev.png"
-            alt="Sahil Verma"
-          />
+        <Avatar className="border">
           <AvatarFallback>SV</AvatarFallback>
         </Avatar>
-        <p className="font-semibold">Sahil</p>
+        <p className="font-semibold">Name</p>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
@@ -75,11 +66,8 @@ const UserDropdownMenu = () => {
         <DropdownMenuItem>GitHub</DropdownMenuItem>
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuItem disabled>API</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <DropdownMenuSeparator /> */}
+        <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

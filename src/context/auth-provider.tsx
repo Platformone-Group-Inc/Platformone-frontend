@@ -1,8 +1,10 @@
 "use client";
 
 import useAuth from "@/hooks/use-auth";
-import React, { createContext, useContext } from "react";
+import { logoutUserMutationFn } from "@/services/operations/Auth";
 
+import { useRouter } from "next/navigation";
+import React, { createContext, useContext } from "react";
 
 type UserType = {
   fullname: string;
@@ -12,7 +14,7 @@ type UserType = {
   isSuperAdmin: boolean;
   lastLogin: Date | any;
   organization: string;
-  role: any
+  role: any;
 };
 
 type AuthContextType = {
@@ -21,6 +23,7 @@ type AuthContextType = {
   isLoading: boolean;
   isFetching: boolean;
   refetch: () => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,9 +34,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const { data, error, isLoading, isFetching, refetch } = useAuth();
   const user = data?.data?.user;
 
+  const router = useRouter();
+
+  const logout = () => {
+    console.log(user);
+    // set user null
+    // TODO remove this
+    // logoutUserMutationFn();
+
+    router.push("/login");
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, error, isLoading, isFetching, refetch }}
+      value={{ user, error, isLoading, isFetching, refetch, logout }}
     >
       {children}
     </AuthContext.Provider>
@@ -41,11 +55,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export const useAuthContext = () => {
-  const conext = useContext(AuthContext);
-  // console.log("Auth context state:", conext);
+  const context = useContext(AuthContext);
+  // console.log("Auth context state:", context);
 
-  if (!conext) {
+  if (!context) {
     throw new Error("useAuthContext must be used within a AuthProvider");
   }
-  return conext;
+  return context;
 };
