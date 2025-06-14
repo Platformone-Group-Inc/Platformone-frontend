@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useSideBarStore } from "@/store/useSidebarStore";
 import { ChevronLeftIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -60,11 +60,10 @@ const AppSidebar = () => {
         <div
           className={cn(
             "flex items-center gap-2 mb-5",
-
             isExpanded ? "justify-normal" : "justify-center"
           )}
         >
-          <BrandLogo className="size-10 fill-white" />
+          {!isExpanded && <BrandLogo className="size-10 fill-white" />}
           {isExpanded && (
             <motion.span
               layout
@@ -79,7 +78,7 @@ const AppSidebar = () => {
                 damping: 20,
                 delay: 0.2,
               }}
-              className="font-bold text-xl"
+              className="relative font-bold text-2xl mb-2"
             >
               {BRAND_NAME}
             </motion.span>
