@@ -1,0 +1,32 @@
+add breadcrubs and make it sticky
+remove columns form control data table
+update pagination of data table
+ai assement new page
+chagnes accorting to figma
+
+fix/update stats api and ui implementation
+
+api integations
+ - stats 
+    - home cards
+    - total framework
+    - progress
+    - control family
+    - 
+
+control data table 
+   - filters
+   - change status with dropdown
+
+
+ - submition
+      - ai assement
+      - final submition
+      - report generation
+
+- need to refactor folder structure and remove unused code and files
+
+      
+ - systems form api only POST GET will be later for each input
+ - update organization api implemet on ui
+ - 

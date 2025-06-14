@@ -1,95 +1,19 @@
-"use client";
-import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { InfoCircle, MessageText } from "iconsax-react";
-import {
-  ArrowLeftIcon,
-  EllipsisVerticalIcon,
-  ListFilterIcon,
-} from "lucide-react";
+import AssessmentCard from "./components/assessment-card";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import NewActionModal from "./components/modals/new-action-modal";
-import AssessmentTable from "./components/assesment-table";
-import FilterModal from "./components/modals/filter-modal";
-import AssessmentTableAction from "./components/table-actions";
-
-const Page = () => {
+const AiAssessment = () => {
   return (
-    <div className="p-6 w-full">
-      <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
-        <div className="space-y-3">
-          <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
-            CMMS GAP Assessment
-            <InfoCircle className="stroke-secondary size-4" />
-            {/* <Badge className="ml-3.5">Showing 1 Document</Badge> */}
-          </h1>
-          <div className="text-sm space-y-3">
-            <div className="flex items-center gap-3">
-              <ArrowLeftIcon size={16} />
-              Showing 1-50 Questions
-            </div>
-            <div className="relative w-full bg-border rounded-full h-3 overflow-hidden">
-              <motion.div
-                className="absolute left-0 h-full bg-primary-600 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: "60%" }}
-              />
-              <motion.div
-                className="absolute left-0 h-full bg-error rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: "50%" }}
-              />
-              <motion.div
-                className="absolute left-0 h-full bg-info rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: "40%" }}
-              />
-            </div>
-            <p className="font-medium">
-              Answered- 24 of 107 (Yes - 18, No - 1, Partially - 1, NA - 4)
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <Select>
-            <SelectTrigger className="gap-1 rounded-lg px-3.5 font-semibold text-sm">
-              <SelectValue placeholder="Actions" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem
-                  value="question"
-                  className="rounded-lg hover:text-primary focus:text-primary font-semibold focus:bg-primary/10"
-                >
-                  Add Questions
-                </SelectItem>
-                <SelectItem
-                  value="upload"
-                  className="rounded-lg hover:text-primary focus:text-primary font-semibold focus:bg-primary/10"
-                >
-                  Upload Questions
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <AssessmentTableAction />
-
-          <FilterModal />
+    <div>
+      <div className="p-6 border-b">
+        <h1 className="font-medium text-xl">Ai Assessment</h1>
+      </div>
+      <div className="py-4 px-6 @container">
+        <h2 className="text-lg font-bold ">Answers Progress for frameworks</h2>
+        <div className="grid gap-4 grid-cols-1 @[550px]:grid-cols-2 @[800px]:grid-cols-3 @[1200px]:grid-cols-4 ">
+          <AssessmentCard />
         </div>
       </div>
-      <AssessmentTable />
-      <NewActionModal />
     </div>
   );
 };
 
-export default Page;
+export default AiAssessment;

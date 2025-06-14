@@ -2,10 +2,10 @@
 
 import AiIcon from "../icons/ai-icon";
 import HeaderSearch from "./header-search";
-import NotificationPopover from "./notification-popover";
+// import NotificationPopover from "./notification-popover";
 import UserDropdownMenu from "./user-dropdown-menu";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
 // import { ThemeToggle } from "../theme-toggle";
@@ -36,7 +36,7 @@ const DashboardHeader = () => {
           <AiIcon />
         </button>
         {/* <ThemeToggle /> */}
-        <NotificationPopover />
+        {/* <NotificationPopover /> */}
         <UserDropdownMenu />
       </div>
     </motion.div>

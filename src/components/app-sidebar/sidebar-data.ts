@@ -130,6 +130,6 @@ export const SIDEBAR_DATA: SideBarItem[] = [
     ],
   },
   // { label: "Settings", icon: Setting, href: "/settings" },
-  { label: "Log Out", icon: Logout, href: "/logout" },
+
   // { icon: Wifi, label: "Network", href: "/network" },
 ];

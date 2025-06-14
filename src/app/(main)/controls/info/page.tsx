@@ -5,7 +5,7 @@ import ControlsInfoAction from "./components/controls-info-actions";
 import { Button } from "@/components/ui/button";
 import { Grid3X3Icon, Rows3Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import DemoDataTable from "../control-old/demo-data-table";
+
 import ControlInfoCard from "../components/control-info-card";
 import {
   getControlByControlFamiliesQueryFn,
@@ -24,7 +24,6 @@ import {
 import { useAuthContext } from "@/context/auth-provider";
 import { useQuery } from "@tanstack/react-query";
 import ControlsTable from "../control/_components/controls-table";
-import { get } from "http";
 
 const ControlInfoPage = () => {
   const [view, setView] = useState<"grid" | "table">("grid");
@@ -76,8 +75,8 @@ const ControlInfoPage = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 min-h-screen overflow-y-scroll">
-      <div className="flex items-center justify-between">
+    <div className=" w-full">
+      <div className="flex items-center backdrop-blur justify-between py-4 px-6 sticky top-0 z-10 border-b">
         <div>
           <h1 className="font-semibold text-lg">
             {/* FedRAMP Moderate (800-53 Rev. 5) */}
@@ -94,16 +93,13 @@ const ControlInfoPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>
-                  {/* FedRAMP Moderate (800-53 Rev. 5) */}
-                  {cloneFrameworkName}
-                </BreadcrumbPage>
+                <BreadcrumbPage>{cloneFrameworkName}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
         <div className="flex items-center gap-3">
-          <Button
+          {/* <Button
             variant={"outline"}
             onClick={() => setView((s) => (s === "grid" ? "table" : "grid"))}
             className="p-1"
@@ -124,12 +120,12 @@ const ControlInfoPage = () => {
             >
               <Rows3Icon size={18} />
             </span>
-          </Button>
+          </Button> */}
           <ControlsInfoAction />
         </div>
       </div>
       {view === "grid" && (
-        <div className=" grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className=" grid gap-4 py-4 px-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {controlFamiliesByOrg?.map((controlFamily: any) => (
             <ControlInfoCard
               key={controlFamily?._id}
