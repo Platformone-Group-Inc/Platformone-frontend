@@ -9,6 +9,7 @@ import SidebarItem from "./sidebar-item";
 import { ScrollArea } from "../ui/scroll-area";
 import { BRAND_NAME } from "@/lib/constants";
 import BrandLogo from "../icons/brand-logo";
+import Link from "next/link";
 
 // Variants for container and children
 const containerVariants = {
@@ -57,7 +58,8 @@ const AppSidebar = () => {
         }}
       >
         {/* brand */}
-        <div
+        <Link
+          href={"/"}
           className={cn(
             "flex items-center gap-2 mb-5",
             isExpanded ? "justify-normal" : "justify-center"
@@ -83,7 +85,7 @@ const AppSidebar = () => {
               {BRAND_NAME}
             </motion.span>
           )}
-        </div>
+        </Link>
 
         {/* Toggle button */}
         <motion.button
