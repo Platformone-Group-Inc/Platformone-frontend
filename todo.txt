@@ -24,7 +24,7 @@ control data table
       - final submition
       - report generation
 
-
+- need to refactor folder structure and remove unused code and files
 
       
  - systems form api only POST GET will be later for each input
