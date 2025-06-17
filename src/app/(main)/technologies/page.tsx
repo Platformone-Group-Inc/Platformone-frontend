@@ -80,6 +80,7 @@ const TechnologiesPage = () => {
                           {opt.label}
                         </SelectItem>
                       ))}
+                      <SelectItem value={"other"}>Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
