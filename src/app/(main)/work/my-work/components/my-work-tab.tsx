@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentsDataTable from "./tables/documents-data-table";
 // import ControlsDataTable from "./tables/controls-data-table";
 import EvidenceDataTable from "./tables/evidence-table";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const tabData = [
   {
@@ -33,7 +32,7 @@ export const tabData = [
 const MyWorkTab = () => {
   return (
     <Tabs defaultValue={tabData[0].value}>
-      <TabsList className="p-1 h-auto gap-4 bg-white border">
+      <TabsList className="sticky top-0 z-10 p-1 h-auto gap-4 bg-white border">
         {tabData.map((tab) => (
           <TabsTrigger
             key={tab.value}
@@ -44,13 +43,12 @@ const MyWorkTab = () => {
           </TabsTrigger>
         ))}
       </TabsList>
-      <ScrollArea className="h-[calc(100vh-100px)]">
-        {tabData.map((tab) => (
-          <TabsContent key={tab.value} value={tab.value}>
-            <tab.table />
-          </TabsContent>
-        ))}
-      </ScrollArea>
+
+      {tabData.map((tab) => (
+        <TabsContent key={tab.value} value={tab.value}>
+          <tab.table />
+        </TabsContent>
+      ))}
     </Tabs>
   );
 };

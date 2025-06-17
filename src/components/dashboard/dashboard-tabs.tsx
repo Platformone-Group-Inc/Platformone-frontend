@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import ChartsGrid from "./charts-grid";
-import { ScrollArea } from "../ui/scroll-area";
 
 const tabData = [
   {
@@ -33,13 +33,12 @@ const DashboardTab = () => {
           </TabsTrigger>
         ))}
       </TabsList>
-      <ScrollArea className="h-[calc(100vh-100px)]">
-        {tabData.map((tab) => (
-          <TabsContent value={tab.value} key={tab.value}>
-            {<tab.content />}
-          </TabsContent>
-        ))}
-      </ScrollArea>
+
+      {tabData.map((tab) => (
+        <TabsContent value={tab.value} key={tab.value}>
+          {<tab.content />}
+        </TabsContent>
+      ))}
     </Tabs>
   );
 };

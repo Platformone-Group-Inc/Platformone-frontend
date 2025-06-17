@@ -39,7 +39,7 @@ export function DataTable<TData>({
                   <TableHead
                     key={header.id}
                     colSpan={header.colSpan}
-                    className="text-center py-4"
+                    className="w-full py-4"
                     style={{
                       ...getCommonPinningStyles({ column: header.column }),
                     }}
@@ -65,7 +65,6 @@ export function DataTable<TData>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className="text-center"
                       style={{
                         ...getCommonPinningStyles({ column: cell.column }),
                       }}

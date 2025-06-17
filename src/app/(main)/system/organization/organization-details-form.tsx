@@ -102,7 +102,7 @@ const OrganizationDetailsForm = () => {
           various reports requiring this information.
         </p>
 
-        {false ? (
+        {true ? (
           <Dropzone
             maxSize={1024 * 1024 * 10}
             minSize={1024}

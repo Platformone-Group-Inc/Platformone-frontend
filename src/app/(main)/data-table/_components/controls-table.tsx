@@ -32,6 +32,7 @@ interface Control {
   actionItems: string | null;
   createdAt: Date;
 }
+
 const data: Control[] = Array.from({ length: 300 }).map((_, i) => ({
   id: crypto.randomUUID(),
   controlCode: "AC-" + faker.string.alphanumeric({ length: 5 }),
