@@ -27,15 +27,8 @@ const TechnologiesPage = () => {
             <InfoCircle className="size-4 stroke-secondary" />
           </h1>
 
+          {/* todo change this to actual loading skeleton */}
           {isLoading && "loading"}
-
-          <button
-            onClick={() => {
-              console.log();
-            }}
-          >
-            click
-          </button>
 
           <TabsList className="flex h-auto w-full flex-wrap justify-start rounded-none bg-white/20 backdrop-blur p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">
             {technologies?.map((technology) => (

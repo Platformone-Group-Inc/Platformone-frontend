@@ -10,12 +10,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { technologiesOption } from "../data";
 
 interface Props {
+  slug: string;
   item: TechnologyItem;
 }
 
-const SelectTechnologyItem: React.FC<Props> = ({ item }) => {
+const SelectTechnologyItem: React.FC<Props> = ({ slug, item }) => {
+  // need review
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const options = technologiesOption[slug]?.options as {
+    value: string;
+    label: string;
+  }[];
+
   return (
     <div className="border p-4 rounded-xl space-y-1.5">
       <p className="font-semibold mb-4 ">{item.question}</p>
@@ -25,11 +35,11 @@ const SelectTechnologyItem: React.FC<Props> = ({ item }) => {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="apple">Apple</SelectItem>
-            <SelectItem value="banana">Banana</SelectItem>
-            <SelectItem value="blueberry">Blueberry</SelectItem>
-            <SelectItem value="grapes">Grapes</SelectItem>
-            <SelectItem value="pineapple">Pineapple</SelectItem>
+            {options?.map((i) => (
+              <SelectItem key={i.value} value={i.value}>
+                {i.label}
+              </SelectItem>
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>
