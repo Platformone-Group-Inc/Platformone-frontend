@@ -5,7 +5,7 @@ export const technologiesOption = [
     items: [
       {
         value: "infrastructure-as-a-service-iaas-or-csp-managed",
-        label: "Infrastructure as a Service (IaaS) or CSP‑managed?",
+        label: "Infrastructure as a Service (IaaS) or CSP-managed?",
         options: [
           { value: "aws", label: "AWS" },
           { value: "azure", label: "Azure" },
