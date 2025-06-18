@@ -38,14 +38,43 @@ const TechnologiesPage = () => {
     categorySlug: string,
     questionLabel: string
   ): string => {
+  const getSavedValue = (categorySlug: string, questionLabel: string): string => {
     if (!technologies) return "";
 
     const category = technologies.find((cat: any) => cat.slug === categorySlug);
+    
+    const slugVariations = [
+      categorySlug,
+      categorySlug.replace('-and-', '-&-'), 
+      categorySlug.replace('-&-', '-and-'), 
+    ];
+    
+    const category = technologies.find((cat: any) => 
+      slugVariations.includes(cat.slug)
+    );
     if (!category) return "";
 
     const item = category.items.find(
       (item: any) => item.question === questionLabel
     );
+    
+    
+    let item = category.items.find((item: any) => item.question === questionLabel);
+    
+    if (!item) {
+      item = category.items.find((item: any) => {
+        const apiQuestion = item.question.toLowerCase();
+        const optionQuestion = questionLabel.toLowerCase();
+        
+        if (optionQuestion.includes('mfa') && apiQuestion.includes('multi-factor')) return true;
+        if (optionQuestion.includes('iam') && apiQuestion.includes('identity management')) return true;
+        if (optionQuestion.includes('vulnerability scanning') && apiQuestion.includes('vulnerability')) return true;
+        if (optionQuestion.includes('log management') && apiQuestion.includes('log')) return true;
+        
+        return false;
+      });
+    }
+    
     return item ? item.answer : "";
   };
 
@@ -54,6 +83,7 @@ const TechnologiesPage = () => {
     answer: string,
     options: Array<{ label: string; value: string }>
   ): string => {
+  const getOptionValueFromAnswer = (answer: string, options: Array<{ label: string; value: string }>): string => {
     if (!answer) return "";
 
     const option = options.find((opt) => opt.label === answer);
@@ -67,6 +97,14 @@ const TechnologiesPage = () => {
 
       technologiesOption.forEach((category) => {
         category.items.forEach((item) => {
+      
+      console.log("API Categories:", technologies.map((cat: any) => ({ slug: cat.slug, category: cat.category })));
+      console.log("Options Categories:", technologiesOption.map(cat => ({ id: cat.id, label: cat.label })));
+      
+      technologiesOption.forEach(category => {
+        console.log(`\nProcessing category: ${category.label} (${category.id})`);
+        
+        category.items.forEach(item => {
           const savedAnswer = getSavedValue(category.id, item.label);
           if (savedAnswer) {
             const optionValue = getOptionValueFromAnswer(
