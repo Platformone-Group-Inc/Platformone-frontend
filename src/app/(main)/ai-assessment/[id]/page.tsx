@@ -33,14 +33,12 @@ const Page = () => {
           </h1>
           <div className="text-sm space-y-3">
             <Button
-              asChild
               variant={"transparent"}
-              onClick={() => {
-                router.back();
-              }}
-              className="flex items-center gap-3 !text-black"
+              onClick={router.back}
+              size={"icon"}
+              className="inline-flex items-center gap-3 !text-black !stroke-black fill-black"
             >
-              <ArrowLeftIcon size={16} />
+              <ArrowLeftIcon size={20} />
             </Button>
             Showing 1-50 Questions
             <p className="font-medium">

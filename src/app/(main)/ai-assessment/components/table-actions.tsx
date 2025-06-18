@@ -7,16 +7,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import CreateQuestionModal from "./modals/create-question-modal";
 
 const AssessmentTableAction = () => {
   return (
-    <DropdownMenu>
+    <DropdownMenu defaultOpen>
       <DropdownMenuTrigger asChild>
         <Button>Actions</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>Add Questions</DropdownMenuItem>
-        <DropdownMenuItem>Upload Questions</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <CreateQuestionModal />
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
