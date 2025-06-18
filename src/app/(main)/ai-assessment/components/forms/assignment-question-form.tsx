@@ -64,7 +64,7 @@ const AssessmentQuestionForm: React.FC<Props> = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 bg-white"
+        className="space-y-4 p-4 bg-white"
       >
         <FormField
           control={form.control}

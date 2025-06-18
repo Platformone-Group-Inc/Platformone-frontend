@@ -8,16 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import CreateQuestionModal from "./modals/create-question-modal";
+import UploadQuestionsModal from "./modals/upload-questions-modal";
 
 const AssessmentTableAction = () => {
   return (
-    <DropdownMenu defaultOpen>
+    // todo remove this default open
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button>Actions</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="flex flex-col">
         <DropdownMenuItem asChild>
           <CreateQuestionModal />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <UploadQuestionsModal />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

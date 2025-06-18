@@ -26,6 +26,7 @@ const Page = () => {
     <div className="p-6 w-full">
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <div className="space-y-3">
+          <NewActionModal />
           <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
             CMMS GAP Assessment
             <InfoCircle className="stroke-secondary size-4" />

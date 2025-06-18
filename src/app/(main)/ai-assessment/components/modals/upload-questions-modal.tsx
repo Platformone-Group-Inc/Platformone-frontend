@@ -8,17 +8,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AssessmentQuestionForm from "../forms/assignment-question-form";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
 
-const CreateQuestionModal = () => {
+import { useState } from "react";
+import UploadQuestionsForm from "../forms/upload-questions-form";
+
+const UploadQuestionsModal = () => {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"transparent"}>Add Question</Button>
+        <Button variant={"transparent"}>Upload Questions</Button>
       </DialogTrigger>
       <DialogContent className="md:rounded-none max-w-xl bg-white">
         <DialogHeader>
@@ -26,12 +26,10 @@ const CreateQuestionModal = () => {
             <DialogTitle>Create Question for Universal Assessment</DialogTitle>
           </div>
         </DialogHeader>
-        <ScrollArea className="max-h-[600px] overflow-y-auto">
-          <AssessmentQuestionForm onClose={() => setOpen(false)} />
-        </ScrollArea>
+        <UploadQuestionsForm />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default CreateQuestionModal;
+export default UploadQuestionsModal;
