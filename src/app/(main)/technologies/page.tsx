@@ -18,10 +18,9 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-
 const TechnologiesPage = () => {
   const { user } = useAuthContext();
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState({});
 
   const { data, isLoading } = useQuery({
     queryKey: ["technology", user?.organization],
@@ -33,107 +32,39 @@ const TechnologiesPage = () => {
   console.log(data, "technologies");
   const technologies = data?.data?.technologies;
 
-  const getSavedValue = (
-    categorySlug: string,
-    questionLabel: string
-  ): string => {
+  // Helper function to get saved value for a specific question
+  const getSavedValue = (categorySlug, questionLabel) => {
     if (!technologies) return "";
 
-    const slugVariations = [
-      categorySlug,
-      categorySlug.replace("-and-", "-&-"),
-      categorySlug.replace("-&-", "-and-"),
-    ];
-
-    const category = technologies.find((cat: any) =>
-      slugVariations.includes(cat.slug)
-    );
+    const category = technologies.find((cat) => cat.slug === categorySlug);
     if (!category) return "";
 
-    let item = category.items.find(
-      (item: any) => item.question === questionLabel
-    );
-
-    if (!item) {
-      item = category.items.find((item: any) => {
-        const apiQuestion = item.question.toLowerCase();
-        const optionQuestion = questionLabel.toLowerCase();
-
-        if (
-          optionQuestion.includes("mfa") &&
-          apiQuestion.includes("multi-factor")
-        )
-          return true;
-        if (
-          optionQuestion.includes("iam") &&
-          apiQuestion.includes("identity management")
-        )
-          return true;
-        if (
-          optionQuestion.includes("vulnerability scanning") &&
-          apiQuestion.includes("vulnerability")
-        )
-          return true;
-        if (
-          optionQuestion.includes("log management") &&
-          apiQuestion.includes("log")
-        )
-          return true;
-
-        return false;
-      });
-    }
-
+    const item = category.items.find((item) => item.question === questionLabel);
     return item ? item.answer : "";
   };
 
-  const getOptionValueFromAnswer = (
-    answer: string,
-    options: Array<{ label: string; value: string }>
-  ): string => {
+  // Helper function to convert answer back to option value
+  const getOptionValueFromAnswer = (answer, options) => {
     if (!answer) return "";
 
-    // @ts-ignore
     const option = options.find((opt) => opt.label === answer);
     return option ? option.value : "other";
   };
 
+  // Initialize form data when technologies data is loaded
   useEffect(() => {
     if (technologies) {
-      const initialFormData: Record<string, string> = {};
-
-      console.log(
-        "API Categories:",
-        technologies.map((cat: any) => ({
-          slug: cat.slug,
-          category: cat.category,
-        }))
-      );
-      console.log(
-        "Options Categories:",
-        technologiesOption.map((cat) => ({ id: cat.id, label: cat.label }))
-      );
+      const initialFormData = {};
 
       technologiesOption.forEach((category) => {
-        console.log(
-          `\nProcessing category: ${category.label} (${category.id})`
-        );
-
         category.items.forEach((item) => {
           const savedAnswer = getSavedValue(category.id, item.label);
-          console.log(
-            `  - Question: "${item.label}" | Saved Answer: "${savedAnswer}"`
-          );
-
           if (savedAnswer) {
             const optionValue = getOptionValueFromAnswer(
               savedAnswer,
               item.options
             );
-            // @ts-ignore
-
             initialFormData[item.value] = optionValue;
-            console.log(`    -> Setting ${item.value} = ${optionValue}`);
           }
         });
       });
@@ -141,8 +72,6 @@ const TechnologiesPage = () => {
       setFormData(initialFormData);
     }
   }, [technologies]);
-
-  // @ts-ignore
 
   const handleSelectChange = (itemValue, selectedValue) => {
     setFormData((prev) => ({
@@ -153,6 +82,7 @@ const TechnologiesPage = () => {
 
   const handleSave = () => {
     console.log("Form data to save:", formData);
+    // Implement your save logic here
   };
 
   console.log({ technologies, formData });
@@ -190,8 +120,6 @@ const TechnologiesPage = () => {
               className="space-y-4"
             >
               {category.items.map((item) => {
-                // @ts-ignore
-
                 const currentValue = formData[item.value] || "";
 
                 return (
