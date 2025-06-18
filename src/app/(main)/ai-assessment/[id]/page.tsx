@@ -26,6 +26,7 @@ const Page = () => {
     <div className="p-6 w-full">
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <div className="space-y-3">
+          <NewActionModal />
           <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
             CMMS GAP Assessment
             <InfoCircle className="stroke-secondary size-4" />
@@ -33,14 +34,12 @@ const Page = () => {
           </h1>
           <div className="text-sm space-y-3">
             <Button
-              asChild
               variant={"transparent"}
-              onClick={() => {
-                router.back();
-              }}
-              className="flex items-center gap-3 !text-black"
+              onClick={router.back}
+              size={"icon"}
+              className="inline-flex items-center gap-3 !text-black !stroke-black fill-black"
             >
-              <ArrowLeftIcon size={16} />
+              <ArrowLeftIcon size={20} />
             </Button>
             Showing 1-50 Questions
             <p className="font-medium">
