@@ -1,5 +1,4 @@
 "use client";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InfoCircle } from "iconsax-react";
 import { useQuery } from "@tanstack/react-query";
@@ -16,19 +15,72 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-
+import { useState, useEffect } from "react";
 const TechnologiesPage = () => {
   const { user } = useAuthContext();
+  const [formData, setFormData] = useState({});
 
   const { data, isLoading } = useQuery({
     queryKey: ["technology", user?.organization],
-    queryFn: () => getTechnologyQueryFn(user?.organization as string),
+    queryFn: () => getTechnologyQueryFn(user?.organization || ""),
     enabled: !!user?.organization,
   });
+  console.log(user, "organization");
 
+  console.log(data, "technologies");
   const technologies = data?.data?.technologies;
 
-  console.log({ technologies });
+  // Helper function to get saved value for a specific question
+  const getSavedValue = (categorySlug, questionLabel) => {
+    if (!technologies) return "";
+    
+    const category = technologies.find(cat => cat.slug === categorySlug);
+    if (!category) return "";
+    
+    const item = category.items.find(item => item.question === questionLabel);
+    return item ? item.answer : "";
+  };
+
+  // Helper function to convert answer back to option value
+  const getOptionValueFromAnswer = (answer, options) => {
+    if (!answer) return "";
+    
+    const option = options.find(opt => opt.label === answer);
+    return option ? option.value : "other";
+  };
+
+  // Initialize form data when technologies data is loaded
+  useEffect(() => {
+    if (technologies) {
+      const initialFormData = {};
+      
+      technologiesOption.forEach(category => {
+        category.items.forEach(item => {
+          const savedAnswer = getSavedValue(category.id, item.label);
+          if (savedAnswer) {
+            const optionValue = getOptionValueFromAnswer(savedAnswer, item.options);
+            initialFormData[item.value] = optionValue;
+          }
+        });
+      });
+      
+      setFormData(initialFormData);
+    }
+  }, [technologies]);
+
+  const handleSelectChange = (itemValue, selectedValue) => {
+    setFormData(prev => ({
+      ...prev,
+      [itemValue]: selectedValue
+    }));
+  };
+
+  const handleSave = () => {
+    console.log("Form data to save:", formData);
+    // Implement your save logic here
+  };
+
+  console.log({ technologies, formData });
 
   return (
     <div className=" @container w-full">
@@ -40,7 +92,7 @@ const TechnologiesPage = () => {
           </h1>
 
           {/* todo change this to actual loading skeleton */}
-          {/* {isLoading && "loading"} */}
+          {isLoading && <div>Loading...</div>}
 
           <TabsList className="flex h-auto w-full flex-wrap justify-start rounded-none p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">
             {technologiesOption.map((i) => (
@@ -54,44 +106,50 @@ const TechnologiesPage = () => {
             ))}
           </TabsList>
         </div>
+        
         <div className="px-6 my-6 max-w-2xl">
-          {technologiesOption.map((i) => (
-            <TabsContent key={i.id} value={i.id} className="space-y-4">
-              {i.items.map((item) => (
-                <div
-                  key={item.value}
-                  className="border p-4 rounded-xl space-y-2"
-                >
-                  <Label className="font-semibold">{item.label}</Label>
-                  {item?.description && (
-                    <p className="text-xs font-medium">{item.description}</p>
-                  )}
-                  <Select
-                    onValueChange={(val) => {
-                      console.log(val);
-                    }}
+          {technologiesOption.map((category) => (
+            <TabsContent key={category.id} value={category.id} className="space-y-4">
+              {category.items.map((item) => {
+                const currentValue = formData[item.value] || "";
+                
+                return (
+                  <div
+                    key={item.value}
+                    className="border p-4 rounded-xl space-y-2"
                   >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select an option" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {item.options.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                      <SelectItem value={"other"}>Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              ))}
+                    <Label className="font-semibold">{item.label}</Label>
+                    {item?.description && (
+                      <p className="text-xs font-medium">{item.description}</p>
+                    )}
+                    <Select
+                      value={currentValue}
+                      onValueChange={(val) => handleSelectChange(item.value, val)}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select an option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {item.options.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value={"other"}>Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                );
+              })}
             </TabsContent>
           ))}
         </div>
       </Tabs>
 
       <div className="fixed right-8 bottom-8">
-        <Button className="rounded-xl">Save</Button>
+        <Button className="rounded-xl" onClick={handleSave}>
+          Save
+        </Button>
       </div>
     </div>
   );
