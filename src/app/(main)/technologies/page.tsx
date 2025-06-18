@@ -16,9 +16,10 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+
 const TechnologiesPage = () => {
   const { user } = useAuthContext();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<Record<string, string>>({});
 
   const { data, isLoading } = useQuery({
     queryKey: ["technology", user?.organization],
@@ -31,18 +32,18 @@ const TechnologiesPage = () => {
   const technologies = data?.data?.technologies;
 
   // Helper function to get saved value for a specific question
-  const getSavedValue = (categorySlug, questionLabel) => {
+  const getSavedValue = (categorySlug: string, questionLabel: string): string => {
     if (!technologies) return "";
     
-    const category = technologies.find(cat => cat.slug === categorySlug);
+    const category = technologies.find((cat: any) => cat.slug === categorySlug);
     if (!category) return "";
     
-    const item = category.items.find(item => item.question === questionLabel);
+    const item = category.items.find((item: any) => item.question === questionLabel);
     return item ? item.answer : "";
   };
 
   // Helper function to convert answer back to option value
-  const getOptionValueFromAnswer = (answer, options) => {
+  const getOptionValueFromAnswer = (answer: string, options: Array<{ label: string; value: string }>): string => {
     if (!answer) return "";
     
     const option = options.find(opt => opt.label === answer);
@@ -52,7 +53,7 @@ const TechnologiesPage = () => {
   // Initialize form data when technologies data is loaded
   useEffect(() => {
     if (technologies) {
-      const initialFormData = {};
+      const initialFormData: Record<string, string> = {};
       
       technologiesOption.forEach(category => {
         category.items.forEach(item => {
@@ -68,7 +69,7 @@ const TechnologiesPage = () => {
     }
   }, [technologies]);
 
-  const handleSelectChange = (itemValue, selectedValue) => {
+  const handleSelectChange = (itemValue: string, selectedValue: string) => {
     setFormData(prev => ({
       ...prev,
       [itemValue]: selectedValue
