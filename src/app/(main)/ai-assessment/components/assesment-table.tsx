@@ -22,7 +22,7 @@ function AssessmentRow({ i }: { i: number }) {
   return (
     <div
       key={i}
-      className="flex flex-col gap-4 border-b pb-4 sm:flex-row sm:items-start sm:gap-6"
+      className="flex flex-col gap-4 border-b pb-4 px-2 sm:flex-row sm:items-start sm:gap-6"
     >
       <div className="flex gap-3 sm:flex-1">
         <Checkbox />
@@ -85,8 +85,17 @@ const AssessmentTableActions = () => {
 
 const AssessmentTable = () => {
   return (
+    // ma
     <ScrollArea className="h-[calc(100vh-500px)] border-b mt-8">
-      <div className="w-full space-y-10">
+      <div className="w-full space-y-10 border">
+        <div className="flex flex-col text-xs gap-4 border-b border-t-0 p-4 rounded-t-md bg-primary-100 sm:flex-row sm:items-start sm:gap-6">
+          <p className="sm:flex-1">Question</p>
+          <p>Answers</p>
+          <p>Applied To</p>
+          <p>Action Items</p>
+          <p>Comments</p>
+          <p>Action</p>
+        </div>
         {Array.from({ length: 10 }).map((_, i) => (
           <AssessmentRow i={i} key={i} />
         ))}

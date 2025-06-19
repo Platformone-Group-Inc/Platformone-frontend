@@ -4,15 +4,6 @@ import { Button } from "@/components/ui/button";
 import { InfoCircle } from "iconsax-react";
 import { ArrowLeftIcon } from "lucide-react";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import NewActionModal from "../components/modals/new-action-modal";
 import AssessmentTable from "../components/assesment-table";
 import FilterModal from "../components/modals/filter-modal";
@@ -48,27 +39,6 @@ const Page = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Select>
-            <SelectTrigger className="gap-1 rounded-lg px-3.5 font-semibold text-sm">
-              <SelectValue placeholder="Actions" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem
-                  value="question"
-                  className="rounded-lg hover:text-primary focus:text-primary font-semibold focus:bg-primary/10"
-                >
-                  Add Questions
-                </SelectItem>
-                <SelectItem
-                  value="upload"
-                  className="rounded-lg hover:text-primary focus:text-primary font-semibold focus:bg-primary/10"
-                >
-                  Upload Questions
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
           <AssessmentTableAction />
 
           <FilterModal />
