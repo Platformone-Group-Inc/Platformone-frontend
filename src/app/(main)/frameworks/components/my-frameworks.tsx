@@ -64,7 +64,7 @@ const MyFrameworks = () => {
 
       }
       {
-        myFrameworks?.frameworks?.length === 0 && <NoFrameworks />
+        myFrameworks?.frameworks?.length === 0 || myFrameworksError && <NoFrameworks />
       }
     </>
   );
