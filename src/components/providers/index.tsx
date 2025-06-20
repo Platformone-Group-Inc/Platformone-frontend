@@ -2,6 +2,7 @@
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { TooltipProvider } from "../ui/tooltip";
+import { TooltipProvider as AnimateTooltipProvider } from "../animate-ui/radix-tooltip";
 // import { ThemeProvider } from "./theme-provider";
 
 const Providers = ({ children }: React.PropsWithChildren) => {
@@ -13,7 +14,9 @@ const Providers = ({ children }: React.PropsWithChildren) => {
         enableSystem
         disableTransitionOnChange
       > */}
-      <TooltipProvider>{children}</TooltipProvider>
+      <AnimateTooltipProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+      </AnimateTooltipProvider>
       {/* </ThemeProvider> */}
     </NuqsAdapter>
   );
