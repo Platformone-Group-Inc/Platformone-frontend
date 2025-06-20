@@ -35,13 +35,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const user = data?.data?.user;
 
   const router = useRouter();
-
+ 
   const logout = () => {
-    console.log(user);
-    // set user null
-    // TODO remove this
-    // logoutUserMutationFn();
-
+   logoutUserMutationFn();
     router.push("/login");
   };
 
