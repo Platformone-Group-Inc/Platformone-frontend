@@ -10,6 +10,7 @@ const useAuth = () => {
     staleTime: Infinity,
     retry: 5,
     gcTime: 1000 * 60 * 60,
+    
   });
   return query;
 };

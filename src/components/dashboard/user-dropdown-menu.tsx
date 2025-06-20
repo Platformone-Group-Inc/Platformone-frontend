@@ -9,16 +9,27 @@ import {
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuthContext } from "@/context/auth-provider";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutUserMutationFn } from "@/services/operations/Auth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 const UserDropdownMenu = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: logoutUserMutationFn,
     onSuccess: () => {
+            // Invalidate the auth query before clearing
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      // Or remove it specifically
+      queryClient.removeQueries({ queryKey: ["authUser"] });
+      
       router.replace("/login");
+      queryClient.clear();
+
+      toast.success("Logout successful");
+   
     },
     onError: (error) => {
       toast.error(error.message || "Logout failed");
