@@ -9,9 +9,21 @@ import {
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuthContext } from "@/context/auth-provider";
-
+import { useMutation } from "@tanstack/react-query";
+import { logoutUserMutationFn } from "@/services/operations/Auth";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 const UserDropdownMenu = () => {
-  const { logout } = useAuthContext();
+  const router = useRouter();
+  const { mutate, isPending } = useMutation({
+    mutationFn: logoutUserMutationFn,
+    onSuccess: () => {
+      router.replace("/login");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Logout failed");
+    },
+  });
 
   return (
     <DropdownMenu>
@@ -67,7 +79,7 @@ const UserDropdownMenu = () => {
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuItem disabled>API</DropdownMenuItem>
         <DropdownMenuSeparator /> */}
-        <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => mutate()}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
