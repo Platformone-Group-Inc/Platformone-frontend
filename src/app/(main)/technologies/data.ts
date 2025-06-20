@@ -7,13 +7,13 @@ export const technologiesOption = [
         value: "infrastructure-as-a-service-iaas-or-csp-managed",
         label: "Infrastructure as a Service (IaaS) or CSP-managed?",
         options: [
-          { value: "aws", label: "AWS" },
-          { value: "azure", label: "Azure" },
-          { value: "google-services", label: "Google Services" },
-          { value: "cgi-federal", label: "CGI Federal" },
-          { value: "ibm-cloud", label: "IBM Cloud" },
+          { value: "AWS", label: "AWS" },
+          { value: "Azure", label: "Azure" },
+          { value: "Google Services", label: "Google Services" },
+          { value: "CGI Federal", label: "CGI Federal" },
+          { value: "IBM Cloud", label: "IBM Cloud" },
           {
-            value: "oracle-service-cloud-osvc",
+            value: "Oracle Service Cloud (OSvC)",
             label: "Oracle Service Cloud (OSvC)",
           },
         ],
@@ -22,38 +22,69 @@ export const technologiesOption = [
         value: "dns-dnssec",
         label: "DNS/DNSSEC",
         options: [
-          { value: "aws-route53", label: "AWS Route53" },
-          { value: "akamai", label: "Akamai" },
-          { value: "google-dns", label: "Google DNS" },
+          { value: "AWS Route53", label: "AWS Route53" },
+          { value: "Akamai", label: "Akamai" },
+          { value: "Google DNS", label: "Google DNS" },
         ],
       },
       {
         value: "firewalls-waf",
         label: "Firewalls/WAF",
         options: [
-          { value: "akamai", label: "Akamai" },
-          { value: "palo-alto", label: "Palo Alto" },
-          { value: "cloudflare", label: "CloudFlare" },
-          { value: "zscaler", label: "ZScaler" },
-          { value: "checkpoint", label: "CheckPoint" },
+          { value: "Akamai", label: "Akamai" },
+          { value: "Palo Alto", label: "Palo Alto" },
+          { value: "CloudFlare", label: "CloudFlare" },
+          { value: "ZScaler", label: "ZScaler" },
+          { value: "CheckPoint", label: "CheckPoint" },
         ],
       },
       {
         value: "proxy-servers",
         label: "Proxy Servers",
-        options: [{ value: "squid", label: "Squid" }],
+        options: [{ value: "Squid", label: "Squid" }],
       },
       {
         value: "vpns",
         label: "VPNs",
         options: [
-          { value: "palo-alto", label: "Palo Alto" },
-          { value: "google-services", label: "Google Services" },
-          { value: "zscaler", label: "ZScaler" },
-          { value: "cisco", label: "Cisco" },
-          { value: "cloudflare", label: "CloudFlare" },
-          { value: "openvpn", label: "OpenVpn" },
+          { value: "Palo Alto", label: "Palo Alto" },
+          { value: "Google Services", label: "Google Services" },
+          { value: "ZScaler", label: "ZScaler" },
+          { value: "Cisco", label: "Cisco" },
+          { value: "CloudFlare", label: "CloudFlare" },
+          { value: "OpenVpn", label: "OpenVpn" },
         ],
+      },{
+        value: "Load Balancer",
+        label: "Load Balancer",
+        options: [
+          { value: "AWS ELB", label: "AWS ELB" },
+          { value: "Mircosoft Blob", label: "Mircosoft Blob" },
+        
+        ],
+ 
+
+      },
+      {
+        value: "Web Application Server(s)",
+        label: "Web Application Server(s)",
+        options: [
+          { value: "IIS", label: "IIS" },
+          { value: "Apache", label: "Apache" },
+        ],
+ 
+
+      },{
+        value: "Storage",
+        label: "Storage",
+        options: [
+          { value: "S3", label: "S3" },
+          { value: "Glacier", label: "Glacier" },
+           {value: "Blob", label: "Blob" }
+   
+        ],
+ 
+
       },
     ],
   },
@@ -68,9 +99,9 @@ export const technologiesOption = [
         description:
           "What OS is used across the entire FedRAMP environment? If more than one, list all.",
         options: [
-          { value: "rhel", label: "RHEL" },
-          { value: "win10", label: "Win10" },
-          { value: "ubuntu", label: "Ubuntu" },
+          { value: "RHEL", label: "RHEL" },
+          { value: "Win10", label: "Win10" },
+          { value: "Ubuntu", label: "Ubuntu" },
         ],
       },
       {
@@ -80,9 +111,9 @@ export const technologiesOption = [
         description:
           "What DBs & versions are in use? If more than one, list all.",
         options: [
-          { value: "mongodb", label: "MongoDB" },
-          { value: "sql", label: "SQL" },
-          { value: "postgress", label: "Postgress" },
+          { value: "MongoDB", label: "MongoDB" },
+          { value: "SQL", label: "SQL" },
+          { value: "Postgress", label: "Postgress" },
         ],
       },
       {
@@ -92,11 +123,11 @@ export const technologiesOption = [
         description: "What is used on all components in FedRAMP environment?",
         options: [
           {
-            value: "trend-micro-deep-security",
+            value: "Trend Micro Deep Security",
             label: "Trend Micro Deep Security",
           },
-          { value: "symantec", label: "Symantec" },
-          { value: "clamav", label: "ClamAV" },
+          { value: "Symantec", label: "Symantec" },
+          { value: "ClamAV", label: "ClamAV" },
         ],
       },
       {
@@ -106,11 +137,11 @@ export const technologiesOption = [
         description: "What is used on all components in FedRAMP environment?",
         options: [
           {
-            value: "trend-micro-deep-security",
+            value: "Trend Micro Deep Security",
             label: "Trend Micro Deep Security",
           },
-          { value: "symantec", label: "Symantec" },
-          { value: "ossec", label: "OSSEC" },
+          { value: "Symantec", label: "Symantec" },
+          { value: "OSSEC", label: "OSSEC" },
         ],
       },
       {
@@ -120,51 +151,72 @@ export const technologiesOption = [
         description:
           "Is a tool in place to prevent unauthorized program execution?",
         options: [
-          { value: "apparmor", label: "AppArmor" },
-          { value: "symantec", label: "Symantec" },
-          { value: "trend-micro", label: "Trend Micro" },
+          { value: "AppArmor", label: "AppArmor" },
+          { value: "Symantec", label: "Symantec" },
+          { value: "Trend Micro", label: "Trend Micro" },
         ],
       },
       {
-        value: "configuration-management-what-is-used",
+        value: "Configuration Management",
         label: "Configuration Management",
         description: "What is used?",
         options: [
-          { value: "ansible", label: "Ansible" },
-          { value: "chef", label: "Chef" },
-          { value: "jenkins", label: "Jenkins" },
-          { value: "docker", label: "Docker" },
-          { value: "kubernetes", label: "Kubernetes" },
+          { value: "Ansible", label: "Ansible" },
+          { value: "Chef", label: "Chef" },
+          { value: "Jenkins", label: "Jenkins" }
         ],
       },
+       {
+        value: "Containerized Environment Management",
+        label: "Containerized Environment Management",
+        description: "What is used?",
+        options: [
+          { value: "Docker", label: "Docker" },
+          { value: "Kubernetes", label: "Kubernetes" },
+        ],
+      }
     ],
   },
   {
-    id: "access-and-id",
+    id: "Access & ID",
     label: "Access & ID",
     items: [
       {
-        value: "iam-identity-management",
-        label: "IAM / Identity Management",
+        value: "Identity Management",
+        label: "Identity Management",
         options: [
-          { value: "active-directory", label: "Active Directory" },
-          { value: "aws-iam", label: "AWS IAM" },
-          { value: "okta-idaas", label: "Okta IDaaS" },
-          { value: "duo-security", label: "Duo Security" },
-          { value: "entra-id", label: "Entra ID" },
-          { value: "userid-pw", label: "UserID/PW" },
+          { value: "Okta", label: "Okta" },
+          { value: "IDaaS", label: "IDaaS" },
+          { value: "Active Directory", label: "Active Directory" },
+          { value: "Entra ID", label: "Entra ID" },
+          { value: "AWS IAM", label: "AWS IAM" },
+
+
         ],
       },
       {
-        value: "mfa",
-        label: "MFA",
+        value: "Multi-Factor Authentication (MFA)",
+        label: "Multi-Factor Authentication (MFA)",
         options: [
-          { value: "okta-verify", label: "Okta Verify" },
-          { value: "ms-authenticator", label: "MS Authenticator" },
-          { value: "duo-security", label: "Duo Security" },
-          { value: "saml-2-0", label: "SAML 2.0" },
+          { value: "Okta Verify", label: "Okta Verify" },
+          { value: "MS Authenticator", label: "MS Authenticator" },
+          { value: "Duo Security", label: "Duo Security" },
+          { value: "SAML 2.0", label: "SAML 2.0" },
+
+
         ],
       },
+      {
+        value: "Customer Authentication",
+        label: "Customer Authentication",
+        options: [
+          { value: "UserID/PW", label: "UserID/PW" },
+          { value: "SAML 2.0", label: "SAML 2.0" },
+
+
+
+        ],
+      }
     ],
   },
   {
@@ -175,16 +227,20 @@ export const technologiesOption = [
         value: "log-management",
         label: "Log Management",
         options: [
-          { value: "splunk", label: "Splunk" },
-          { value: "sumologic", label: "SumoLogic" },
-          { value: "logstash", label: "Logstash" },
-          { value: "and-kibana", label: "and Kibana (ELK)" },
+          { value: "Splunk", label: "Splunk" },
+          { value: "SumoLogic", label: "SumoLogic" },
+          { value: "Logstash", label: "Logstash" },
+          { value: "and Kibana (ELK)", label: "and Kibana (ELK)" },
         ],
       },
       {
-        value: "centralized-logs",
-        label: "Centralized Logs collected from all components",
-        options: [{ value: "elastic-logstash", label: "Elastic Logstash" }],
+        value: "Security Information and Event Management (SIEM)",
+        label: "Security Information and Event Management (SIEM)",
+        options: [{ value: "elastic-logstash", label: "Elastic Logstash" }, {
+          value: "Splunk",
+          label: "Splunk",
+        }],
+
       },
     ],
   },
@@ -193,21 +249,23 @@ export const technologiesOption = [
     label: "Monitoring",
     items: [
       {
-        value: "new-relic",
-        label: "Performance & Availability",
-        options: [{ value: "new-relic", label: "New Relic" }],
+        value: "System Monitoring & Maintenance Tools",
+        label: "System Monitoring & Maintenance Tools",
+        options: [{ value: "New Relic", label: "New Relic" }],
       },
       {
-        value: "integrity-monitoring",
-        label: "Integrity Monitoring",
-        options: [
-          { value: "ossec-integrity-module", label: "OSSEC Integrity Module" },
-          {
-            value: "trend-micro-integrity-module",
-            label: "Trend Micro Integrity Module",
-          },
-        ],
+        value: "Performance Monitoring",
+        label: "Performance Monitoring",
+        options: [{ value: "New Relic", label: "New Relic" }],
       },
+      {
+        value: "File Integrity Monitoring",
+        label: "File Integrity Monitoring",
+        options: [{ value: "OSSEC Integrity Module", label: "OSSEC Integrity Module" }, {
+          value: "Trend Micro Integrity Module",
+          label: "Trend Micro Integrity Module"
+        }],
+      }
     ],
   },
   {
@@ -215,22 +273,37 @@ export const technologiesOption = [
     label: "Scanning",
     items: [
       {
-        value: "vulnerability-scanning",
-        label: "Vulnerability Scanning",
+        value: "Scanning - Operating System & Infrastructure",
+        label: "Scanning - Operating System & Infrastructure",
         options: [
-          { value: "qualys", label: "Qualys" },
-          { value: "tenable-nessus", label: "Tenable Nessus" },
+          { value: "Tenable Nessus", label: "Tenable Nessus" }
         ],
-      },
-      {
-        value: "ticketing-integrations",
-        label: "Ticketing Integrations",
+      }, {
+        value: "Scanning - Dynamic Web Application scans",
+        label: "Scanning - Dynamic Web Application scans",
         options: [
-          { value: "servicenow", label: "ServiceNow" },
-          { value: "jira", label: "Jira" },
-          { value: "salesforce", label: "SalesForce" },
+          { value: "BurpSuite", label: "BurpSuite" }
         ],
-      },
+      }, {
+        value: "Scanning - Database Vulnerability scans",
+        label: "Scanning - Database Vulnerability scans",
+        options: [
+          { value: "Qualys", label: "Qualys" }
+        ],
+      }, {
+        value: "Vulnerability Tracking/Management",
+        label: "Vulnerability Tracking/Management",
+        options: [
+          { value: "Veracode", label: "Veracode" },
+          { value: "SalesForce", label: "SalesForce" },
+          { value: "ServiceNow", label: "ServiceNow" },
+          { value: "Jira", label: "Jira" }
+
+
+        ],
+      }
+
+
     ],
   },
   {
@@ -238,31 +311,32 @@ export const technologiesOption = [
     label: "SDLC",
     items: [
       {
-        value: "code-repository",
-        label: "Code Repository",
+        value: "Source Code - Repository & Version Control",
+        label: "Source Code - Repository & Version Control",
         options: [
-          { value: "github", label: "GitHub" },
-          { value: "gitlab", label: "GitLab" },
+          { value: "GitHub", label: "GitHub" },
+          { value: "GitLab", label: "GitLab" },
         ],
       },
       {
-        value: "ci-cd",
-        label: "CI/CD",
-        options: [{ value: "jenkins", label: "Jenkins" }],
+        value: "Analysis - Static Code",
+        label: "Analysis - Static Code",
+        options: [{ value: "SonarQube", label: "SonarQube" }, { value: "Veracode", label: "Veracode" }],
+
       },
       {
-        value: "static-code-analysis",
-        label: "Static Code Analysis",
+        value: "Analysis - Dynamic Code",
+        label: "Analysis - Dynamic Code",
         options: [
-          { value: "sonarqube", label: "SonarQube" },
-          { value: "veracode", label: "Veracode" },
-          { value: "burpsuite", label: "BurpSuite" },
+          { value: "Qualys", label: "Qualys" },
+          { value: "BurpSuite", label: "BurpSuite" }
+
         ],
       },
       {
-        value: "vulnerability-scanning",
-        label: "Vulnerability Scanning",
-        options: [{ value: "qualys", label: "Qualys" }],
+        value: "Source Code - Deployment / Deployment Automation",
+        label: "Source Code - Deployment / Deployment Automation",
+        options: [{ value: "Jenkins", label: "Jenkins" }],
       },
     ],
   },
@@ -272,7 +346,7 @@ export const technologiesOption = [
     items: [
       {
         value:
-          "ticketing-system-what-ticketing-system-is-used-for-customer-care-it-change-mgmt-and-incident-mgmt",
+          "Ticketing System",
         label: "Ticketing System",
         description:
           "What ticketing system is used for Customer Care, IT Change Mgmt, and Incident Mgmt?",
@@ -284,55 +358,59 @@ export const technologiesOption = [
       },
       {
         value:
-          "anti-virus-anti-malware-centralized-used-on-user-systems-end-points",
+          "Anti-Virus/Anti-Malware (centralized)",
         label:
-          "Anti-Virus/Anti-Malware (centralized) - Used on User Systems/End Points",
+          "Anti-Virus/Anti-Malware (centralized)",
         options: [
           {
             value: "trend-micro-deep-security",
             label: "Trend Micro Deep Security",
           },
-          { value: "symantec", label: "Symantec" },
+          { value: "Trend Micro Deep Security", label: "Trend Micro Deep Security" },
+          { value: "Symantec", label: "Symantec" }
         ],
       },
+
+
       {
-        value: "email-other-communications",
+        value: "Email, Other Communications",
         label: "Email, Other Communications",
         options: [
-          { value: "google-workspace-mail", label: "Google Workspace Mail" },
-          { value: "office-365", label: "Office 365" },
-          { value: "on-prem-exchange", label: "On-Prem Exchange" },
-          { value: "slack", label: "Slack" },
+          { value: "Google Workspace Mail", label: "Google Workspace Mail" },
+          { value: "Office 365", label: "Office 365" },
+          { value: "On-Prem Exchange", label: "On-Prem Exchange" },
+          { value: "Slack", label: "Slack" },
         ],
+
       },
       {
-        value: "document-storage-document-sharing",
+        value: "Document Storage / Document Sharing",
         label: "Document Storage / Document Sharing",
         options: [
-          { value: "google-workspace-drive", label: "Google Workspace Drive" },
-          { value: "office-365-onedrive", label: "Office 365 OneDrive" },
+          { value: "Google Workspace Drive", label: "Google Workspace Drive" },
+          { value: "Office 365 OneDrive", label: "Office 365 OneDrive" },
         ],
       },
       {
-        value: "laptop-encryption-tools",
+        value: "Laptop Encryption Tools",
         label: "Laptop Encryption Tools",
         options: [
-          { value: "filevault", label: "FileVault" },
-          { value: "bitdefender", label: "Bitdefender" },
+          { value: "FileVault", label: "FileVault" },
+          { value: "Bitdefender", label: "Bitdefender" },
         ],
       },
       {
-        value: "electronic-discovery-legal-hold",
+        value: "Electronic Discovery (eDiscovery)",
         label:
-          "Electronic Discovery (eDiscovery) or placing document/files under legal hold",
+          "Electronic Discovery (eDiscovery)",
         options: [{ value: "ediscovery", label: "ediscovery" }],
       },
       {
-        value: "security-awareness-training",
+        value: "Learning Management",
         label: "Learning Management",
         description:
           "What tool(s) are used for delivering / tracking Security Awareness Training?",
-        options: [{ value: "know4me", label: "Know4me" }],
+        options: [{ value: "Know4me", label: "Know4me" }],
       },
     ],
   },
