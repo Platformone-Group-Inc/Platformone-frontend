@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface SidebarItemProps {
   item: ItemType;
@@ -27,23 +27,24 @@ const SidebarSubItems = ({ item }: { item: SideBarGroup }) => {
   const [itemExpanded, setItemExpanded] = useState(false);
 
   const content = (
-    <motion.button
-      onClick={() => setItemExpanded((s) => !s)}
-      className={cn(
-        "w-full flex items-center text-sm justify-between rounded-full text-left stroke-white",
-        "transition-all hover:bg-white/20 ",
-        isExpanded ? " px-4 py-3" : "size-12 justify-center",
-
-        item.subItems.map((i) => i.href).includes(pathname as string) &&
-          // isExpanded &&
-          "bg-white hover:bg-white/80 text-primary-600 stroke-primary-600 "
-      )}
-    >
+    <>
       <TooltipTrigger asChild>
-        <div className="flex items-center gap-2">
-          <span className={"relative"}>
-            <item.icon className="h-5 w-5 " />
-            {/* <ChevronRight
+        <motion.button
+          onClick={() => setItemExpanded((s) => !s)}
+          className={cn(
+            "w-full flex items-center text-sm justify-between rounded-full text-left stroke-white",
+            "transition-all hover:bg-white/20 ",
+            isExpanded ? " px-4 py-3" : "size-12 justify-center",
+
+            item.subItems.map((i) => i.href).includes(pathname as string) &&
+              // isExpanded &&
+              "bg-white hover:bg-white/80 text-primary-600 stroke-primary-600 "
+          )}
+        >
+          <div className="flex items-center gap-2">
+            <span className={"relative"}>
+              <item.icon className="h-5 w-5 " />
+              {/* <ChevronRight
             className={cn(
               "absolute top-1/2 -translate-y-1/2 right-0 text-white",
               item.subItems.map((i) => i.href).includes(pathname as string)
@@ -51,38 +52,39 @@ const SidebarSubItems = ({ item }: { item: SideBarGroup }) => {
                 : "translate-x-6"
             )}
           /> */}
-          </span>
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.span
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-              >
-                {item.label}
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </div>
+            </span>
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.span
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                >
+                  {item.label}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {isExpanded && (
+            <motion.span
+              initial={{ opacity: 0, rotate: -90 }}
+              animate={{
+                opacity: 1,
+                rotate: itemExpanded ? 0 : -90,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <ChevronDown className="h-4 w-4" />
+            </motion.span>
+          )}
+        </motion.button>
       </TooltipTrigger>
       <TooltipContent hidden={isExpanded} sideOffset={25} side="right">
         {item.label}
       </TooltipContent>
-
-      {isExpanded && (
-        <motion.span
-          initial={{ opacity: 0, rotate: -90 }}
-          animate={{
-            opacity: 1,
-            rotate: itemExpanded ? 0 : -90,
-          }}
-          exit={{ opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        >
-          <ChevronDown className="h-4 w-4" />
-        </motion.span>
-      )}
-    </motion.button>
+    </>
   );
 
   return (
@@ -169,7 +171,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
   return item.subItems ? (
     <SidebarSubItems item={item} />
   ) : (
-    <motion.div>
+    <>
       <TooltipTrigger asChild>
         <Link
           href={item.href as string}
@@ -197,7 +199,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item }) => {
       <TooltipContent hidden={isExpanded} sideOffset={25} side="right">
         {item.label}
       </TooltipContent>
-    </motion.div>
+    </>
   );
 };
 
