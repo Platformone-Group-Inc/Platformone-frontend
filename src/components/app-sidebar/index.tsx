@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, MotionConfig } from "framer-motion";
+import { motion, MotionConfig } from "framer-motion";
 import { useSideBarStore } from "@/store/useSidebarStore";
 import { ChevronLeftIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { BRAND_NAME } from "@/lib/constants";
 import BrandLogo from "../icons/brand-logo";
 import Link from "next/link";
+import { Tooltip } from "../ui/tooltip";
 
 // Variants for container and children
 const containerVariants = {
@@ -117,7 +118,9 @@ const AppSidebar = () => {
           >
             {SIDEBAR_DATA.map((item, i) => (
               <motion.div key={i} variants={itemVariants}>
-                <SidebarItem item={item} />
+                <Tooltip>
+                  <SidebarItem item={item} />
+                </Tooltip>
               </motion.div>
             ))}
           </motion.div>
