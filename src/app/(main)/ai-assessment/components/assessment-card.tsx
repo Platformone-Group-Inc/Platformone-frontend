@@ -28,7 +28,7 @@ const AssessmentCard = () => {
           <TooltipTrigger asChild>
             <Info className="size-6 cursor-pointer text-muted-foreground" />
           </TooltipTrigger>
-          <TooltipContent className="max-w-sm text-sm leading-normal">
+          <TooltipContent className="max-w-sm text-xs leading-normal">
             <p className="mb-2 font-semibold">How is this calculated?</p>
             <ul className="list-disc pl-4 space-y-1">
               <li>

@@ -16,6 +16,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
+import NewActionModal from "./modals/new-action-modal";
+
 function AssessmentRow({ i }: { i: number }) {
   const [v, setV] = useState<"yes" | "no" | "na">("yes");
 
@@ -73,11 +75,13 @@ const AssessmentTableActions = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[240px]">
-        <DropdownMenuItem>Add Action Item</DropdownMenuItem>
-        <DropdownMenuItem>Upload Evidence</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <NewActionModal />
+        </DropdownMenuItem>
+        {/* <DropdownMenuItem>Upload Evidence</DropdownMenuItem>
         <DropdownMenuItem>Change Mappings</DropdownMenuItem>
         <DropdownMenuItem>Past Answers</DropdownMenuItem>
-        <DropdownMenuItem>Delete Question</DropdownMenuItem>
+        <DropdownMenuItem>Delete Question</DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -86,16 +90,16 @@ const AssessmentTableActions = () => {
 const AssessmentTable = () => {
   return (
     // ma
-    <ScrollArea className="h-[calc(100vh-500px)] border-b mt-8">
-      <div className="w-full space-y-10 border">
-        <div className="flex flex-col text-xs gap-4 border-b border-t-0 p-4 rounded-t-md bg-primary-100 sm:flex-row sm:items-start sm:gap-6">
+    <ScrollArea className="h-[calc(100vh-350px)] border-b mt-8">
+      <div className="w-full space-y-10">
+        {/* <div className="flex flex-col text-xs gap-4 border-b border-t-0 p-4 rounded-t-md bg-primary-100 sm:flex-row sm:items-start sm:gap-6">
           <p className="sm:flex-1">Question</p>
           <p>Answers</p>
           <p>Applied To</p>
           <p>Action Items</p>
           <p>Comments</p>
           <p>Action</p>
-        </div>
+        </div> */}
         {Array.from({ length: 10 }).map((_, i) => (
           <AssessmentRow i={i} key={i} />
         ))}

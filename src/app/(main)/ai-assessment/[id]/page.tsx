@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { InfoCircle } from "iconsax-react";
 import { ArrowLeftIcon } from "lucide-react";
 
-import NewActionModal from "../components/modals/new-action-modal";
 import AssessmentTable from "../components/assesment-table";
 import FilterModal from "../components/modals/filter-modal";
 import AssessmentTableAction from "../components/table-actions";
@@ -17,7 +16,7 @@ const Page = () => {
     <div className="p-6 w-full">
       <div className="space-y-1 border-b pb-6 flex items-center justify-between ">
         <div className="space-y-3">
-          <NewActionModal />
+          {/* <NewActionModal /> */}
           <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
             CMMS GAP Assessment
             <InfoCircle className="stroke-secondary size-4" />
@@ -45,7 +44,6 @@ const Page = () => {
         </div>
       </div>
       <AssessmentTable />
-      <NewActionModal />
     </div>
   );
 };
