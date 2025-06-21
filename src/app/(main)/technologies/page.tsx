@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TechnologiesPage = () => {
   const { user } = useAuthContext();
@@ -155,7 +156,7 @@ const TechnologiesPage = () => {
     console.log("Form data to save:", formData);
   };
 
-  console.log({ technologies, formData });
+  // console.log({ technologies, formData });
 
   return (
     <div className=" @container w-full">
@@ -166,67 +167,89 @@ const TechnologiesPage = () => {
             <InfoCircle className="size-4 stroke-secondary" />
           </h1>
 
-          {/* todo change this to actual loading skeleton */}
-          {isLoading && <div>Loading...</div>}
+          {(!data || isLoading) && (
+            <div className="flex pb-3 h-auto w-full gap-2 flex-wrap justify-start rounded-none p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className="h-8 w-[150px] flex-shrink-0 rounded-md"
+                />
+              ))}
+            </div>
+          )}
 
-          <TabsList className="flex h-auto w-full flex-wrap justify-start rounded-none p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">
-            {technologiesOption.map((i) => (
-              <TabsTrigger
-                key={i.id}
-                value={i.id}
-                className="relative h-auto px-5 rounded-none text-secondary-600 font-semibold after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:text-primary-600 data-[state=active]:bg-primary-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary-600"
-              >
-                {i.label}
-              </TabsTrigger>
+          {data && (
+            <TabsList className="flex h-auto w-full flex-wrap justify-start rounded-none p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">
+              {technologiesOption.map((i) => (
+                <TabsTrigger
+                  key={i.id}
+                  value={i.id}
+                  className="relative h-auto px-5 rounded-none text-secondary-600 font-semibold after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:text-primary-600 data-[state=active]:bg-primary-100 data-[state=active]:shadow-none data-[state=active]:after:bg-primary-600"
+                >
+                  {i.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          )}
+        </div>
+
+        {(!data || isLoading) && (
+          <div className="px-6 my-6 space-y-5 max-w-2xl">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <Skeleton key={i} className="h-[100px] w-full" />
             ))}
-          </TabsList>
-        </div>
+          </div>
+        )}
 
-        <div className="px-6 my-6 max-w-2xl">
-          {technologiesOption.map((category) => (
-            <TabsContent
-              key={category.id}
-              value={category.id}
-              className="space-y-4"
-            >
-              {category.items.map((item) => {
-                // @ts-ignore
+        {data && (
+          <div className="px-6 my-6 max-w-2xl">
+            {technologiesOption.map((category) => (
+              <TabsContent
+                key={category.id}
+                value={category.id}
+                className="space-y-4"
+              >
+                {category.items.map((item) => {
+                  // @ts-ignore
 
-                const currentValue = formData[item.value] || "";
+                  const currentValue = formData[item.value] || "";
 
-                return (
-                  <div
-                    key={item.value}
-                    className="border p-4 rounded-xl space-y-2"
-                  >
-                    <Label className="font-semibold">{item.label}</Label>
-                    {item?.description && (
-                      <p className="text-xs font-medium">{item.description}</p>
-                    )}
-                    <Select
-                      value={currentValue}
-                      onValueChange={(val) =>
-                        handleSelectChange(item.value, val)
-                      }
+                  return (
+                    <div
+                      key={item.value}
+                      className="border p-4 rounded-xl space-y-2"
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select an option" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {item.options.map((opt) => (
-                          <SelectItem key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </SelectItem>
-                        ))}
-                        <SelectItem value={"other"}>Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                );
-              })}
-            </TabsContent>
-          ))}
-        </div>
+                      <Label className="font-semibold">{item.label}</Label>
+                      {item?.description && (
+                        <p className="text-xs font-medium">
+                          {item.description}
+                        </p>
+                      )}
+                      <Select
+                        value={currentValue}
+                        onValueChange={(val) =>
+                          handleSelectChange(item.value, val)
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select an option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {item.options.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                          <SelectItem value={"other"}>Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  );
+                })}
+              </TabsContent>
+            ))}
+          </div>
+        )}
       </Tabs>
 
       <div className="fixed right-8 bottom-8">
