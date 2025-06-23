@@ -351,9 +351,9 @@ export const technologiesOption = [
         description:
           "What ticketing system is used for Customer Care, IT Change Mgmt, and Incident Mgmt?",
         options: [
-          { value: "salesforce", label: "SalesForce" },
-          { value: "servicenow", label: "ServiceNow" },
-          { value: "jira", label: "Jira" },
+          { value: "SalesForce", label: "SalesForce" },
+          { value: "ServiceNow", label: "ServiceNow" },
+          { value: "Jira", label: "Jira" },
         ],
       },
       {

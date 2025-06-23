@@ -17,7 +17,7 @@ export interface TechnologyItem {
  * @returns {Promise<{data:{technologies:Technology[]}}>}
  */
 export const getTechnologyQueryFn = async (
-  organizationId: string
+  organizationId?: string
 ): Promise<{ data: { technologies: Technology[] } }> => {
   const response = await API.get(
     `/technology/tech-responses/organization/${organizationId}`
