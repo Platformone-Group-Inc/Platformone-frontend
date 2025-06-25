@@ -39,8 +39,8 @@ const Page = () => {
         </div>
         <div className="flex items-center gap-4">
           <AssessmentTableAction />
-
           <FilterModal />
+          <Button>Save</Button>
         </div>
       </div>
       <AssessmentTable />
