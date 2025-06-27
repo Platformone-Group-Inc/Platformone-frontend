@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 
-const AssessmentCard = () => {
+const AssessmentCard = ({framework}: any) => {
   return (
     <div className="w-full border rounded-2xl divide-y">
       <div className="p-3 flex items-center justify-between">
@@ -21,7 +21,7 @@ const AssessmentCard = () => {
           />
 
           <p className="font-semibold text-sm">
-            Cybersecurity Maturity Model Certification (CMMC 2.0)
+          {framework?.name}
           </p>
         </div>
         <Tooltip>
@@ -63,7 +63,7 @@ const AssessmentCard = () => {
       <div className="h-20" />
       <div className="flex flex-col p-3">
         <Link
-          href={"/ai-assessment/asdfasdfsdf"}
+          href={`/ai-assessment/${framework?._id}`}
           className={cn(
             buttonVariants({
               variant: "secondary",
