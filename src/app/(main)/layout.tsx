@@ -18,7 +18,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
         <DashboardHeader />
 
         {/* <ScrollArea className="flex-1"> */}
-        <div className="flex flex-1 overflow-hidden bg-primary-100 p-4">
+        <div className="flex gap-4 flex-1 overflow-hidden bg-primary-100 p-4">
           <ScrollArea className="flex-1 max-w-[calc (100vw-800px)] overflow-y-auto bg-white border shadow-xl rounded-2xl">
             {children}
           </ScrollArea>
@@ -26,7 +26,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
           <motion.div
             animate={{ width: isOpen ? 400 : 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="overflow-hidden border-l border-gray-200 h-full"
+            className="overflow-hidden h-full"
           >
             <AnimatePresence>{isOpen && <AiChatBox />}</AnimatePresence>
           </motion.div>
