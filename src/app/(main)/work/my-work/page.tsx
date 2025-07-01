@@ -3,25 +3,6 @@ import MyWorkDataTable from "./_components/tables/my-work-data-table";
 
 import TabView from "./components/tab-views";
 
-// export const tabData = [
-//   {
-//     label: "Documents",
-//     value: "documents",
-//   },
-//   {
-//     label: "Controls",
-//     value: "controls",
-//   },
-//   {
-//     label: "Evidence",
-//     value: "evidence",
-//   },
-//   {
-//     label: "Action Items",
-//     value: "actions",
-//   },
-// ];
-
 const MyWorkPage = () => {
   return (
     <Suspense>
