@@ -17,10 +17,10 @@ import { useAuthContext } from "@/context/auth-provider";
 import API from "@/services/axios-client";
 import { technologiesOption } from "./data";
 import { getTechnologyQueryFn } from "@/services/operations/Technology";
-import { 
-  useAddTechnology, 
-  useUpdateTechnology, 
-  useTechnologyMutation 
+import {
+  useAddTechnology,
+  useUpdateTechnology,
+  useTechnologyMutation,
 } from "@/services/mutations/Technology";
 type FormData = Record<string, string>;
 
@@ -46,21 +46,14 @@ const TechnologiesPage = () => {
   const [showForm, setShowForm] = useState(false);
 
   // --- Fetch technology data for this org ---
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["technology", user?.organization],
-    queryFn: () =>
-      getTechnologyQueryFn(user?.organization),
+    queryFn: () => getTechnologyQueryFn(user?.organization),
     enabled: !!user?.organization,
     retry: false,
   });
 
-   const technologyMutation = useTechnologyMutation(isEdit, {
+  const technologyMutation = useTechnologyMutation(isEdit, {
     onSuccess: (data) => {
       console.log("Technology operation successful:", data);
       if (!isEdit) {
@@ -69,7 +62,7 @@ const TechnologiesPage = () => {
     },
     onError: (error) => {
       console.error("Technology operation failed:", error);
-    }
+    },
   });
 
   // --- Populate form on load or error (404 = add mode) ---
@@ -79,28 +72,37 @@ const TechnologiesPage = () => {
       setShowForm(true);
       const apiData = data.data.technologies;
       const apiMap: FormData = {};
-      console.log(apiData, 'apiData')
+      console.log(apiData, "apiData");
       apiData.forEach((cat) => {
-        const foundCategory = technologiesOption.find((c) => c.label === cat.category);
+        const foundCategory = technologiesOption.find(
+          (c) => c.label === cat.category
+        );
 
         if (foundCategory) {
           cat.items.forEach((item) => {
-            const foundItem = foundCategory.items.find((i) => i.label === item.question);
+            const foundItem = foundCategory.items.find(
+              (i) => i.label === item.question
+            );
 
             if (foundItem) {
               // First try exact match with answer
-              let matchingOpt = foundItem.options.find(opt => opt.label === item.answer);
+              let matchingOpt = foundItem.options.find(
+                (opt) => opt.label === item.answer
+              );
 
               // If no exact match, try matching with value
               if (!matchingOpt) {
-                matchingOpt = foundItem.options.find(opt => opt.value === item.answer);
+                matchingOpt = foundItem.options.find(
+                  (opt) => opt.value === item.answer
+                );
               }
 
               // If still no match, try case-insensitive comparison
               if (!matchingOpt) {
-                matchingOpt = foundItem.options.find(opt =>
-                  opt.label.toLowerCase() === item.answer.toLowerCase() ||
-                  opt.value.toLowerCase() === item.answer.toLowerCase()
+                matchingOpt = foundItem.options.find(
+                  (opt) =>
+                    opt.label.toLowerCase() === item.answer.toLowerCase() ||
+                    opt.value.toLowerCase() === item.answer.toLowerCase()
                 );
               }
 
@@ -109,24 +111,29 @@ const TechnologiesPage = () => {
 
               // Debug logging to see what's happening
               if (!matchingOpt && item.answer !== "Other") {
-                console.log(`No match found for question: "${item.question}", answer: "${item.answer}"`);
-                console.log('Available options:', foundItem.options.map(opt => ({ label: opt.label, value: opt.value })));
+                console.log(
+                  `No match found for question: "${item.question}", answer: "${item.answer}"`
+                );
+                console.log(
+                  "Available options:",
+                  foundItem.options.map((opt) => ({
+                    label: opt.label,
+                    value: opt.value,
+                  }))
+                );
               }
             }
           });
         }
       });
       setFormData(apiMap);
-    } else if (
-      (isError) ||
-      (!isLoading && !data?.data?.technologies)
-    ) {
+    } else if (isError || (!isLoading && !data?.data?.technologies)) {
       // Show form for new entries when there's no data
       setIsEdit(false);
       setShowForm(true);
       const blankFormData: FormData = {};
-      technologiesOption.forEach((category:any) => {
-        category.items.forEach((item:any) => {
+      technologiesOption.forEach((category: any) => {
+        category.items.forEach((item: any) => {
           blankFormData[item.value] = "";
         });
       });
@@ -148,11 +155,11 @@ const TechnologiesPage = () => {
   // --- Save ---
   const handleSave = async () => {
     if (!user?.organization) {
-    // Optionally show a toast or error message here
-    console.error("No organization ID");
-    return;
-  }
-      const payload = {
+      // Optionally show a toast or error message here
+      console.error("No organization ID");
+      return;
+    }
+    const payload = {
       organizationId: user?.organization,
       responses: buildResponsesFromFormData(formData, technologiesOption),
     };
@@ -173,7 +180,7 @@ const TechnologiesPage = () => {
   // --- Render error (not 404) ---
   const renderError = () => {
     if (isError) {
-    console.log(error)
+      console.log(error);
     }
     return null;
   };
@@ -182,7 +189,7 @@ const TechnologiesPage = () => {
   return (
     <div className="@container w-full">
       <Tabs defaultValue={technologiesOption[0].id}>
-        <div className="p-6 backdrop-blur bg-white/10 space-y-6 w-full border-b border-black/10 pb-0 sticky top-0 z-10 ">
+        <div className="p-6 bg-white space-y-6 w-full border-b border-black/10 pb-0 sticky top-0 z-10 ">
           <h1 className="font-semibold text-lg inline-flex items-center gap-2">
             Technologies
             <InfoCircle className="size-4 stroke-secondary" />
@@ -226,40 +233,40 @@ const TechnologiesPage = () => {
                 value={category.id}
                 className="space-y-4"
               >
-               {category.items.map((item) => {
-  const currentValue = formData[item.value] || "";
-  return (
-    <div
-      key={item.value}
-      className="border p-4 rounded-xl space-y-2"
-    >
-      <Label className="font-semibold">{item.label}</Label>
-      {item?.description && (
-        <p className="text-xs font-medium">
-          {item.description}
-        </p>
-      )}
-      <Select
-        value={currentValue}
-        onValueChange={(val) =>
-          handleSelectChange(item.value, val)
-        }
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select an option" />
-        </SelectTrigger>
-        <SelectContent>
-          {item.options.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))}
-          <SelectItem value={"Other"}>Other</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-})}
+                {category.items.map((item) => {
+                  const currentValue = formData[item.value] || "";
+                  return (
+                    <div
+                      key={item.value}
+                      className="border p-4 rounded-xl space-y-2"
+                    >
+                      <Label className="font-semibold">{item.label}</Label>
+                      {item?.description && (
+                        <p className="text-xs font-medium">
+                          {item.description}
+                        </p>
+                      )}
+                      <Select
+                        value={currentValue}
+                        onValueChange={(val) =>
+                          handleSelectChange(item.value, val)
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select an option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {item.options.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                          <SelectItem value={"Other"}>Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  );
+                })}
               </TabsContent>
             ))}
           </div>
@@ -273,10 +280,11 @@ const TechnologiesPage = () => {
             onClick={handleSave}
             disabled={technologyMutation.isPending}
           >
-              {technologyMutation.isPending 
-              ? (isEdit ? "Updating..." : "Adding...") 
-              : "Save"
-            }
+            {technologyMutation.isPending
+              ? isEdit
+                ? "Updating..."
+                : "Adding..."
+              : "Save"}
           </Button>
         </div>
       )}

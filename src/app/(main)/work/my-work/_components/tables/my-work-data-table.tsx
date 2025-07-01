@@ -261,9 +261,9 @@ const MyWorkTable = () => {
           onGlobalFilterChange={setGlobalFilter}
         />
 
-        <div className="border w-full overflow-auto max-h-[calc(100vh-342px)] relative">
-          <Table className="w-full">
-            <thead className="sticky top-0 z-20 bg-background">
+        <ScrollArea className="border w-full overflow-auto h-[calc(100vh-342px)] ">
+          <Table className="block w-full h-full">
+            <thead className="sticky left-0 top-0 z-20 bg-background">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -310,7 +310,7 @@ const MyWorkTable = () => {
           </Table>
 
           <ScrollBar orientation="horizontal" />
-        </div>
+        </ScrollArea>
 
         <DataTablePagination table={table} />
       </div>
