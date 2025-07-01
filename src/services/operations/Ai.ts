@@ -6,7 +6,7 @@ import axios, { AxiosError } from "axios";
 export const getChatRemediationQueryFn = async (
   chat_history: any[] = [],
   user_question: string,
-  baseURL: string = "http://138.91.106.170:8000"
+  baseURL: string = "https://138.91.106.170:8000"
 ) => {
   try {
     const response = await axios.post(
