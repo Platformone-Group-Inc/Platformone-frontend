@@ -46,6 +46,7 @@ import { useQuery } from "@tanstack/react-query";
 import DataTableHeader from "@/components/data-table/data-table-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
 
 interface IDocument {
   id: string;
@@ -252,16 +253,17 @@ const MyWorkTable = () => {
           My Work
         </h1>
       </div>
+
       <div className="p-4 flex-1 space-y-4">
         <DataTableToolbar
           table={table}
           globalFilter={globalFilter}
           onGlobalFilterChange={setGlobalFilter}
         />
-        <ScrollArea className="h-[calc(100vh-342px)] max-w-[700px] border w-full overflow-auto">
-          {/* <ScrollArea className="flex-grow border w-full overflow-auto"> */}
-          <Table>
-            <TableHeader className="sticky w-full top-0 left-0 z-10 bg-primary-100 border-b border-white">
+
+        <div className="border w-full overflow-auto max-h-[calc(100vh-342px)] relative">
+          <Table className="w-full">
+            <thead className="sticky top-0 z-20 bg-background">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -269,25 +271,11 @@ const MyWorkTable = () => {
                   ))}
                 </TableRow>
               ))}
-            </TableHeader>
+            </thead>
 
             <TableBody>
-              {isLoading &&
-                Array.from({ length: 20 }).map((_, i) => (
-                  <TableRow key={i}>
-                    {/* {row.id} */}
-                    {table.getAllColumns().map((col) => (
-                      <TableCell
-                        style={{
-                          width: col.getSize(),
-                        }}
-                        key={col.id}
-                      >
-                        <Skeleton className="h-5 w-full" />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+              {isLoading && <DataTableLoadingSkeleton table={table} />}
+
               {!isLoading && table.getRowModel().rows.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
@@ -320,8 +308,9 @@ const MyWorkTable = () => {
               )}
             </TableBody>
           </Table>
+
           <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
 
         <DataTablePagination table={table} />
       </div>
