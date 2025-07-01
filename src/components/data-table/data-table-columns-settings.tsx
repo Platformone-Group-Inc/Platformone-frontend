@@ -74,7 +74,7 @@ const ColumnItem = <TData,>({ column }: { column: Column<TData, unknown> }) => {
     >
       {/* Grip for drag */}
       <button type="button" {...listeners}>
-        <GripVerticalIcon className="h-4 w-4 text-muted-foreground cursor-grab" />
+        <GripVerticalIcon className="h-4 w-4 text-primary-800 cursor-grab" />
       </button>
 
       <Checkbox
@@ -148,8 +148,8 @@ export const ColumnSettings = <TData,>({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="size-8 aspect-square">
-          <SettingsIcon />
+        <Button variant="secondary" className="size-8 p-2 aspect-square">
+          <SettingsIcon size={20} />
         </Button>
       </DialogTrigger>
 

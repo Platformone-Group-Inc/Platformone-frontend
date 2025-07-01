@@ -102,7 +102,7 @@ export const DataTablePagination = <TData,>({
         </div>
 
         {/* Row range info */}
-        <div className="text-sm text-muted-foreground whitespace-nowrap">
+        <div className="hidden sm:flex text-sm text-muted-foreground whitespace-nowrap">
           Showing {startRow} to {endRow} of {totalCount} entries
         </div>
       </div>
