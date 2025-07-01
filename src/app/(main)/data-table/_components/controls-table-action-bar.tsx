@@ -1,4 +1,4 @@
-import { DataTableActionBarSelection } from "@/components/data-table/data-table-action-bar";
+// import { DataTableActionBarSelection } from "@/components/data-table/data-table-action-bar";
 import { Table } from "@tanstack/react-table";
 import DeleteControllersModal from "./modals/delete-controls-modal";
 
@@ -15,7 +15,7 @@ export function ControlsTableActionBar<TData>({
 }: ControlsTableActionBarProps<TData>) {
   return (
     <div className="flex items-center gap-2">
-      <DataTableActionBarSelection table={table} />
+      {/* <DataTableActionBarSelection table={table} /> */}
       <DeleteControllersModal table={table} />
 
       {/*

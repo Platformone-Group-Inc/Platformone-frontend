@@ -51,11 +51,11 @@ export const ColumnFilter = <TData,>({ column }: ColumnFilterProps<TData>) => {
           onChange={(e) => column.setFilterValue(e.target.value)}
           className="h-8 w-[150px]"
         />
-        {columnFilterValue && (
+        {/* {columnFilterValue && (
           <Button variant="transparent" size="sm" onClick={clearFilter}>
             <X className="h-4 w-4" />
           </Button>
-        )}
+        )} */}
       </div>
     );
   }
@@ -80,11 +80,11 @@ export const ColumnFilter = <TData,>({ column }: ColumnFilterProps<TData>) => {
             <SelectItem value="Manager">Manager</SelectItem>
           </SelectContent>
         </Select>
-        {columnFilterValue && (
+        {/* {columnFilterValue && (
           <Button variant="transparent" size="sm" onClick={clearFilter}>
             <X className="h-4 w-4" />
           </Button>
-        )}
+        )} */}
       </div>
     );
   }
@@ -108,11 +108,11 @@ export const ColumnFilter = <TData,>({ column }: ColumnFilterProps<TData>) => {
             <SelectItem value="Pending">Pending</SelectItem>
           </SelectContent>
         </Select>
-        {columnFilterValue && (
+        {/* {columnFilterValue && (
           <Button variant="transparent" size="sm" onClick={clearFilter}>
             <X className="h-4 w-4" />
           </Button>
-        )}
+        )} */}
       </div>
     );
   }
