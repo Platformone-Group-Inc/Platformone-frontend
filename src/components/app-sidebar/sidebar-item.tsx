@@ -37,21 +37,12 @@ const SidebarSubItems = ({ item }: { item: SideBarGroup }) => {
             isExpanded ? " px-4 py-3" : "size-12 justify-center",
 
             item.subItems.map((i) => i.href).includes(pathname as string) &&
-              // isExpanded &&
               "bg-white hover:bg-white/80 text-primary-600 stroke-primary-600 "
           )}
         >
           <div className="flex items-center gap-2">
             <span className={"relative"}>
               <item.icon className="h-5 w-5 " />
-              {/* <ChevronRight
-            className={cn(
-              "absolute top-1/2 -translate-y-1/2 right-0 text-white",
-              item.subItems.map((i) => i.href).includes(pathname as string)
-                ? "hidden"
-                : "translate-x-6"
-            )}
-          /> */}
             </span>
             <AnimatePresence>
               {isExpanded && (
@@ -93,7 +84,7 @@ const SidebarSubItems = ({ item }: { item: SideBarGroup }) => {
         content
       ) : (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>{content}</DropdownMenuTrigger>
+          <DropdownMenuTrigger>{content}</DropdownMenuTrigger>
           <DropdownMenuContent
             side="right"
             align="start"
