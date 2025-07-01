@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ControlsInfoAction from "./components/controls-info-actions";
-import { Button } from "@/components/ui/button";
-import { Grid3X3Icon, Rows3Icon } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 import ControlInfoCard from "../components/control-info-card";
 import {
@@ -23,10 +20,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import { useAuthContext } from "@/context/auth-provider";
 import { useQuery } from "@tanstack/react-query";
-import ControlsTable from "../control/_components/controls-table";
+
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ControlInfoPage = () => {
-  const [view, setView] = useState<"grid" | "table">("grid");
   const { user, isLoading: authLoading } = useAuthContext();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -75,8 +72,8 @@ const ControlInfoPage = () => {
   };
 
   return (
-    <div className=" w-full">
-      <div className="flex items-center backdrop-blur justify-between py-4 px-6 sticky top-0 z-10 border-b">
+    <div className="@container w-full">
+      <div className="flex items-center bg-white justify-between py-4 px-6 sticky top-0 z-10 border-b">
         <div>
           <h1 className="font-semibold text-lg">
             {/* FedRAMP Moderate (800-53 Rev. 5) */}
@@ -99,47 +96,22 @@ const ControlInfoPage = () => {
           </Breadcrumb>
         </div>
         <div className="flex items-center gap-3">
-          {/* <Button
-            variant={"outline"}
-            onClick={() => setView((s) => (s === "grid" ? "table" : "grid"))}
-            className="p-1"
-          >
-            <span
-              className={cn(
-                "p-2 rounded-md aspect-square ",
-                view === "grid" && "bg-primary text-primary-100"
-              )}
-            >
-              <Grid3X3Icon size={18} />
-            </span>
-            <span
-              className={cn(
-                "p-2 rounded-md aspect-square ",
-                view === "table" && "bg-primary text-primary-100"
-              )}
-            >
-              <Rows3Icon size={18} />
-            </span>
-          </Button> */}
           <ControlsInfoAction />
         </div>
       </div>
-      {view === "grid" && (
-        <div className=" grid gap-4 py-4 px-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {controlFamiliesByOrg?.map((controlFamily: any) => (
-            <ControlInfoCard
-              key={controlFamily?._id}
-              controlFamily={controlFamily}
-            />
+
+      <div className="grid gap-4 p-4 grid-cols-1 @[550px]:grid-cols-2 @[800px]:grid-cols-3 @[1200px]:grid-cols-4 ">
+        {controlFamiliesByOrgLoading &&
+          Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="w-full aspect-[3/4]" />
           ))}
-        </div>
-      )}
-      {view === "table" && (
-        <ControlsTable
-          controlByControlFamilies={getAllcontrol}
-          onPageChange={handlePageChange}
-        />
-      )}
+        {controlFamiliesByOrg?.map((controlFamily: any) => (
+          <ControlInfoCard
+            key={controlFamily?._id}
+            controlFamily={controlFamily}
+          />
+        ))}
+      </div>
     </div>
   );
 };

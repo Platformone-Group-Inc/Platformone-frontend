@@ -7,6 +7,7 @@ import DashboardHeader from "@/components/dashboard/header";
 import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
 import { motion, AnimatePresence } from "motion/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 const MainLayout = ({ children }: React.PropsWithChildren) => {
   const { isOpen } = useAiChatBoxStore();
@@ -18,8 +19,13 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
         <DashboardHeader />
 
         {/* <ScrollArea className="flex-1"> */}
-        <div className="flex gap-4 flex-1 overflow-hidden bg-primary-100 p-4">
-          <ScrollArea className="flex-1 max-w-[calc (100vw-800px)] overflow-y-auto bg-white border shadow-xl rounded-2xl">
+        <div
+          className={cn(
+            "flex flex-1 overflow-hidden bg-primary-100 p-4",
+            isOpen && "gap-4"
+          )}
+        >
+          <ScrollArea className="flex-1 overflow-y-auto bg-white border shadow-xl rounded-2xl">
             {children}
           </ScrollArea>
 

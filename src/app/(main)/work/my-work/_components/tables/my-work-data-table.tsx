@@ -1,76 +1,107 @@
-// TODO pagination
 "use client";
 
-import { useDataTable } from "@/hooks/use-data-table";
+import { useMemo, useState } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-import { fa, faker } from "@faker-js/faker";
+import { Checkbox } from "@/components/ui/checkbox";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { faker } from "@faker-js/faker";
+
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type ColumnDef,
+  type Row,
+  type SortingState,
+} from "@tanstack/react-table";
+
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { EllipsisVerticalIcon } from "lucide-react";
 
-import { DataTable } from "@/components/data-table/data-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { EllipsisIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 
-// import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-import { Shell } from "@/components/ui/shell";
-import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
-import ReAssignModal from "./reassign-modal";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { useQuery } from "@tanstack/react-query";
+import DataTableHeader from "@/components/data-table/data-table-header";
 
-interface Work {
+import { Badge } from "@/components/ui/badge";
+import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
+
+interface IDocument {
   id: string;
   name: string;
-  ownerName: string;
-  ownerAvatar: string;
-  status: string;
-  type: string;
-
-  startedAt: Date;
-  endAt: Date;
+  assignee: string;
+  status: "draft" | "published";
+  type: "policy";
+  startDate: Date;
+  endDate: Date;
   dueDate: Date;
 }
 
-const data: Work[] = Array.from({ length: 300 }).map((_, i) => ({
-  id: crypto.randomUUID(),
+// const enumSortStates = ["asc", "desc", "none"] as const;
+const getFakeData = async (): Promise<IDocument[]> => {
+  return Array.from({ length: 100 }).map((_, i) => ({
+    id: crypto.randomUUID(),
+    name: faker.person.fullName(),
+    assignee: faker.person.fullName(),
+    status: "draft",
+    type: "policy",
+    startDate: faker.date.past(),
+    endDate: faker.date.future(),
+    dueDate: faker.date.soon(),
+  }));
+};
 
-  name: faker.company.name(),
-  ownerName: faker.person.fullName(),
-  type: faker.helpers.arrayElement(["Policy"]),
-  status: faker.helpers.arrayElement(["implanted", "not implemented"]),
+const RowAction = ({ row }: { row: Row<IDocument> }) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="transparent" size="icon" aria-label="Row actions">
+        <EllipsisVerticalIcon size={16} />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <DropdownMenuItem
+        onClick={() => {
+          console.log(row.original);
+        }}
+      >
+        View Details
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
 
-  ownerAvatar: `https://api.dicebear.com/7.x/personas/svg?seed=${i + 1}`,
-  startedAt: faker.date.past(),
-  endAt: faker.date.future(),
-  dueDate: faker.date.future(),
-}));
+const MyWorkTable = () => {
+  const [globalFilter, setGlobalFilter] = useState("");
+  const { data, isLoading } = useQuery({
+    queryKey: ["my-work"],
+    queryFn: async () => {
+      const data = await getFakeData();
+      return data;
+    },
+  });
 
-const MyWorkDataTable = () => {
-  const columns: ColumnDef<Work>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <div className="w-9">
+  const columns: ColumnDef<IDocument>[] = useMemo(
+    () => [
+      {
+        id: "id",
+        accessorKey: "id",
+        header: ({ table }) => (
           <Checkbox
             checked={
               table.getIsAllPageRowsSelected() ||
@@ -80,280 +111,205 @@ const MyWorkDataTable = () => {
               table.toggleAllPageRowsSelected(!!value)
             }
             aria-label="Select all"
-            className="translate-y-0.5"
           />
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="w-9">
+        ),
+        cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
             aria-label="Select row"
-            className="translate-y-0.5"
           />
-        </div>
-      ),
-
-      enableSorting: false,
-      enableHiding: false,
-    },
-
-    {
-      accessorKey: "name",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
-      ),
-      meta: {
-        label: "Name",
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        enableResizing: false,
+        size: 40,
+        minSize: 40,
+        maxSize: 40,
       },
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-    },
-    {
-      accessorKey: "ownerAvatar",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Owner" />
-      ),
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"link"} className="flex items-center gap-2">
-              <Avatar className="aspect-square size-10 rounded-full border">
-                <AvatarImage src={row.original.ownerAvatar} />
-                <AvatarFallback>
-                  {row.original.ownerName.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <span className="font-medium truncate text-sm">
-                {row.original.ownerName}
-              </span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem asChild>
-              <ReAssignModal />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
 
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-      meta: {
-        label: "Owner",
+      {
+        id: "name",
+        accessorKey: "name",
+        header: "Name",
+        meta: { label: "Name" },
       },
-    },
-    {
-      accessorKey: "status",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
-      ),
-      cell: ({ row }) => (
-        <div className="flex justify-center ">
-          <Badge
-            variant={row.original.status === "implanted" ? "success" : "error"}
-            size={"sm"}
-            className="text-center capitalize "
-          >
-            {row.original.status}
-          </Badge>
-        </div>
-      ),
-
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-      meta: {
-        label: "Status",
+      {
+        id: "assignee",
+        accessorKey: "assignee",
+        header: "Assignee",
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
+            <Avatar className="">
+              <AvatarFallback>{row.original.assignee[0]}</AvatarFallback>
+            </Avatar>
+            <p>{row.original.assignee}</p>
+          </div>
+        ),
+        meta: { label: "Assignee" },
+        enableSorting: true,
       },
-    },
-    {
-      accessorKey: "type",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Evidence" />
-      ),
-
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-      meta: {
-        label: "Evidence",
+      {
+        id: "status",
+        accessorKey: "status",
+        header: "Status",
+        meta: { label: "Status" },
+        cell: ({ row }) => (
+          <Badge className="capitalize">{row.original.status}</Badge>
+        ),
       },
-      cell: ({ row }) => (
-        <div className="flex justify-center ">
-          <Badge
-            withDot
-            variant={"success"}
-            size={"sm"}
-            className="text-center capitalize "
-          >
-            {row.original.type}
-          </Badge>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "startedAt",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Stated Dates" />
-      ),
-
-      cell: ({ row }) => {
-        const d = new Intl.DateTimeFormat("en-US", {
-          dateStyle: "medium",
-        }).format(row.original.startedAt);
-        const t = new Intl.DateTimeFormat("en-US").format(
-          row.original.startedAt
-        );
-        return (
-          <Tooltip>
-            <TooltipTrigger>{d}</TooltipTrigger>
-            <TooltipContent>
-              <p>{t}</p>
-            </TooltipContent>
-          </Tooltip>
-        );
+      {
+        id: "type",
+        accessorKey: "type",
+        header: "Type",
+        meta: { label: "Type" },
+        cell: ({ row }) => (
+          <Badge className="capitalize">{row.original.type}</Badge>
+        ),
       },
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-    },
-    {
-      accessorKey: "endAt",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="End Dates" />
-      ),
-
-      cell: ({ row }) => {
-        const d = new Intl.DateTimeFormat("en-US", {
-          dateStyle: "medium",
-        }).format(row.original.endAt);
-        const t = new Intl.DateTimeFormat("en-US").format(row.original.endAt);
-        return (
-          <Tooltip>
-            <TooltipTrigger>{d}</TooltipTrigger>
-            <TooltipContent>
-              <p>{t}</p>
-            </TooltipContent>
-          </Tooltip>
-        );
+      {
+        id: "startDate",
+        accessorKey: "startDate",
+        header: "Start Date",
+        meta: { label: "Start Date" },
+        cell: ({ row }) => {
+          return new Intl.DateTimeFormat("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }).format(row.original.startDate);
+        },
       },
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-    },
-    {
-      accessorKey: "dueDate",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Due Dates" />
-      ),
-
-      cell: ({ row }) => {
-        const d = new Intl.DateTimeFormat("en-US", {
-          dateStyle: "medium",
-        }).format(row.original.dueDate);
-        const t = new Intl.DateTimeFormat("en-US").format(row.original.dueDate);
-        return (
-          <Tooltip>
-            <TooltipTrigger>{d}</TooltipTrigger>
-            <TooltipContent>
-              <p>{t}</p>
-            </TooltipContent>
-          </Tooltip>
-        );
+      {
+        id: "endDate",
+        accessorKey: "endDate",
+        header: "End Date",
+        meta: { label: "End Date" },
+        cell: ({ row }) => {
+          return new Intl.DateTimeFormat("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }).format(row.original.endDate);
+        },
       },
-      enableSorting: true,
-      enableColumnFilter: true,
-      enableHiding: true,
-    },
+      {
+        id: "dueDate",
+        accessorKey: "dueDate",
+        header: "Due Date",
+        meta: { label: "Due Date" },
+        cell: ({ row }) => {
+          return new Intl.DateTimeFormat("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }).format(row.original.dueDate);
+        },
+      },
+      {
+        id: "actions",
+        accessorKey: "actions",
+        header: "Actions",
+        cell: ({ row }) => <RowAction row={row} />,
+        enableSorting: false,
+        enableHiding: false,
+      },
+    ],
+    []
+  );
 
-    {
-      id: "actions",
-      header: "Actions",
-      cell: ({}) => (
-        <Button
-          variant="transparent"
-          size="icon"
-          //   onClick={() => alert(`E÷dit ${row.original.name}`)}
-        >
-          <EllipsisIcon size={18} />
-        </Button>
-      ),
-      enableSorting: false,
-    },
-  ];
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnOrder, setColumnOrder] = useState<string[]>(
+    columns.map((c) => c.id as string)
+  );
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
-  const [page, setPage] = useState(1);
-  const perPage = 10;
-
-  const paginated = data.slice((page - 1) * perPage, page * perPage);
-
-  const { table } = useDataTable({
-    data: paginated,
+  const table = useReactTable({
+    data: data || [],
     columns,
-    pageCount: Math.ceil(data.length / perPage),
-    shallow: false,
-    clearOnDefault: true,
+    columnResizeMode: "onChange",
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    onColumnOrderChange: setColumnOrder,
+    onGlobalFilterChange: setGlobalFilter,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: { globalFilter, sorting, pagination, columnOrder },
+    enableSortingRemoval: false,
   });
 
   return (
-    <Shell className="p-4 gap-2">
-      {false ? (
-        <DataTableSkeleton
-          columnCount={10}
-          filterCount={0}
-          cellWidths={[
-            "10rem",
-            "30rem",
-            "10rem",
-            "10rem",
-            "6rem",
-            "6rem",
-            "6rem",
-          ]}
-          shrinkZero
+    <div className="@container w-full overflow-hidden flex flex-col">
+      <div className="border-b p-4">
+        <h1 className="font-semibold inline-flex items-center gap-2 text-xl">
+          My Work
+        </h1>
+      </div>
+
+      <div className="p-4 flex-1 space-y-4">
+        <DataTableToolbar
+          table={table}
+          globalFilter={globalFilter}
+          onGlobalFilterChange={setGlobalFilter}
         />
-      ) : (
-        <DataTable table={table}>
-          <DataTableToolbar table={table} />
-        </DataTable>
-      )}
-    </Shell>
-    // <div className="divide-y">
-    //   <div className="px-6 py-4 flex-grow h-full">
-    //     <DataTable table={table}>
-    //       <DataTableToolbar table={table} />
-    //     </DataTable>
-    //   </div>
-    //   <div className="flex items-center justify-between w-full py-4 px-6">
-    //     <Button
-    //       //  disabled
-    //       variant={"outline"}
-    //     >
-    //       <ArrowLeftIcon size={16} />
-    //       Previous
-    //     </Button>
-    //     <div className="flex items-center gap-2">
-    //       {[1, 2, 3, "...", 50].map((i) => (
-    //         <Button
-    //           key={i}
-    //           size={"icon"}
-    //           variant={i === 2 ? "primary" : "outline"}
-    //         >
-    //           {i}
-    //         </Button>
-    //       ))}
-    //     </div>
-    //     <Button variant={"outline"}>
-    //       Next
-    //       <ArrowRightIcon size={16} />
-    //     </Button>
-    //   </div>
-    // </div>
+
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-432px)] ">
+          <Table className="block w-full full">
+            <thead className="sticky left-0 top-0 z-20 bg-background">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <DataTableHeader key={header.id} header={header} />
+                  ))}
+                </TableRow>
+              ))}
+            </thead>
+
+            <TableBody>
+              {isLoading && <DataTableLoadingSkeleton table={table} />}
+
+              {!isLoading && table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() ? "selected" : undefined}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className="truncate"
+                        style={{ width: `${cell.column.getSize()}px` }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+
+        <DataTablePagination table={table} />
+      </div>
+    </div>
   );
 };
 
-export default MyWorkDataTable;
+export default MyWorkTable;
