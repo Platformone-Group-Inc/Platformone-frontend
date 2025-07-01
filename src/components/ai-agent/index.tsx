@@ -3,13 +3,29 @@
 import { motion } from "motion/react";
 import { ChatMessageList } from "./chat-message-list";
 import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "./chat-bubble";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { ChevronRightIcon, SendIcon } from "lucide-react";
 import AiIcon from "../icons/ai-icon";
 import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
+import { getChatRemediationQueryFn } from "@/services/operations/Ai";
+
+
+interface ChatMessage {
+  id: number;
+  content: string;
+  sender: "user" | "ai";
+  timestamp: number;
+}
+
+interface StoredChatData {
+  messages: ChatMessage[];
+  expiry: number;
+}
+
+const CHAT_STORAGE_KEY = "cmmc_chat_history";
+const CHAT_EXPIRY_HOURS = 24;
 
 const AiChatBox = () => {
   const { closeChat } = useAiChatBoxStore();
@@ -19,158 +35,127 @@ const AiChatBox = () => {
       id: 1,
       content: "Hello! How can I help you today?",
       sender: "ai",
-    },
-    {
-      id: 2,
-      content: "I have a question about the component library.",
-      sender: "user",
-    },
-    {
-      id: 3,
-      content: "Sure! I'd be happy to help. What would you like to know?",
-      sender: "ai",
-    },
-    { id: 4, content: "How do I install the library?", sender: "user" },
-    { id: 5, content: "You can install it using npm or yarn.", sender: "ai" },
-    { id: 6, content: "Can you show me the command?", sender: "user" },
-    {
-      id: 7,
-      content: "Sure! Use: npm install your-library-name",
-      sender: "ai",
-    },
-    { id: 8, content: "Is it compatible with Next.js?", sender: "user" },
-    {
-      id: 9,
-      content: "Yes, it's fully compatible with Next.js.",
-      sender: "ai",
-    },
-    { id: 10, content: "What about TypeScript support?", sender: "user" },
-    { id: 11, content: "It has built-in TypeScript types.", sender: "ai" },
-    { id: 12, content: "How do I import a button component?", sender: "user" },
-    {
-      id: 13,
-      content: "Import it like: import { Button } from 'your-library-name';",
-      sender: "ai",
-    },
-    { id: 14, content: "Are there any themes available?", sender: "user" },
-    {
-      id: 15,
-      content: "Yes, light and dark themes are supported.",
-      sender: "ai",
-    },
-    { id: 16, content: "How do I switch themes?", sender: "user" },
-    {
-      id: 17,
-      content: "You can use the ThemeProvider component.",
-      sender: "ai",
-    },
-    { id: 18, content: "Is there a documentation site?", sender: "user" },
-    { id: 19, content: "Yes, check out docs.your-library.com.", sender: "ai" },
-    { id: 20, content: "Can I customize components?", sender: "user" },
-    {
-      id: 21,
-      content: "Absolutely! Use the sx prop or custom CSS.",
-      sender: "ai",
-    },
-    { id: 22, content: "How do I report a bug?", sender: "user" },
-    { id: 23, content: "Open an issue on our GitHub repo.", sender: "ai" },
-    { id: 24, content: "Is there a roadmap?", sender: "user" },
-    {
-      id: 25,
-      content: "Yes, it's available on our GitHub page.",
-      sender: "ai",
-    },
-    { id: 26, content: "Can I contribute?", sender: "user" },
-    {
-      id: 27,
-      content: "Contributions are welcome! See CONTRIBUTING.md.",
-      sender: "ai",
-    },
-    {
-      id: 28,
-      content: "Does it support server-side rendering?",
-      sender: "user",
-    },
-    { id: 29, content: "Yes, SSR is supported out of the box.", sender: "ai" },
-    { id: 30, content: "How do I get started quickly?", sender: "user" },
-    {
-      id: 31,
-      content: "Follow the Getting Started guide in the docs.",
-      sender: "ai",
-    },
-    { id: 32, content: "Is there a Slack community?", sender: "user" },
-    {
-      id: 33,
-      content: "Yes, join us at slack.your-library.com.",
-      sender: "ai",
-    },
-    { id: 34, content: "Are there any example projects?", sender: "user" },
-    {
-      id: 35,
-      content: "Yes, see the examples folder in the repo.",
-      sender: "ai",
-    },
-    {
-      id: 36,
-      content: "How do I update to the latest version?",
-      sender: "user",
-    },
-    { id: 37, content: "Run npm update your-library-name.", sender: "ai" },
-    { id: 38, content: "Is tree-shaking supported?", sender: "user" },
-    { id: 39, content: "Yes, the library is tree-shakable.", sender: "ai" },
-    { id: 40, content: "How do I use icons?", sender: "user" },
-    {
-      id: 41,
-      content: "Import icons from 'your-library-name/icons'.",
-      sender: "ai",
-    },
-    { id: 42, content: "Can I use it with React Native?", sender: "user" },
-    { id: 43, content: "Currently, only web is supported.", sender: "ai" },
-    { id: 44, content: "Is there a changelog?", sender: "user" },
-    { id: 45, content: "Yes, see CHANGELOG.md in the repo.", sender: "ai" },
-    { id: 46, content: "How do I request a new feature?", sender: "user" },
-    { id: 47, content: "Open a feature request on GitHub.", sender: "ai" },
-    { id: 48, content: "Are there accessibility features?", sender: "user" },
-    { id: 49, content: "Yes, all components are accessible.", sender: "ai" },
-    { id: 50, content: "Thank you for your help!", sender: "user" },
-    {
-      id: 51,
-      content: "You're welcome! Let me know if you need anything else.",
-      sender: "ai",
-    },
-    { id: 52, content: "How do I reset the chat?", sender: "user" },
-    { id: 53, content: "You can refresh the page to reset.", sender: "ai" },
+    }
   ]);
+
+
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  useEffect(() => {
+    const loadChatHistory = () => {
+      try {
+        const storedData = localStorage.getItem(CHAT_STORAGE_KEY);
+        if (storedData) {
+          const parsedData: StoredChatData = JSON.parse(storedData);
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: prev.length + 1,
-        content: input,
-        sender: "user",
-      },
-    ]);
+          if (Date.now() < parsedData.expiry) {
+            setMessages(parsedData.messages);
+          } else {
+
+            localStorage.removeItem(CHAT_STORAGE_KEY);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading chat history:", error);
+        localStorage.removeItem(CHAT_STORAGE_KEY);
+      }
+    };
+
+    loadChatHistory();
+  }, []);
+
+  useEffect(() => {
+    const saveChatHistory = () => {
+      try {
+        const chatData: any = {
+          messages,
+          expiry: Date.now() + (CHAT_EXPIRY_HOURS * 60 * 60 * 1000),
+        };
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatData));
+      } catch (error) {
+        console.error("Error saving chat history:", error);
+      }
+    };
+
+
+    if (messages.length > 1) {
+      saveChatHistory();
+    }
+  }, [messages]);
+
+  const formatChatHistoryForAPI = (messages: any) => {
+
+    const apiMessages = messages
+      .filter((msg: any) => !(msg.id === 1 && msg.sender === "ai"))
+      .map((msg: any) => ({
+        content: msg.content,
+        role: msg.sender === "ai" ? "assistant" : "user"
+      }));
+
+    return apiMessages;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: ChatMessage = {
+      id: Date.now(),
+      content: input.trim(),
+      sender: "user",
+      timestamp: Date.now(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
 
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          content: "This is an AI response to your message.",
-          sender: "ai",
-        },
-      ]);
+    try {
+      const chatHistoryForAPI = formatChatHistoryForAPI(messages);
+
+      const response = await getChatRemediationQueryFn(
+        chatHistoryForAPI,
+        userMessage.content
+      );
+
+
+      const aiMessage: ChatMessage = {
+        id: Date.now() + 1,
+        content: response.response || "I apologize, but I couldn't generate a response. Please try again.",
+        sender: "ai",
+        timestamp: Date.now(),
+      };
+
+      setMessages((prev) => [...prev, aiMessage]);
+
+    } catch (error) {
+      console.error("Error getting AI response:", error);
+
+      const errorMessage: ChatMessage = {
+        id: Date.now() + 1,
+        content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        sender: "ai",
+        timestamp: Date.now(),
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+  };
+
+  const clearChatHistory = () => {
+    const initialMessage: ChatMessage = {
+      id: 1,
+      content: "Hello! How can I help you with CMMC compliance today?",
+      sender: "ai",
+      timestamp: Date.now(),
+    };
+
+    setMessages([initialMessage]);
+    localStorage.removeItem(CHAT_STORAGE_KEY);
   };
 
   return (
