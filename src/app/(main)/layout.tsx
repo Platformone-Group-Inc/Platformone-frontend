@@ -25,7 +25,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
             isOpen && "gap-4"
           )}
         >
-          <ScrollArea className="flex-1 max-w-[calc (100vw-800px)] overflow-y-auto bg-white border shadow-xl rounded-2xl">
+          <ScrollArea className="flex-1 overflow-y-auto bg-white border shadow-xl rounded-2xl">
             {children}
           </ScrollArea>
 

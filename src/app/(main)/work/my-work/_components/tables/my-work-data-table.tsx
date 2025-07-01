@@ -19,13 +19,7 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 import {
   DropdownMenu,
@@ -44,7 +38,7 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 
 import { useQuery } from "@tanstack/react-query";
 import DataTableHeader from "@/components/data-table/data-table-header";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { Badge } from "@/components/ui/badge";
 import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
 
@@ -261,8 +255,8 @@ const MyWorkTable = () => {
           onGlobalFilterChange={setGlobalFilter}
         />
 
-        <ScrollArea className="border w-full overflow-auto h-[calc(100vh-342px)] ">
-          <Table className="block w-full h-full">
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-432px)] ">
+          <Table className="block w-full full">
             <thead className="sticky left-0 top-0 z-20 bg-background">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
