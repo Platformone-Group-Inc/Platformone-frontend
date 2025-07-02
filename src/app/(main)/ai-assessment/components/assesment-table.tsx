@@ -231,16 +231,16 @@ const AssessmentTable = ({
         minSize: 120,
         size: 160,
       },
-      {
-        id: "actionsMenu",
-        accessorKey: "actionsMenu",
-        header: "Menu",
-        cell: () => <AssessmentTableActions />,
-        enableSorting: false,
-        enableHiding: false,
-        minSize: 60,
-        size: 60,
-      },
+      // {
+      //   id: "actionsMenu",
+      //   accessorKey: "actionsMenu",
+      //   header: "Menu",
+      //   cell: () => <AssessmentTableActions />,
+      //   enableSorting: false,
+      //   enableHiding: false,
+      //   minSize: 60,
+      //   size: 60,
+      // },
       {
         id: "comments",
         accessorKey: "comments",
@@ -256,16 +256,17 @@ const AssessmentTable = ({
         size: 60,
       },
 
-      {
-        id: "actions",
-        accessorKey: "actions",
-        header: "Actions",
-        cell: ({ row }) => <RowAction row={row} />,
-        enableSorting: false,
-        enableHiding: false,
-      },
+      // {
+      //   id: "actions",
+      //   accessorKey: "actions",
+      //   header: "Actions",
+      //   cell: ({ row }) => <RowAction row={row} />,
+      //   enableSorting: false,
+      //   enableHiding: false,
+
+      // },
     ],
-    []
+    [answers, onAnswerChange]
   );
 
   const table = useReactTable({
