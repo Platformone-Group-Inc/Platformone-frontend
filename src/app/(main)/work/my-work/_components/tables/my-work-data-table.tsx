@@ -240,8 +240,15 @@ const MyWorkTable = () => {
     enableSortingRemoval: false,
   });
 
+  const visibleColumns = table.getVisibleLeafColumns();
+  const allColumns = table.getAllLeafColumns();
+  const rows = table.getRowModel().rows;
+  const hasRows = rows.length > 0;
+  const isNoVisibleColumns = visibleColumns.length === 2; // assuming first 2 are control columns
+
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">
+      {/* Page Header */}
       <div className="border-b p-4">
         <h1 className="font-semibold inline-flex items-center gap-2 text-xl">
           My Work
@@ -249,41 +256,65 @@ const MyWorkTable = () => {
       </div>
 
       <div className="p-4 flex-1 space-y-4 flex flex-col">
+        {/* Filter / Search / Actions */}
         <DataTableToolbar
           table={table}
           globalFilter={globalFilter}
           onGlobalFilterChange={setGlobalFilter}
         />
 
+        {/* Scrollable Table Container */}
         <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
           <table className="min-w-full table-auto">
-            <thead className="sticky top-0 z-10 bg-background shadow-sm">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className="px-2 py-2 text-left text-sm font-medium text-gray-700"
-                      style={{ width: `${header.getSize?.()}px` }}
-                    >
-                      <DataTableHeader header={header} />
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
+            {/* Sticky Header */}
+            {hasRows && visibleColumns.length > 2 && (
+              <thead className="sticky top-0 z-10 bg-white shadow-sm">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className="px-2 py-2 text-left text-sm font-medium text-gray-700"
+                        style={{ width: `${header.getSize?.()}px` }}
+                      >
+                        <DataTableHeader header={header} />
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+            )}
 
+            {/* Table Body */}
             <tbody>
-              {isLoading && (
+              {isLoading ? (
                 <tr>
                   <td colSpan={columns.length}>
                     <DataTableLoadingSkeleton table={table} />
                   </td>
                 </tr>
-              )}
-
-              {!isLoading && table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row) => (
+              ) : isNoVisibleColumns ? (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="h-[400px] text-center text-gray-500"
+                  >
+                    No columns are visible.&nbsp;
+                    <button
+                      className="underline text-blue-600"
+                      onClick={() => {
+                        const visibility = Object.fromEntries(
+                          allColumns.map((col) => [col.id, true])
+                        );
+                        table.setColumnVisibility(visibility);
+                      }}
+                    >
+                      Reset columns
+                    </button>
+                  </td>
+                </tr>
+              ) : hasRows && visibleColumns.length > 2 ? (
+                rows.map((row) => (
                   <tr
                     key={row.id}
                     data-state={row.getIsSelected() ? "selected" : undefined}
@@ -303,7 +334,7 @@ const MyWorkTable = () => {
                   </tr>
                 ))
               ) : (
-                <tr>
+                <tr className="h-[300px]">
                   <td
                     colSpan={columns.length}
                     className="h-24 text-center text-gray-500"
@@ -318,6 +349,7 @@ const MyWorkTable = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
 
+        {/* Pagination */}
         <DataTablePagination table={table} />
       </div>
     </div>
