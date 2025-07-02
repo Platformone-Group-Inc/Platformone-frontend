@@ -1,9 +1,7 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { DownloadIcon, MailboxIcon, SaveIcon } from "lucide-react";
 
-const NewReportContent = () => {
+const NewReports = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -14,7 +12,7 @@ const NewReportContent = () => {
               <h3 className="text-sm font-semibold text-black">
                 Plan of Action & Milestone (POA&M)
               </h3>
-              <p className="text-xs text-secondary-400">
+              <p className="text-xs text-secondary-400 line-clamp-2">
                 A document for a system that “identifies tasks needing to be
                 accomplished. It details resources required to accomplish the
                 elements of the plan, any milestones in meeting the tasks, and
@@ -52,7 +50,7 @@ const NewReportContent = () => {
               <h3 className="text-sm font-semibold text-black">
                 Plan of Action & Milestone (POA&M)
               </h3>
-              <p className="text-xs text-secondary-400">
+              <p className="text-xs text-secondary-400 line-clamp-2">
                 A document for a system that “identifies tasks needing to be
                 accomplished. It details resources required to accomplish the
                 elements of the plan, any milestones in meeting the tasks, and
@@ -86,4 +84,4 @@ const NewReportContent = () => {
   );
 };
 
-export default NewReportContent;
+export default NewReports;

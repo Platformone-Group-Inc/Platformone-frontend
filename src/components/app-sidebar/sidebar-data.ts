@@ -62,12 +62,11 @@ export const SIDEBAR_DATA: SideBarItem[] = [
     href: "/ai-assessment",
     // badge: "new",
   },
-  // {
-  //   label: "AI Reports",
-  //   icon: DocumentText,
-  //   href: "/ai-reports",
-  //   badge: "new",
-  // },
+  {
+    label: "AI Reports",
+    icon: DocumentText,
+    href: "/ai-reports",
+  },
   { label: "Frameworks", icon: Ram2, href: "/frameworks" },
   {
     label: "Controls",
