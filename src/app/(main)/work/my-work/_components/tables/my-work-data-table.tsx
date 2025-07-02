@@ -241,70 +241,82 @@ const MyWorkTable = () => {
   });
 
   return (
-    <div className="@container w-full overflow-hidden flex flex-col">
+    <div className="@container w-full overflow-hidden flex flex-col h-full">
       <div className="border-b p-4">
         <h1 className="font-semibold inline-flex items-center gap-2 text-xl">
           My Work
         </h1>
       </div>
 
-      <div className="p-4 flex-1 space-y-4">
+      <div className="p-4 flex-1 space-y-4 flex flex-col">
         <DataTableToolbar
           table={table}
           globalFilter={globalFilter}
           onGlobalFilterChange={setGlobalFilter}
         />
 
-        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-432px)] ">
-          <Table className="block w-full full">
-            <thead className="sticky left-0 top-0 z-20 bg-background">
+        <div className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
+          <table className="min-w-full table-auto">
+            <thead className="sticky top-0 z-10 bg-background shadow-sm">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <DataTableHeader key={header.id} header={header} />
+                    <th
+                      key={header.id}
+                      className="px-2 py-2 text-left text-sm font-medium text-gray-700"
+                      style={{ width: `${header.getSize?.()}px` }}
+                    >
+                      <DataTableHeader header={header} />
+                    </th>
                   ))}
-                </TableRow>
+                </tr>
               ))}
             </thead>
 
-            <TableBody>
-              {isLoading && <DataTableLoadingSkeleton table={table} />}
+            <tbody>
+              {isLoading && (
+                <tr>
+                  <td colSpan={columns.length}>
+                    <DataTableLoadingSkeleton table={table} />
+                  </td>
+                </tr>
+              )}
 
               {!isLoading && table.getRowModel().rows.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
+                  <tr
                     key={row.id}
                     data-state={row.getIsSelected() ? "selected" : undefined}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell
+                      <td
                         key={cell.id}
-                        className="truncate"
+                        className="truncate px-4 py-2 text-sm text-gray-800"
                         style={{ width: `${cell.column.getSize()}px` }}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
+                  </tr>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell
+                <tr>
+                  <td
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 text-center text-gray-500"
                   >
                     No results.
-                  </TableCell>
-                </TableRow>
+                  </td>
+                </tr>
               )}
-            </TableBody>
-          </Table>
+            </tbody>
+          </table>
 
           <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        </div>
 
         <DataTablePagination table={table} />
       </div>
