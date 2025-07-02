@@ -187,8 +187,16 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
     enableSortingRemoval: false,
   });
 
+  const visibleColumns = table.getVisibleLeafColumns();
+  const allColumns = table.getAllLeafColumns();
+  const rows = table.getRowModel().rows;
+  const hasRows = rows.length > 0;
+  const isNoVisibleColumns = visibleColumns.length === 2; // assuming first 2 are control columns
+
   return (
-    <>
+    <div className="@container w-full overflow-hidden flex flex-col h-full">
+      {/* Page Header */}
+
       <div className="py-4 px-6 border-b">
         <div>
           <h1 className="font-semibold text-lg">
@@ -214,67 +222,104 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
         </div>
       </div>
 
-      <div className="p-4 w-full space-y-4">
+      <div className="p-4 flex-1 space-y-4 flex flex-col">
+        {/* Filter / Search / Actions */}
         <DataTableToolbar
           table={table}
           globalFilter={globalFilter}
           onGlobalFilterChange={setGlobalFilter}
         />
 
-        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-432px)] ">
-          <Table className="block w-full h-full">
-            <thead className="sticky left-0 top-0 z-20 bg-background">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <DataTableHeader key={header.id} header={header} />
-                  ))}
-                </TableRow>
-              ))}
-            </thead>
+        {/* Scrollable Table Container */}
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
+          <table className="min-w-full table-auto">
+            {/* Sticky Header */}
+            {hasRows && visibleColumns.length > 2 && (
+              <thead className="sticky top-0 z-10 bg-white shadow-sm">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className="px-2 py-2 text-left text-sm font-medium text-gray-700"
+                        style={{ width: `${header.getSize?.()}px` }}
+                      >
+                        <DataTableHeader header={header} />
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+            )}
 
-            <TableBody>
-              {isLoading && <DataTableLoadingSkeleton table={table} />}
-
-              {!isLoading && table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
+            {/* Table Body */}
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={columns.length}>
+                    <DataTableLoadingSkeleton table={table} />
+                  </td>
+                </tr>
+              ) : isNoVisibleColumns ? (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="h-[400px] text-center text-gray-500"
+                  >
+                    No columns are visible.&nbsp;
+                    <button
+                      className="underline text-blue-600"
+                      onClick={() => {
+                        const visibility = Object.fromEntries(
+                          allColumns.map((col) => [col.id, true])
+                        );
+                        table.setColumnVisibility(visibility);
+                      }}
+                    >
+                      Reset columns
+                    </button>
+                  </td>
+                </tr>
+              ) : hasRows && visibleColumns.length > 2 ? (
+                rows.map((row) => (
+                  <tr
                     key={row.id}
                     data-state={row.getIsSelected() ? "selected" : undefined}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell
+                      <td
                         key={cell.id}
-                        className="truncate"
+                        className="truncate px-4 py-2 text-sm text-gray-800"
                         style={{ width: `${cell.column.getSize()}px` }}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
-                      </TableCell>
+                      </td>
                     ))}
-                  </TableRow>
+                  </tr>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell
+                <tr className="h-[300px]">
+                  <td
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 text-center text-gray-500"
                   >
                     No results.
-                  </TableCell>
-                </TableRow>
+                  </td>
+                </tr>
               )}
-            </TableBody>
-          </Table>
+            </tbody>
+          </table>
 
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
 
+        {/* Pagination */}
         <DataTablePagination table={table} />
       </div>
-    </>
+    </div>
   );
 };
 
