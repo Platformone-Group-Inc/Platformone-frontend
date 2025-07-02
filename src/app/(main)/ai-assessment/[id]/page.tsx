@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { InfoCircle } from "iconsax-react";
+// import { InfoCircle } from "iconsax-react";
 import { ArrowLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import AssessmentTable from "../components/assesment-table";
-import FilterModal from "../components/modals/filter-modal";
-import AssessmentTableAction from "../components/table-actions";
+// import FilterModal from "../components/modals/filter-modal";
+// import AssessmentTableAction from "../components/table-actions";
 import { useParams, useRouter } from "next/navigation";
 import { useSubmitAssignment } from "@/services/mutations/Assignment";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ import {
   getAssignmentsByOrganizationQueryFn,
   getAssignmentStatQueryFn,
 } from "@/services/operations/Assignments";
+import FallbackLoader from "@/components/other/fallback-loader";
 
 const Page = () => {
   const router = useRouter();
@@ -36,11 +37,7 @@ const Page = () => {
     enabled: !!params.id,
   });
 
-  const {
-    data: assignmentsStats,
-    isLoading: assignmentsStatsLoading,
-    error: assignmentsStatsError,
-  } = useQuery({
+  const { data: assignmentsStats } = useQuery({
     queryKey: ["assignmentsStats", params.id],
     queryFn: () => getAssignmentStatQueryFn(params.id as string),
     enabled: !!params.id,
@@ -94,7 +91,7 @@ const Page = () => {
   };
 
   if (assignmentsLoading) {
-    return <div>Loading...</div>;
+    return <FallbackLoader />;
   }
 
   if (assignmentsError) {
@@ -102,29 +99,24 @@ const Page = () => {
   }
 
   return (
-    <div className="p-6 w-full">
-      <div className="space-y-1 border-b pb-6 flex items-center justify-between">
-        <div className="space-y-3">
-          <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
-            {assignmentsStats?.frameworkName} GAP Assessment
-            <InfoCircle className="stroke-secondary size-4" />
-          </h1>
-          <div className="text-sm space-y-3">
-            <Button
-              variant={"transparent"}
-              onClick={router.back}
-              size={"icon"}
-              className="inline-flex items-center gap-3 !text-black !stroke-black fill-black"
-            >
-              <ArrowLeftIcon size={20} />
-            </Button>
-            Showing 1 - {assignmentsStats?.answerStats?.totalAssignments}{" "}
-            Questions
-          </div>
-        </div>
+    <div className="w-full">
+      <div className="space-y-1 border-b py-6 px-4 flex items-center justify-between">
+        <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
+          <Button
+            variant={"transparent"}
+            onClick={router.back}
+            size={"icon"}
+            className="rounded-full inline-flex items-center gap-3 !text-black !stroke-black fill-black"
+          >
+            <ArrowLeftIcon size={20} />
+          </Button>
+          {assignmentsStats?.frameworkName} GAP Assessment
+          {/* <InfoCircle className="stroke-secondary size-4" /> */}
+        </h1>
+
         <div className="flex items-center gap-4">
-          <AssessmentTableAction />
-          <FilterModal />
+          {/* <AssessmentTableAction />
+          <FilterModal /> */}
           <Button onClick={handleSave}>Save</Button>
         </div>
       </div>
