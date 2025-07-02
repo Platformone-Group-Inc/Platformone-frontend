@@ -19,7 +19,7 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+// import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 import {
   DropdownMenu,
@@ -255,7 +255,7 @@ const MyWorkTable = () => {
           onGlobalFilterChange={setGlobalFilter}
         />
 
-        <div className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
           <table className="min-w-full table-auto">
             <thead className="sticky top-0 z-10 bg-background shadow-sm">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -316,7 +316,7 @@ const MyWorkTable = () => {
           </table>
 
           <ScrollBar orientation="horizontal" />
-        </div>
+        </ScrollArea>
 
         <DataTablePagination table={table} />
       </div>
