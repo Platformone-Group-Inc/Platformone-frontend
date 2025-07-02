@@ -12,16 +12,19 @@ import { useParams, useRouter } from "next/navigation";
 import { useSubmitAssignment } from "@/services/mutations/Assignment";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { getAssignmentsByOrganizationQueryFn, getAssignmentStatQueryFn } from "@/services/operations/Assignments";
+import {
+  getAssignmentsByOrganizationQueryFn,
+  getAssignmentStatQueryFn,
+} from "@/services/operations/Assignments";
 
 const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
 
-
-  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a">>({});
-
+  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a">>(
+    {}
+  );
 
   const {
     data: assignments,
@@ -43,14 +46,13 @@ const Page = () => {
     enabled: !!params.id,
   });
 
-  console.log(assignmentsStats, 'assignmentsStats');
+  console.log(assignmentsStats, "assignmentsStats");
 
   useEffect(() => {
     if (assignments && assignments.length > 0) {
       const existingAnswers: Record<string, "yes" | "no" | "n/a"> = {};
 
       assignments.forEach((assignment: any) => {
-
         if (assignment.answer) {
           existingAnswers[assignment._id] = assignment.answer;
         } else if (assignment.response) {
@@ -74,13 +76,12 @@ const Page = () => {
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["assignments", params.id] });
-      console.log('Assignment submitted:', data);
+      console.log("Assignment submitted:", data);
     },
     onError: (error) => {
-      console.error('Submission failed:', error);
-    }
+      console.error("Submission failed:", error);
+    },
   });
-
 
   const handleSave = () => {
     const result = Object.entries(answers).map(([_id, answer]) => ({
@@ -117,24 +118,8 @@ const Page = () => {
             >
               <ArrowLeftIcon size={20} />
             </Button>
-            Showing 1 - {assignmentsStats?.
-              answerStats
-              ?.totalAssignments} Questions
-            <p className="font-medium">
-              Answered- {assignmentsStats?.
-                answerStats
-                ?.totalAssignments - assignmentsStats?.
-                  answerStats
-                  ?.noAnswer} of {assignmentsStats?.
-              answerStats
-              ?.totalAssignments} (Yes - {assignmentsStats?.
-                    answerStats
-                    ?.answeredYes} , No - {assignmentsStats?.
-                    answerStats
-                    ?.answeredNo}, NA - {assignmentsStats?.
-                    answerStats
-                    ?.answeredNA})
-            </p>
+            Showing 1 - {assignmentsStats?.answerStats?.totalAssignments}{" "}
+            Questions
           </div>
         </div>
         <div className="flex items-center gap-4">
