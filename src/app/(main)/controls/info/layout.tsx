@@ -1,7 +1,6 @@
 import { ReactNode, Suspense } from "react";
+import FallbackLoader from "@/components/other/fallback-loader";
 
-export default function InfoLayout({ children }: { children: ReactNode }) {
-  return (
-    <Suspense fallback={<div>Loading Controls...</div>}>{children}</Suspense>
-  );
+export default function SuspenseLayout({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<FallbackLoader />}>{children}</Suspense>;
 }

@@ -1,27 +1,31 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { InfoCircle } from "iconsax-react";
+// import { InfoCircle } from "iconsax-react";
 import { ArrowLeftIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import AssessmentTable from "../components/assesment-table";
-import FilterModal from "../components/modals/filter-modal";
-import AssessmentTableAction from "../components/table-actions";
+// import FilterModal from "../components/modals/filter-modal";
+// import AssessmentTableAction from "../components/table-actions";
 import { useParams, useRouter } from "next/navigation";
 import { useSubmitAssignment } from "@/services/mutations/Assignment";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { getAssignmentsByOrganizationQueryFn, getAssignmentStatQueryFn } from "@/services/operations/Assignments";
+import {
+  getAssignmentsByOrganizationQueryFn,
+  getAssignmentStatQueryFn,
+} from "@/services/operations/Assignments";
+import FallbackLoader from "@/components/other/fallback-loader";
 
 const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
 
-
-  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a">>({});
-
+  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a">>(
+    {}
+  );
 
   const {
     data: assignments,
@@ -33,24 +37,19 @@ const Page = () => {
     enabled: !!params.id,
   });
 
-  const {
-    data: assignmentsStats,
-    isLoading: assignmentsStatsLoading,
-    error: assignmentsStatsError,
-  } = useQuery({
+  const { data: assignmentsStats } = useQuery({
     queryKey: ["assignmentsStats", params.id],
     queryFn: () => getAssignmentStatQueryFn(params.id as string),
     enabled: !!params.id,
   });
 
-  console.log(assignmentsStats, 'assignmentsStats');
+  console.log(assignmentsStats, "assignmentsStats");
 
   useEffect(() => {
     if (assignments && assignments.length > 0) {
       const existingAnswers: Record<string, "yes" | "no" | "n/a"> = {};
 
       assignments.forEach((assignment: any) => {
-
         if (assignment.answer) {
           existingAnswers[assignment._id] = assignment.answer;
         } else if (assignment.response) {
@@ -74,13 +73,12 @@ const Page = () => {
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["assignments", params.id] });
-      console.log('Assignment submitted:', data);
+      console.log("Assignment submitted:", data);
     },
     onError: (error) => {
-      console.error('Submission failed:', error);
-    }
+      console.error("Submission failed:", error);
+    },
   });
-
 
   const handleSave = () => {
     const result = Object.entries(answers).map(([_id, answer]) => ({
@@ -93,7 +91,7 @@ const Page = () => {
   };
 
   if (assignmentsLoading) {
-    return <div>Loading...</div>;
+    return <FallbackLoader />;
   }
 
   if (assignmentsError) {
@@ -101,45 +99,24 @@ const Page = () => {
   }
 
   return (
-    <div className="p-6 w-full">
-      <div className="space-y-1 border-b pb-6 flex items-center justify-between">
-        <div className="space-y-3">
-          <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
-            {assignmentsStats?.frameworkName} GAP Assessment
-            <InfoCircle className="stroke-secondary size-4" />
-          </h1>
-          <div className="text-sm space-y-3">
-            <Button
-              variant={"transparent"}
-              onClick={router.back}
-              size={"icon"}
-              className="inline-flex items-center gap-3 !text-black !stroke-black fill-black"
-            >
-              <ArrowLeftIcon size={20} />
-            </Button>
-            Showing 1 - {assignmentsStats?.
-              answerStats
-              ?.totalAssignments} Questions
-            <p className="font-medium">
-              Answered- {assignmentsStats?.
-                answerStats
-                ?.totalAssignments - assignmentsStats?.
-                  answerStats
-                  ?.noAnswer} of {assignmentsStats?.
-              answerStats
-              ?.totalAssignments} (Yes - {assignmentsStats?.
-                    answerStats
-                    ?.answeredYes} , No - {assignmentsStats?.
-                    answerStats
-                    ?.answeredNo}, NA - {assignmentsStats?.
-                    answerStats
-                    ?.answeredNA})
-            </p>
-          </div>
-        </div>
+    <div className="w-full">
+      <div className="space-y-1 border-b py-6 px-4 flex items-center justify-between">
+        <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
+          <Button
+            variant={"transparent"}
+            onClick={router.back}
+            size={"icon"}
+            className="rounded-full inline-flex items-center gap-3 !text-black !stroke-black fill-black"
+          >
+            <ArrowLeftIcon size={20} />
+          </Button>
+          {assignmentsStats?.frameworkName} GAP Assessment
+          {/* <InfoCircle className="stroke-secondary size-4" /> */}
+        </h1>
+
         <div className="flex items-center gap-4">
-          <AssessmentTableAction />
-          <FilterModal />
+          {/* <AssessmentTableAction />
+          <FilterModal /> */}
           <Button onClick={handleSave}>Save</Button>
         </div>
       </div>

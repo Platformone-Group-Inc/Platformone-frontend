@@ -7,8 +7,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import RadialChart from "@/components/charts/radial-chart";
 
-const AssessmentCard = ({framework}: any) => {
+const AssessmentCard = ({ framework }: any) => {
   return (
     <div className="w-full border rounded-2xl divide-y">
       <div className="p-3 flex items-center justify-between">
@@ -20,14 +21,21 @@ const AssessmentCard = ({framework}: any) => {
             className="size-10 rounded-lg"
           />
 
-          <p className="font-semibold text-sm">
-          {framework?.name}
+          <p className="font-semibold text-sm line-clamp-2">
+            {framework?.name}
           </p>
         </div>
         <Tooltip>
           <TooltipTrigger asChild>
             <Info className="size-6 cursor-pointer text-muted-foreground" />
           </TooltipTrigger>
+          {/* <button
+            onClick={() => {
+              console.log(framework);
+            }}
+          >
+            click
+          </button> */}
           <TooltipContent className="max-w-sm text-xs leading-normal">
             <p className="mb-2 font-semibold">How is this calculated?</p>
             <ul className="list-disc pl-4 space-y-1">
@@ -60,7 +68,10 @@ const AssessmentCard = ({framework}: any) => {
           </TooltipContent>
         </Tooltip>
       </div>
-      <div className="h-20" />
+      {/* <div className="h-20" /> */}
+      <div className="flex items-center justify-center p-4">
+        <RadialChart value={68} />
+      </div>
       <div className="flex flex-col p-3">
         <Link
           href={`/ai-assessment/${framework?._id}`}

@@ -15,20 +15,8 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
-  type Row,
   type SortingState,
 } from "@tanstack/react-table";
-
-// import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { EllipsisVerticalIcon } from "lucide-react";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -55,7 +43,7 @@ interface IDocument {
 
 // const enumSortStates = ["asc", "desc", "none"] as const;
 const getFakeData = async (): Promise<IDocument[]> => {
-  return Array.from({ length: 100 }).map((_, i) => ({
+  return Array.from({ length: 100 }).map(() => ({
     id: crypto.randomUUID(),
     name: faker.person.fullName(),
     assignee: faker.person.fullName(),
@@ -67,29 +55,10 @@ const getFakeData = async (): Promise<IDocument[]> => {
   }));
 };
 
-const RowAction = ({ row }: { row: Row<IDocument> }) => (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button variant="transparent" size="icon" aria-label="Row actions">
-        <EllipsisVerticalIcon size={16} />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
-      <DropdownMenuItem
-        onClick={() => {
-          console.log(row.original);
-        }}
-      >
-        View Details
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
-
-const TeamWorkTable = () => {
+const ScheduleReports = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const { data, isLoading } = useQuery({
-    queryKey: ["team-work"],
+    queryKey: ["my-work"],
     queryFn: async () => {
       const data = await getFakeData();
       return data;
@@ -206,14 +175,6 @@ const TeamWorkTable = () => {
           }).format(row.original.dueDate);
         },
       },
-      {
-        id: "actions",
-        accessorKey: "actions",
-        header: "Actions",
-        cell: ({ row }) => <RowAction row={row} />,
-        enableSorting: false,
-        enableHiding: false,
-      },
     ],
     []
   );
@@ -244,17 +205,10 @@ const TeamWorkTable = () => {
   const allColumns = table.getAllLeafColumns();
   const rows = table.getRowModel().rows;
   const hasRows = rows.length > 0;
-  const isNoVisibleColumns = visibleColumns.length === 2; // assuming first 2 are control columns
+  const isNoVisibleColumns = visibleColumns.length === 1; // assuming 2 cols are control columns
 
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">
-      {/* Page Header */}
-      <div className="border-b p-4">
-        <h1 className="font-semibold inline-flex items-center gap-2 text-xl">
-          Team Work
-        </h1>
-      </div>
-
       <div className="p-4 flex-1 space-y-4 flex flex-col">
         {/* Filter / Search / Actions */}
         <DataTableToolbar
@@ -264,7 +218,7 @@ const TeamWorkTable = () => {
         />
 
         {/* Scrollable Table Container */}
-        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-420px)]">
           <table className="min-w-full table-auto">
             {/* Sticky Header */}
             {hasRows && visibleColumns.length > 2 && (
@@ -356,4 +310,4 @@ const TeamWorkTable = () => {
   );
 };
 
-export default TeamWorkTable;
+export default ScheduleReports;
