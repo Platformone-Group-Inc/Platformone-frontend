@@ -11,7 +11,6 @@ import AiIcon from "../icons/ai-icon";
 import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
 import { getChatRemediationQueryFn } from "@/services/operations/Ai";
 
-
 interface ChatMessage {
   id: number;
   content: string;
@@ -21,6 +20,7 @@ interface ChatMessage {
 
 interface StoredChatData {
   messages: ChatMessage[];
+  apiChatHistory: any[]; // Store the API chat history separately
   expiry: number;
 }
 
@@ -30,16 +30,16 @@ const CHAT_EXPIRY_HOURS = 24;
 const AiChatBox = () => {
   const { closeChat } = useAiChatBoxStore();
 
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
       content: "Hello! How can I help you today?",
       sender: "ai",
+      timestamp: Date.now(),
     }
   ]);
 
-
-
+  const [apiChatHistory, setApiChatHistory] = useState<any[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,8 +52,8 @@ const AiChatBox = () => {
 
           if (Date.now() < parsedData.expiry) {
             setMessages(parsedData.messages);
+            setApiChatHistory(parsedData.apiChatHistory || []);
           } else {
-
             localStorage.removeItem(CHAT_STORAGE_KEY);
           }
         }
@@ -69,8 +69,9 @@ const AiChatBox = () => {
   useEffect(() => {
     const saveChatHistory = () => {
       try {
-        const chatData: any = {
+        const chatData: StoredChatData = {
           messages,
+          apiChatHistory,
           expiry: Date.now() + (CHAT_EXPIRY_HOURS * 60 * 60 * 1000),
         };
         localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatData));
@@ -79,31 +80,19 @@ const AiChatBox = () => {
       }
     };
 
-
     if (messages.length > 1) {
       saveChatHistory();
     }
-  }, [messages]);
-
-  const formatChatHistoryForAPI = (messages: any) => {
-
-    const apiMessages = messages
-      .filter((msg: any) => !(msg.id === 1 && msg.sender === "ai"))
-      .map((msg: any) => ({
-        content: msg.content,
-        role: msg.sender === "ai" ? "assistant" : "user"
-      }));
-
-    return apiMessages;
-  };
+  }, [messages, apiChatHistory]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
+    const userMessageContent = input.trim();
     const userMessage: ChatMessage = {
       id: Date.now(),
-      content: input.trim(),
+      content: userMessageContent,
       sender: "user",
       timestamp: Date.now(),
     };
@@ -113,13 +102,10 @@ const AiChatBox = () => {
     setIsLoading(true);
 
     try {
-      const chatHistoryForAPI = formatChatHistoryForAPI(messages);
-
       const response = await getChatRemediationQueryFn(
-        chatHistoryForAPI,
-        userMessage.content
+        apiChatHistory, 
+        userMessageContent
       );
-
 
       const aiMessage: ChatMessage = {
         id: Date.now() + 1,
@@ -129,6 +115,10 @@ const AiChatBox = () => {
       };
 
       setMessages((prev) => [...prev, aiMessage]);
+      
+      if (response.chat_history) {
+        setApiChatHistory(response.chat_history);
+      }
 
     } catch (error) {
       console.error("Error getting AI response:", error);
@@ -155,6 +145,7 @@ const AiChatBox = () => {
     };
 
     setMessages([initialMessage]);
+    setApiChatHistory([]);
     localStorage.removeItem(CHAT_STORAGE_KEY);
   };
 
@@ -196,7 +187,15 @@ const AiChatBox = () => {
             <ChatBubbleMessage
               variant={message.sender === "user" ? "sent" : "received"}
             >
-              {message.content}
+              <div className="flex flex-col">
+                <div className="mb-1">{message.content}</div>
+                <div className="text-xs text-gray-500 opacity-70">
+                  {new Date(message.timestamp).toLocaleTimeString([], { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                  })}
+                </div>
+              </div>
             </ChatBubbleMessage>
           </ChatBubble>
         ))}

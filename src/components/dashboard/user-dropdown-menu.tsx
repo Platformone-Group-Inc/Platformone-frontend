@@ -24,7 +24,7 @@ const UserDropdownMenu = () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
       // Or remove it specifically
       queryClient.removeQueries({ queryKey: ["authUser"] });
-      
+      localStorage.removeItem("cmmc_chat_history");
       router.replace("/login");
       queryClient.clear();
 
