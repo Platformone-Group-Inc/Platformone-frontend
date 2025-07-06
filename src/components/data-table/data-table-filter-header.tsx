@@ -58,7 +58,7 @@ const DataTableFilterHeader = <T,>({ header, title }: Props<T>) => {
             disabled={!canSort}
             className="flex items-center justify-between w-full text-left"
           >
-            <span>{title}</span>
+            <span className="truncate">{title}</span>
             {isSorted === "asc" ? (
               <ArrowUpIcon className="ml-2 size-4" />
             ) : isSorted === "desc" ? (

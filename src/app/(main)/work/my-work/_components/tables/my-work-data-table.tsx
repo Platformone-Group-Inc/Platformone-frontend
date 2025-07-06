@@ -2,9 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
 import { Checkbox } from "@/components/ui/checkbox";
-
 import { faker } from "@faker-js/faker";
 
 import {
@@ -19,8 +17,6 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 
-// import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,14 +27,9 @@ import { Button } from "@/components/ui/button";
 import { EllipsisVerticalIcon } from "lucide-react";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-
 import { useQuery } from "@tanstack/react-query";
-import DataTableHeader from "@/components/data-table/data-table-header";
-
 import { Badge } from "@/components/ui/badge";
 import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
 import DataTableFilterHeader from "@/components/data-table/data-table-filter-header";
@@ -55,7 +46,6 @@ interface IDocument {
   dueDate: Date;
 }
 
-// const enumSortStates = ["asc", "desc", "none"] as const;
 const getFakeData = async (): Promise<IDocument[]> => {
   return Array.from({ length: 100 }).map((_, i) => ({
     id: crypto.randomUUID(),
@@ -141,7 +131,10 @@ const MyWorkTable = () => {
       {
         id: "assignee",
         accessorKey: "assignee",
-        header: "Assignee",
+
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Assignee" />
+        ),
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
             <Avatar className="">
@@ -174,8 +167,11 @@ const MyWorkTable = () => {
       {
         id: "startDate",
         accessorKey: "startDate",
-        header: "Start Date",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Start Date" />
+        ),
         meta: { label: "Start Date" },
+        enableColumnFilter: false,
         cell: ({ row }) => {
           return new Intl.DateTimeFormat("en-US", {
             day: "2-digit",
@@ -187,8 +183,11 @@ const MyWorkTable = () => {
       {
         id: "endDate",
         accessorKey: "endDate",
-        header: "End Date",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="End Date" />
+        ),
         meta: { label: "End Date" },
+        enableColumnFilter: false,
         cell: ({ row }) => {
           return new Intl.DateTimeFormat("en-US", {
             day: "2-digit",
@@ -200,8 +199,11 @@ const MyWorkTable = () => {
       {
         id: "dueDate",
         accessorKey: "dueDate",
-        header: "Due Date",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Due Date" />
+        ),
         meta: { label: "Due Date" },
+        enableColumnFilter: false,
         cell: ({ row }) => {
           return new Intl.DateTimeFormat("en-US", {
             day: "2-digit",
@@ -231,7 +233,6 @@ const MyWorkTable = () => {
   const table = useReactTable({
     data: data || [],
     columns,
-    // Temp disable
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -243,6 +244,9 @@ const MyWorkTable = () => {
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter, sorting, pagination, columnOrder },
     enableSortingRemoval: false,
+    defaultColumn: {
+      minSize: 200,
+    },
   });
 
   const visibleColumns = table.getVisibleLeafColumns();
@@ -250,6 +254,7 @@ const MyWorkTable = () => {
   const rows = table.getRowModel().rows;
   const hasRows = rows.length > 0;
   const isNoVisibleColumns = visibleColumns.length === 2; // assuming first 2 are control columns
+  const filteredRows = table.getFilteredRowModel().rows;
 
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">
@@ -272,28 +277,26 @@ const MyWorkTable = () => {
         <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
           <table className="min-w-full table-auto">
             {/* Sticky Header */}
-            {hasRows && visibleColumns.length > 2 && (
-              <thead className="sticky top-0 z-10 bg-background border-b shadow-sm">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        className="relative group w-full px-3 py-2 text-left text-sm align-top"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                      // <DataTableHeader key={header.id} header={header} />
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-            )}
+            <thead className="sticky top-0 z-10 bg-background border-b shadow-sm">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className="relative group w-full px-3 py-2 text-left text-sm align-top"
+                      style={{ width: `${header.column.getSize()}px` }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  ))}
+                </tr>
+              ))}
+            </thead>
 
             {/* Table Body */}
             <tbody>
@@ -323,6 +326,26 @@ const MyWorkTable = () => {
                     </button>
                   </td>
                 </tr>
+              ) : filteredRows.length === 0 ? (
+                <tr className="h-[300px]">
+                  <td
+                    colSpan={columns.length}
+                    className="h-24 text-sm text-center text-gray-500"
+                  >
+                    No results found for your filter criteria.{" "}
+                    <button
+                      className="text-primary-600 font-bold"
+                      onClick={() => {
+                        console.log("Clear filters clicked");
+
+                        // Reset column filters
+                        table.resetColumnFilters();
+                      }}
+                    >
+                      Clear filter
+                    </button>
+                  </td>
+                </tr>
               ) : hasRows && visibleColumns.length > 2 ? (
                 rows.map((row) => (
                   <tr
@@ -332,7 +355,7 @@ const MyWorkTable = () => {
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="truncate px-4 py-2 text-sm text-gray-800"
+                        className="truncate flex-shrink-0 px-4 py-2 text-sm text-gray-800"
                         style={{ width: `${cell.column.getSize()}px` }}
                       >
                         {flexRender(
@@ -349,7 +372,7 @@ const MyWorkTable = () => {
                     colSpan={columns.length}
                     className="h-24 text-center text-gray-500"
                   >
-                    No results.
+                    No results available.
                   </td>
                 </tr>
               )}
