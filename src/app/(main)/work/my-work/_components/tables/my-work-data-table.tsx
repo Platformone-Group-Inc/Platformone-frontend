@@ -34,6 +34,7 @@ import { Badge } from "@/components/ui/badge";
 import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
 import DataTableFilterHeader from "@/components/data-table/data-table-filter-header";
 import { TableHead } from "@/components/ui/table";
+import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-filter-header";
 
 interface IDocument {
   id: string;
@@ -149,7 +150,13 @@ const MyWorkTable = () => {
       {
         id: "status",
         accessorKey: "status",
-        header: "Status",
+        header: ({ header }) => (
+          <DataTableChipFilterHeader
+            header={header}
+            title="Status"
+            options={["Draft", "Published"]}
+          />
+        ),
         meta: { label: "Status" },
         cell: ({ row }) => (
           <Badge className="capitalize">{row.original.status}</Badge>
@@ -158,8 +165,16 @@ const MyWorkTable = () => {
       {
         id: "type",
         accessorKey: "type",
-        header: "Type",
-        meta: { label: "Type" },
+        header: ({ header }) => (
+          <DataTableChipFilterHeader
+            header={header}
+            title="Type"
+            options={["Draft", "Published"]}
+          />
+        ),
+        meta: {
+          label: "Type",
+        },
         cell: ({ row }) => (
           <Badge className="capitalize">{row.original.type}</Badge>
         ),
