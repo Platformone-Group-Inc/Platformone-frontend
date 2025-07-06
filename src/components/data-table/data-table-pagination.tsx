@@ -1,5 +1,8 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import type { Table as ITable } from "@tanstack/react-table";
+import { useQueryState } from "nuqs";
 import {
   Select,
   SelectContent,
@@ -21,37 +24,72 @@ export const DataTablePagination = <TData,>({
   totalCount = 0,
 }: DataTablePaginationProps<TData>) => {
   const [jumpToPage, setJumpToPage] = useState("");
-  const pagination = table.getState().pagination;
-  const currentPage = pagination.pageIndex + 1;
-  const pageSize = pagination.pageSize;
+
+  // Sync pagination state with URL
+  const [pageParam, setPageParam] = useQueryState("page", {
+    history: "push",
+    parse: Number,
+    serialize: (v) => v.toString(),
+  });
+  const [pageSizeParam, setPageSizeParam] = useQueryState("pageSize", {
+    history: "push",
+    parse: Number,
+    serialize: (v) => v.toString(),
+  });
+
+  const pageIndex = table.getState().pagination.pageIndex;
+  const pageSize = table.getState().pagination.pageSize;
+  const currentPage = pageIndex + 1;
   const totalPages = Math.max(Math.ceil(totalCount / pageSize), 1);
+
+  // Sync state with table when query changes
+  useEffect(() => {
+    if (
+      typeof pageParam === "number" &&
+      pageParam >= 1 &&
+      pageParam <= totalPages
+    ) {
+      table.setPageIndex(pageParam - 1);
+    }
+  }, [pageParam]);
+
+  useEffect(() => {
+    if (typeof pageSizeParam === "number") {
+      table.setPageSize(pageSizeParam);
+    }
+  }, [pageSizeParam]);
 
   const startRow = (currentPage - 1) * pageSize + 1;
   const endRow = Math.min(currentPage * pageSize, totalCount);
 
   const handleJumpToPage = () => {
-    const pageNumber = parseInt(jumpToPage);
-    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
-      table.setPageIndex(pageNumber - 1);
+    const targetPage = parseInt(jumpToPage);
+    if (!isNaN(targetPage) && targetPage >= 1 && targetPage <= totalPages) {
+      table.setPageIndex(targetPage - 1);
+      setPageParam(targetPage);
       setJumpToPage("");
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleJumpToPage();
-    }
+    if (e.key === "Enter") handleJumpToPage();
   };
 
   return (
     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-2 py-4 gap-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        {/* Page size selection */}
+        {/* Rows per page */}
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium whitespace-nowrap">Rows per page</p>
           <Select
             value={pageSize.toString()}
-            onValueChange={(value) => table.setPageSize(Number(value))}
+            onValueChange={(value) => {
+              const newSize = Number(value);
+              table.setPageSize(newSize);
+              setPageSizeParam(newSize);
+              setPageParam(1); // Reset to first page
+              table.setPageIndex(0);
+            }}
           >
             <SelectTrigger className="h-8 w-[80px]">
               <SelectValue />
@@ -92,27 +130,30 @@ export const DataTablePagination = <TData,>({
             onClick={handleJumpToPage}
             disabled={
               !jumpToPage ||
-              isNaN(parseInt(jumpToPage)) ||
-              parseInt(jumpToPage) < 1 ||
-              parseInt(jumpToPage) > totalPages
+              isNaN(Number(jumpToPage)) ||
+              Number(jumpToPage) < 1 ||
+              Number(jumpToPage) > totalPages
             }
           >
             Go
           </Button>
         </div>
 
-        {/* Row range info */}
+        {/* Row info */}
         <div className="hidden sm:flex text-sm text-muted-foreground whitespace-nowrap">
           Showing {startRow} to {endRow} of {totalCount} entries
         </div>
       </div>
 
-      {/* Navigation buttons */}
+      {/* Navigation */}
       <div className="flex items-center gap-2 self-end lg:self-auto">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.setPageIndex(0)}
+          onClick={() => {
+            table.setPageIndex(0);
+            setPageParam(1);
+          }}
           disabled={!table.getCanPreviousPage()}
           aria-label="First Page"
         >
@@ -121,7 +162,10 @@ export const DataTablePagination = <TData,>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.previousPage()}
+          onClick={() => {
+            table.previousPage();
+            setPageParam(currentPage - 1);
+          }}
           disabled={!table.getCanPreviousPage()}
           aria-label="Previous Page"
         >
@@ -130,7 +174,10 @@ export const DataTablePagination = <TData,>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.nextPage()}
+          onClick={() => {
+            table.nextPage();
+            setPageParam(currentPage + 1);
+          }}
           disabled={!table.getCanNextPage()}
           aria-label="Next Page"
         >
@@ -139,7 +186,10 @@ export const DataTablePagination = <TData,>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.setPageIndex(totalPages - 1)}
+          onClick={() => {
+            table.setPageIndex(totalPages - 1);
+            setPageParam(totalPages);
+          }}
           disabled={!table.getCanNextPage()}
           aria-label="Last Page"
         >

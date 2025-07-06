@@ -40,7 +40,7 @@ interface AssessmentRowProps {
 
 function AssessmentRow({ i, value, onAnswerChange }: AssessmentRowProps) {
   return (
-    <div className="flex flex-col gap-4 border-b pb-4 px-2 sm:flex-row sm:items-start sm:gap-6">
+    <div className="flex flex-col gap-4 border-b p-4 sm:flex-row sm:items-start sm:gap-6">
       <div className="flex gap-3 sm:flex-1">
         <Checkbox />
         <p className="text-sm font-medium hover:underline text-info-600 line-clamp-3">
@@ -140,9 +140,29 @@ const AssessmentTable = ({
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">
       <div className="p-4 flex-1 space-y-4 flex flex-col">
-        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-350px)]">
-          <div className="sticky top-0 left-9 p-4 bg-error z-10">hello</div>
-          <div className="h-[300vh]"></div>lorem
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-350px)] ">
+          {/* <div className="p-4 border-b w-full bg-background flex items-center"> */}
+          <div className="sticky top-0 left-0 z-10 flex flex-col gap-4 border-b p-4 sm:flex-row sm:items-start sm:gap-6 bg-background">
+            <div className="flex gap-3 sm:flex-1">
+              <Checkbox />
+              <p className="text-sm flex-grow">Question</p>
+              <p className="text-sm px-10">Answer</p>
+              <p className="text-sm ">Control ID</p>
+              <p className="text-sm ">Actions</p>
+              <p className="text-sm">Comment</p>
+              {/* <p className="text-sm ">
+                Answer
+              </p> */}
+            </div>
+          </div>
+          {assignments?.map((assignment: any) => (
+            <AssessmentRow
+              key={assignment?._id}
+              i={assignment}
+              value={answers[assignment._id] || "n/a"}
+              onAnswerChange={onAnswerChange}
+            />
+          ))}
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </div>

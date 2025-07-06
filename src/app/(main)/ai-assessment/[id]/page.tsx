@@ -100,26 +100,41 @@ const Page = () => {
 
   return (
     <div className="w-full">
-      <div className="space-y-1 border-b py-6 px-4 flex items-center justify-between">
-        <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
-          <Button
-            variant={"transparent"}
-            onClick={router.back}
-            size={"icon"}
-            className="rounded-full inline-flex items-center gap-3 !text-black !stroke-black fill-black"
-          >
-            <ArrowLeftIcon size={20} />
-          </Button>
-          {assignmentsStats?.frameworkName} GAP Assessment
-          {/* <InfoCircle className="stroke-secondary size-4" /> */}
-        </h1>
-
-        <div className="flex items-center gap-4">
-          {/* <AssessmentTableAction />
+      <div className="w-full">
+        <div className="space-y-1 py-4 px-4 flex items-center justify-between">
+          <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
+            <Button
+              variant={"transparent"}
+              onClick={router.back}
+              size={"icon"}
+              className="rounded-full inline-flex items-center gap-3 !text-black !stroke-black fill-black"
+            >
+              <ArrowLeftIcon size={20} />
+            </Button>
+            {assignmentsStats?.frameworkName} GAP Assessment
+            {/* <InfoCircle className="stroke-secondary size-4" /> */}
+          </h1>
+          <div className="flex items-center gap-4">
+            {/* <AssessmentTableAction />
           <FilterModal /> */}
-          <Button onClick={handleSave}>Save</Button>
+            <Button onClick={handleSave}>Save</Button>
+          </div>
+        </div>
+        <div className="pb-4 border-b px-6">
+          Showing 1 - {assignmentsStats?.answerStats?.totalAssignments}{" "}
+          Questions
+          <p className="font-medium">
+            Answered-{" "}
+            {assignmentsStats?.answerStats?.totalAssignments -
+              assignmentsStats?.answerStats?.noAnswer}{" "}
+            of {assignmentsStats?.answerStats?.totalAssignments} (Yes -{" "}
+            {assignmentsStats?.answerStats?.answeredYes} , No -{" "}
+            {assignmentsStats?.answerStats?.answeredNo}, NA -{" "}
+            {assignmentsStats?.answerStats?.answeredNA})
+          </p>
         </div>
       </div>
+
       <AssessmentTable
         frameworkId={params.id as string}
         answers={answers}

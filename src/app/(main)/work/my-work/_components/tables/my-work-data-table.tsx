@@ -48,7 +48,7 @@ interface IDocument {
 }
 
 const getFakeData = async (): Promise<IDocument[]> => {
-  return Array.from({ length: 100 }).map((_, i) => ({
+  return Array.from({ length: 100 }).map(() => ({
     id: crypto.randomUUID(),
     name: faker.person.fullName(),
     assignee: faker.person.fullName(),

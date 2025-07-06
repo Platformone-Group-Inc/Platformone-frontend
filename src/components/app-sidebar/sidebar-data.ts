@@ -64,7 +64,7 @@ export const SIDEBAR_DATA: SideBarItem[] = [
       {
         label: "AI Assessment",
         icon: DocumentText,
-        href: "ai-assessment",
+        href: "/ai-assessment",
       },
       {
         label: "Reports",
