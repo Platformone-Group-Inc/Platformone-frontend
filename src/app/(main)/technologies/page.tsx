@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InfoCircle } from "iconsax-react";
 import { Label } from "@/components/ui/label";
@@ -12,16 +13,19 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthContext } from "@/context/auth-provider";
-import API from "@/services/axios-client";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { technologiesOption } from "./data";
 import { getTechnologyQueryFn } from "@/services/operations/Technology";
-import {
-  useAddTechnology,
-  useUpdateTechnology,
-  useTechnologyMutation,
-} from "@/services/mutations/Technology";
+import { useTechnologyMutation } from "@/services/mutations/Technology";
+
 type FormData = Record<string, string>;
 
 function buildResponsesFromFormData(
@@ -41,12 +45,17 @@ function buildResponsesFromFormData(
 const TechnologiesPage = () => {
   const { user } = useAuthContext();
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({});
+  const [initialData, setInitialData] = useState<FormData>({});
   const [isEdit, setIsEdit] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const nextRoute = useRef<string | null>(null);
 
-  // --- Fetch technology data for this org ---
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const isDirty = JSON.stringify(formData) !== JSON.stringify(initialData);
+
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["technology", user?.organization],
     queryFn: () => getTechnologyQueryFn(user?.organization),
     enabled: !!user?.organization,
@@ -54,50 +63,64 @@ const TechnologiesPage = () => {
   });
 
   const technologyMutation = useTechnologyMutation(isEdit, {
-    onSuccess: (data) => {
-      console.log("Technology operation successful:", data);
-      if (!isEdit) {
-        setIsEdit(true); // Switch to edit mode after successful add
-      }
-    },
-    onError: (error) => {
-      console.error("Technology operation failed:", error);
+    onSuccess: () => {
+      setIsEdit(true);
+      setInitialData(formData);
     },
   });
 
-  // --- Populate form on load or error (404 = add mode) ---
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isDirty]);
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (isDirty) {
+        setShowDialog(true);
+        nextRoute.current = url;
+        throw "Route change blocked.";
+      }
+    };
+    const pushState = router.push;
+    router.push = (url) => {
+      if (isDirty) {
+        setShowDialog(true);
+        nextRoute.current = url.toString();
+        return;
+      }
+      pushState(url);
+    };
+    return () => {
+      router.push = pushState;
+    };
+  }, [isDirty, router]);
+
   useEffect(() => {
     if (data?.data?.technologies) {
       setIsEdit(true);
       setShowForm(true);
       const apiData = data.data.technologies;
       const apiMap: FormData = {};
-      console.log(apiData, "apiData");
       apiData.forEach((cat) => {
         const foundCategory = technologiesOption.find(
           (c) => c.label === cat.category
         );
-
         if (foundCategory) {
           cat.items.forEach((item) => {
             const foundItem = foundCategory.items.find(
               (i) => i.label === item.question
             );
-
             if (foundItem) {
-              // First try exact match with answer
               let matchingOpt = foundItem.options.find(
-                (opt) => opt.label === item.answer
+                (opt) => opt.label === item.answer || opt.value === item.answer
               );
-
-              // If no exact match, try matching with value
-              if (!matchingOpt) {
-                matchingOpt = foundItem.options.find(
-                  (opt) => opt.value === item.answer
-                );
-              }
-
-              // If still no match, try case-insensitive comparison
               if (!matchingOpt) {
                 matchingOpt = foundItem.options.find(
                   (opt) =>
@@ -105,30 +128,14 @@ const TechnologiesPage = () => {
                     opt.value.toLowerCase() === item.answer.toLowerCase()
                 );
               }
-
-              // Set the form value
               apiMap[foundItem.value] = matchingOpt?.value || "Other";
-
-              // Debug logging to see what's happening
-              if (!matchingOpt && item.answer !== "Other") {
-                console.log(
-                  `No match found for question: "${item.question}", answer: "${item.answer}"`
-                );
-                console.log(
-                  "Available options:",
-                  foundItem.options.map((opt) => ({
-                    label: opt.label,
-                    value: opt.value,
-                  }))
-                );
-              }
             }
           });
         }
       });
       setFormData(apiMap);
+      setInitialData(apiMap);
     } else if (isError || (!isLoading && !data?.data?.technologies)) {
-      // Show form for new entries when there's no data
       setIsEdit(false);
       setShowForm(true);
       const blankFormData: FormData = {};
@@ -138,13 +145,12 @@ const TechnologiesPage = () => {
         });
       });
       setFormData(blankFormData);
+      setInitialData(blankFormData);
     } else if (isError) {
-      // Handle other errors - don't show form
       setShowForm(false);
     }
   }, [data, isError, error, isLoading]);
 
-  // --- Handle select change ---
   const handleSelectChange = (itemValue: string, selectedValue: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -152,40 +158,23 @@ const TechnologiesPage = () => {
     }));
   };
 
-  // --- Save ---
   const handleSave = async () => {
-    if (!user?.organization) {
-      // Optionally show a toast or error message here
-      console.error("No organization ID");
-      return;
-    }
+    if (!user?.organization) return;
     const payload = {
       organizationId: user?.organization,
       responses: buildResponsesFromFormData(formData, technologiesOption),
     };
-
-    console.log(payload);
     await technologyMutation.mutateAsync(payload);
   };
 
-  // --- Render loading skeleton ---
-  const loadingSkeleton = (
-    <div className="px-6 my-6 space-y-5 max-w-2xl">
-      {Array.from({ length: 20 }).map((_, i) => (
-        <Skeleton key={i} className="h-[100px] w-full" />
-      ))}
-    </div>
-  );
-
-  // --- Render error (not 404) ---
-  const renderError = () => {
-    if (isError) {
-      console.log(error);
+  const handleLeave = () => {
+    setShowDialog(false);
+    if (nextRoute.current) {
+      router.push(nextRoute.current);
+      nextRoute.current = null;
     }
-    return null;
   };
 
-  // --- Render ---
   return (
     <div className="@container w-full">
       <Tabs defaultValue={technologiesOption[0].id}>
@@ -221,10 +210,6 @@ const TechnologiesPage = () => {
           )}
         </div>
 
-        {isLoading && loadingSkeleton}
-
-        {renderError()}
-
         {showForm && !isLoading && (
           <div className="px-6 my-6 max-w-2xl">
             {technologiesOption.map((category) => (
@@ -233,40 +218,35 @@ const TechnologiesPage = () => {
                 value={category.id}
                 className="space-y-4"
               >
-                {category.items.map((item) => {
-                  const currentValue = formData[item.value] || "";
-                  return (
-                    <div
-                      key={item.value}
-                      className="border p-4 rounded-xl space-y-2"
+                {category.items.map((item) => (
+                  <div
+                    key={item.value}
+                    className="border p-4 rounded-xl space-y-2"
+                  >
+                    <Label className="font-semibold">{item.label}</Label>
+                    {item?.description && (
+                      <p className="text-xs">{item.description}</p>
+                    )}
+                    <Select
+                      value={formData[item.value] || ""}
+                      onValueChange={(val) =>
+                        handleSelectChange(item.value, val)
+                      }
                     >
-                      <Label className="font-semibold">{item.label}</Label>
-                      {item?.description && (
-                        <p className="text-xs font-medium">
-                          {item.description}
-                        </p>
-                      )}
-                      <Select
-                        value={currentValue}
-                        onValueChange={(val) =>
-                          handleSelectChange(item.value, val)
-                        }
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select an option" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {item.options.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
-                          ))}
-                          <SelectItem value={"Other"}>Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  );
-                })}
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select an option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {item.options.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ))}
               </TabsContent>
             ))}
           </div>
@@ -288,6 +268,25 @@ const TechnologiesPage = () => {
           </Button>
         </div>
       )}
+
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Unsaved changes</DialogTitle>
+          </DialogHeader>
+          <p>
+            You have unsaved changes. Are you sure you want to leave this page?
+          </p>
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setShowDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="error" onClick={handleLeave}>
+              Leave Anyway
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
