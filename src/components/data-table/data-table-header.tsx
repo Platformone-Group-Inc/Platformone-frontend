@@ -39,7 +39,7 @@ export const DataTableHeader = <T,>({
   return (
     <TableHead
       key={header.id}
-      className="relative group px-3 py-2 text-left align-top"
+      className="relative group w-full px-3 py-2 text-left align-top"
       style={{ width: `${header.getSize()}px` }}
     >
       {!header.isPlaceholder && (

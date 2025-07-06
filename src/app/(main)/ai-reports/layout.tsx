@@ -1,9 +1,11 @@
 "use client";
 
+import FallbackLoader from "@/components/other/fallback-loader";
 import { cn } from "@/lib/utils";
 import { InfoCircle } from "iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 const tabData = [
   {
@@ -24,7 +26,7 @@ const ReportsLayout = ({ children }: React.PropsWithChildren) => {
   const pathname = usePathname();
 
   return (
-    <>
+    <Suspense fallback={<FallbackLoader />}>
       <div className="border-b sticky bg-white top-0 left-0 z-10">
         <div className="flex items-center justify-between p-4">
           <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
@@ -54,7 +56,7 @@ const ReportsLayout = ({ children }: React.PropsWithChildren) => {
         </div>
       </div>
       <div className="p-4">{children}</div>
-    </>
+    </Suspense>
   );
 };
 

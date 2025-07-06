@@ -46,26 +46,32 @@ export const SIDEBAR_DATA: SideBarItem[] = [
   {
     label: "System Information",
     icon: Cpu,
-    subItems: [
-      { label: "Organization", icon: UserSquare, href: "/system/organization" },
-      {
-        label: "Security Personnel",
-        icon: Security,
-        href: "/system/security-personnel",
-      },
-      { label: "Info System", icon: Security, href: "/system/info-system" },
-    ],
+    href: "/system",
+    // subItems: [
+    //   { label: "Organization", icon: UserSquare, href: "/system/organization" },
+    //   {
+    //     label: "Security Personnel",
+    //     icon: Security,
+    //     href: "/system/security-personnel",
+    //   },
+    //   { label: "Info System", icon: Security, href: "/system/info-system" },
+    // ],
   },
   {
     label: "AI Assessment",
     icon: DocumentText,
-    href: "/ai-assessment",
-    // badge: "new",
-  },
-  {
-    label: "AI Reports",
-    icon: DocumentText,
-    href: "/ai-reports",
+    subItems: [
+      {
+        label: "AI Assessment",
+        icon: DocumentText,
+        href: "/ai-assessment",
+      },
+      {
+        label: "Reports",
+        icon: DocumentText,
+        href: "/ai-reports",
+      },
+    ],
   },
   { label: "Frameworks", icon: Ram2, href: "/frameworks" },
   {
