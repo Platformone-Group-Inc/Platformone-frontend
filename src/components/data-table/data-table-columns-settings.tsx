@@ -57,9 +57,10 @@ const ColumnItem = <TData,>({ column }: { column: Column<TData, unknown> }) => {
 
   const isVisible = column.getIsVisible();
   const label =
-    typeof column.columnDef.header === "string"
+    column.columnDef.meta?.label ??
+    (typeof column.columnDef.header === "string"
       ? column.columnDef.header
-      : column.id;
+      : column.id);
 
   return (
     <div
@@ -67,19 +68,24 @@ const ColumnItem = <TData,>({ column }: { column: Column<TData, unknown> }) => {
       style={style}
       {...attributes}
       className={cn(
-        "relative flex items-center space-x-3 p-2 border rounded-md shadow-sm",
-        isVisible ? "bg-background" : "bg-muted",
-        isDragging && "ring-2 ring-primary bg-muted z-50"
+        "relative flex items-center gap-2 p-2 border rounded-md shadow-sm bg-background",
+        !isVisible && "opacity-60 bg-muted",
+        isDragging && "ring-2 ring-primary z-50"
       )}
     >
-      {/* Grip for drag */}
-      <button type="button" {...listeners}>
-        <GripVerticalIcon className="h-4 w-4 text-primary-800 cursor-grab" />
+      <button
+        type="button"
+        {...listeners}
+        className="cursor-grab active:cursor-grabbing text-muted-foreground"
+        aria-label="Drag column"
+      >
+        <GripVerticalIcon className="h-4 w-4" />
       </button>
 
       <Checkbox
         checked={isVisible}
         onCheckedChange={(checked) => column.toggleVisibility(!!checked)}
+        aria-label={`Toggle visibility for ${label}`}
       />
 
       <span className="flex-1 text-sm truncate">{label}</span>
@@ -106,7 +112,7 @@ export const ColumnSettings = <TData,>({
   const initialOrder = allColumns.map((col) => col.id);
   const [columnOrder, setColumnOrder] = React.useState<string[]>(initialOrder);
 
-  // Sync external state
+  // Sync with table state
   React.useEffect(() => {
     const currentOrder = table.getState().columnOrder;
     if (currentOrder.length > 0) setColumnOrder(currentOrder);
@@ -118,8 +124,8 @@ export const ColumnSettings = <TData,>({
 
     const oldIndex = columnOrder.indexOf(active.id as string);
     const newIndex = columnOrder.indexOf(over.id as string);
-    const updatedOrder = [...columnOrder];
 
+    const updatedOrder = [...columnOrder];
     const [moved] = updatedOrder.splice(oldIndex, 1);
     updatedOrder.splice(newIndex, 0, moved);
 
@@ -143,13 +149,19 @@ export const ColumnSettings = <TData,>({
     [columnOrder, allColumns]
   );
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    })
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="size-8 p-2 aspect-square">
-          <SettingsIcon size={20} />
+        <Button variant="secondary" size="icon" className="size-8">
+          <SettingsIcon size={14} />
         </Button>
       </DialogTrigger>
 
@@ -160,8 +172,15 @@ export const ColumnSettings = <TData,>({
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium">Manage Columns</span>
-            <Button variant="outline" size="sm" onClick={handleReset}>
+            <span className="text-sm font-medium text-muted-foreground">
+              Reorder and toggle column visibility
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleReset}
+              className="text-xs"
+            >
               Reset to Default
             </Button>
           </div>
@@ -177,7 +196,7 @@ export const ColumnSettings = <TData,>({
               strategy={verticalListSortingStrategy}
             >
               <ScrollArea className="h-[400px] overflow-y-auto">
-                <div className="space-y-2 px-2 relative z-10">
+                <div className="space-y-2 px-1">
                   {orderedColumns.map((col) => (
                     <ColumnItem key={col.id} column={col} />
                   ))}

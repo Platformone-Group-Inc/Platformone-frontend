@@ -41,6 +41,8 @@ import DataTableHeader from "@/components/data-table/data-table-header";
 
 import { Badge } from "@/components/ui/badge";
 import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
+import DataTableFilterHeader from "@/components/data-table/data-table-filter-header";
+import { TableHead } from "@/components/ui/table";
 
 interface IDocument {
   id: string;
@@ -131,7 +133,9 @@ const MyWorkTable = () => {
       {
         id: "name",
         accessorKey: "name",
-        header: "Name",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Name" />
+        ),
         meta: { label: "Name" },
       },
       {
@@ -227,6 +231,7 @@ const MyWorkTable = () => {
   const table = useReactTable({
     data: data || [],
     columns,
+    // Temp disable
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -268,17 +273,22 @@ const MyWorkTable = () => {
           <table className="min-w-full table-auto">
             {/* Sticky Header */}
             {hasRows && visibleColumns.length > 2 && (
-              <thead className="sticky top-0 z-10 bg-white shadow-sm">
+              <thead className="sticky top-0 z-10 bg-background border-b shadow-sm">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <th
+                      <TableHead
                         key={header.id}
-                        className="px-2 py-2 text-left text-sm font-medium text-gray-700"
-                        style={{ width: `${header.getSize?.()}px` }}
+                        className="relative group w-full px-3 py-2 text-left text-sm align-top"
                       >
-                        <DataTableHeader header={header} />
-                      </th>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                      // <DataTableHeader key={header.id} header={header} />
                     ))}
                   </tr>
                 ))}
