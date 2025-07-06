@@ -46,7 +46,7 @@ export const SIDEBAR_DATA: SideBarItem[] = [
   {
     label: "System Information",
     icon: Cpu,
-    href: "system",
+    href: "/system",
     // subItems: [
     //   { label: "Organization", icon: UserSquare, href: "/system/organization" },
     //   {

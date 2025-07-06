@@ -36,6 +36,17 @@ import DataTableFilterHeader from "@/components/data-table/data-table-filter-hea
 import { TableHead } from "@/components/ui/table";
 import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-filter-header";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 interface IDocument {
   id: string;
   name: string;
@@ -78,6 +89,51 @@ const RowAction = ({ row }: { row: Row<IDocument> }) => (
     </DropdownMenuContent>
   </DropdownMenu>
 );
+
+const ResignUserModal = () => {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <DropdownMenuItem>Reassign User</DropdownMenuItem>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Resign User?</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to resign this user? This action cannot be
+            undone.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter className="mt-4">
+          {/* <DialogClose asChild> */}
+          <Button variant="secondary">Cancel</Button>
+          {/* </DialogClose> */}
+          <Button variant="error">Confirm Resignation</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const ReassignUser: React.FC<{ user: string }> = ({ user }) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <div className="flex items-center gap-2">
+          <Avatar className="">
+            <AvatarFallback>{user[0]}</AvatarFallback>
+          </Avatar>
+          <p className="font-semibold underline ">{user}</p>
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {/* <ResignUserModal /> */}
+        <DropdownMenuItem>Reassign User</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const MyWorkTable = () => {
   const [globalFilter, setGlobalFilter] = useState("");
@@ -136,14 +192,7 @@ const MyWorkTable = () => {
         header: ({ header }) => (
           <DataTableFilterHeader header={header} title="Assignee" />
         ),
-        cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <Avatar className="">
-              <AvatarFallback>{row.original.assignee[0]}</AvatarFallback>
-            </Avatar>
-            <p>{row.original.assignee}</p>
-          </div>
-        ),
+        cell: ({ row }) => <ReassignUser user={row.original.assignee} />,
         meta: { label: "Assignee" },
         enableSorting: true,
       },
