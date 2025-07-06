@@ -26,6 +26,7 @@ const MainLayout = ({ children }: React.PropsWithChildren) => {
           )}
         >
           <ScrollArea className="flex-1 overflow-y-auto bg-white border shadow-xl rounded-2xl">
+            <span id="root-scroll"></span>
             {children}
           </ScrollArea>
 

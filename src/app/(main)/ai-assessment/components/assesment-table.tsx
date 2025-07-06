@@ -43,7 +43,7 @@ function AssessmentRow({ i, value, onAnswerChange }: AssessmentRowProps) {
     <div className="flex flex-col gap-4 border-b p-4 sm:flex-row sm:items-start sm:gap-6">
       <div className="flex gap-3 sm:flex-1">
         <Checkbox />
-        <p className="text-sm font-medium hover:underline text-info-600 line-clamp-3">
+        <p className="text-sm font-medium hover:underline text-info-600 line-clamp-2">
           {i?.question}
         </p>
       </div>

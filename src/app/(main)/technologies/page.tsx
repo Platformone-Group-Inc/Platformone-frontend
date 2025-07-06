@@ -177,7 +177,17 @@ const TechnologiesPage = () => {
 
   return (
     <div className="@container w-full">
-      <Tabs defaultValue={technologiesOption[0].id}>
+      <Tabs
+        defaultValue={technologiesOption[0].id}
+        onValueChange={() => {
+          if (typeof window !== "undefined") {
+            const rootScroll = document.querySelector("#root-scroll");
+            rootScroll!.scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+        }}
+      >
         <div className="p-6 bg-white space-y-6 w-full border-b border-black/10 pb-0 sticky top-0 z-10 ">
           <h1 className="font-semibold text-lg inline-flex items-center gap-2">
             Technologies
@@ -255,6 +265,15 @@ const TechnologiesPage = () => {
 
       {showForm && !isLoading && (
         <div className="fixed right-8 bottom-8">
+          <button
+            onClick={() => {
+              const rootScroll = document.querySelector("#root-scroll");
+              console.log(rootScroll);
+              rootScroll!.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            click
+          </button>
           <Button
             className="rounded-xl"
             onClick={handleSave}
