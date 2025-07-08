@@ -140,7 +140,7 @@ const AssessmentTable = ({
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">
       <div className="p-4 flex-1 space-y-4 flex flex-col">
-        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-350px)] ">
+        <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-370px)] ">
           {/* <div className="p-4 border-b w-full bg-background flex items-center"> */}
           <div className="sticky top-0 left-0 z-10 flex flex-col gap-4 border-b p-4 sm:flex-row sm:items-start sm:gap-6 bg-background">
             <div className="flex gap-3 sm:flex-1">
