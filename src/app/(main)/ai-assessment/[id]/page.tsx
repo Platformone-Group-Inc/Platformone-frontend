@@ -2,8 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 // import { InfoCircle } from "iconsax-react";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+
+import { parseAsInteger, useQueryState } from "nuqs";
 
 import AssessmentTable from "../components/assesment-table";
 // import FilterModal from "../components/modals/filter-modal";
@@ -17,6 +19,15 @@ import {
   getAssignmentStatQueryFn,
 } from "@/services/operations/Assignments";
 import FallbackLoader from "@/components/other/fallback-loader";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const Page = () => {
   const router = useRouter();
@@ -43,7 +54,11 @@ const Page = () => {
     enabled: !!params.id,
   });
 
-  console.log(assignmentsStats, "assignmentsStats");
+  const [pageSize, setPageSize] = useQueryState(
+    "pageSize",
+    parseAsInteger.withDefault(20)
+  );
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
   useEffect(() => {
     if (assignments && assignments.length > 0) {
@@ -141,6 +156,121 @@ const Page = () => {
         onAnswerChange={handleAnswerChange}
         assignments={assignments}
       />
+
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-2 py-4 gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          {/* Rows per page */}
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium whitespace-nowrap">
+              Rows per page
+            </p>
+            <Select
+              value={pageSize.toString()}
+              onValueChange={(num) => setPageSize(Number(num))}
+            >
+              <SelectTrigger className="h-8 w-[80px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[10, 25, 50, 100].map((size) => (
+                  <SelectItem key={size} value={size.toString()}>
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Page info */}
+          <div className="text-sm font-medium whitespace-nowrap">
+            Page {page} of 50
+          </div>
+
+          {/* Jump to page */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium whitespace-nowrap">
+              Jump to:
+            </span>
+            {/* TODO kr dena sir */}
+            <Input
+              type="number"
+              // value={jumpToPage}
+              placeholder="Page #"
+              min={1}
+              // max={totalPages}
+              // onChange={(e) => setJumpToPage(e.target.value)}
+              // onKeyPress={handleKeyPress}
+              className="h-8 w-20"
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              // onClick={handleJumpToPage}
+              // disabled={
+              //   !jumpToPage ||
+              //   isNaN(Number(jumpToPage)) ||
+              //   Number(jumpToPage) < 1 ||
+              //   Number(jumpToPage) > totalPages
+              // }
+            >
+              Go
+            </Button>
+          </div>
+
+          {/* Row info */}
+          <div className="hidden sm:flex text-sm text-muted-foreground whitespace-nowrap">
+            {/* Showing {startRow} to {endRow} of {totalCount} entries */}
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center gap-2 self-end lg:self-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setPage(1);
+            }}
+            disabled={page === 1}
+            aria-label="First Page"
+          >
+            First
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setPage(page - 1);
+            }}
+            disabled={page === 1}
+            aria-label="Previous Page"
+          >
+            <ChevronLeftIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setPage(page + 1);
+            }}
+            disabled={page === 10}
+            aria-label="Next Page"
+          >
+            <ChevronRightIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setPage(10);
+            }}
+            disabled={page === 10}
+            aria-label="Last Page"
+          >
+            Last
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
