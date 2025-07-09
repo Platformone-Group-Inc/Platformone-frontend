@@ -4,9 +4,8 @@ import { Button } from "@/components/ui/button";
 // import { InfoCircle } from "iconsax-react";
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState, useEffect } from "react";
-
 import { parseAsInteger, useQueryState } from "nuqs";
-
+import { useSearchParams } from 'next/navigation'
 import AssessmentTable from "../components/assesment-table";
 // import FilterModal from "../components/modals/filter-modal";
 // import AssessmentTableAction from "../components/table-actions";
@@ -33,8 +32,18 @@ const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
-
-  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a">>(
+  const searchParams = useSearchParams()
+  const npage = searchParams.get('page')
+  const [jumpToPage, setJumpToPage] = useState('');
+  const [pageSize, setPageSize] = useQueryState(
+    "pageSize",
+    parseAsInteger.withDefault(10)
+  );
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
+    {}
+  );
+  const [originalAnswers, setOriginalAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
     {}
   );
 
@@ -43,8 +52,8 @@ const Page = () => {
     isLoading: assignmentsLoading,
     error: assignmentsError,
   } = useQuery({
-    queryKey: ["assignments", params.id],
-    queryFn: () => getAssignmentsByOrganizationQueryFn(params.id as string),
+    queryKey: ["assignments", params.id, page, pageSize],
+    queryFn: () => getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
     enabled: !!params.id,
   });
 
@@ -54,27 +63,27 @@ const Page = () => {
     enabled: !!params.id,
   });
 
-  const [pageSize, setPageSize] = useQueryState(
-    "pageSize",
-    parseAsInteger.withDefault(20)
-  );
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const totalPages = assignments?.meta?.totalPages || 1;
+  const handleJumpToPage = () => {
+    const num = Number(jumpToPage);
+    if (num >= 1 && num <= totalPages) {
+      setPage(num);
+    }
+  };
 
   useEffect(() => {
-    if (assignments && assignments.length > 0) {
-      const existingAnswers: Record<string, "yes" | "no" | "n/a"> = {};
-
-      assignments.forEach((assignment: any) => {
-        if (assignment.answer) {
-          existingAnswers[assignment._id] = assignment.answer;
-        } else if (assignment.response) {
-          existingAnswers[assignment._id] = assignment.response;
-        } else if (assignment.value) {
-          existingAnswers[assignment._id] = assignment.value;
+    if (assignments?.assignments && assignments?.assignments?.length > 0) {
+      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> = {};
+      assignments?.assignments?.forEach((assignment: any) => {
+        const answer = assignment.answer || assignment.response || assignment.value;
+        if (answer && answer !== "" && (answer === "yes" || answer === "no" || answer === "n/a")) {
+          existingAnswers[assignment._id] = answer;
+        } else {
+          existingAnswers[assignment._id] = undefined;
         }
       });
-
       setAnswers(existingAnswers);
+      setOriginalAnswers({ ...existingAnswers });
     }
   }, [assignments]);
 
@@ -87,8 +96,9 @@ const Page = () => {
 
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["assignments", params.id] });
-      console.log("Assignment submitted:", data);
+      queryClient.invalidateQueries({ queryKey: ["assignments", params.id, page, pageSize] });
+      queryClient.invalidateQueries({ queryKey: ["assignmentsStats", params.id] });
+      setOriginalAnswers({ ...answers });
     },
     onError: (error) => {
       console.error("Submission failed:", error);
@@ -96,13 +106,17 @@ const Page = () => {
   });
 
   const handleSave = () => {
-    const result = Object.entries(answers).map(([_id, answer]) => ({
-      _id,
-      answer,
-    }));
-
-    submitAssignment.mutate(result);
-    console.log("All Answers:", result);
+    const changedAnswers = Object.entries(answers)
+      .filter(([_id, answer]) => {
+        return originalAnswers[_id] !== answer;
+      })
+      .map(([_id, answer]) => ({
+        _id,
+         answer: answer as string,
+      }));
+    if (changedAnswers.length > 0) {
+      submitAssignment.mutate(changedAnswers);
+    }
   };
 
   if (assignmentsLoading) {
@@ -132,12 +146,13 @@ const Page = () => {
           <div className="flex items-center gap-4">
             {/* <AssessmentTableAction />
           <FilterModal /> */}
+            <Button onClick={()=>{console.log("report")}} disabled={assignmentsStats?.answerStats?.totalAssignments != assignmentsStats?.answerStats?.answeredYes + assignmentsStats?.answerStats?.answeredNo + assignmentsStats?.answerStats?.answeredNA}>Generate Report</Button>
             <Button onClick={handleSave}>Save</Button>
           </div>
         </div>
         <div className="pb-4 border-b px-6">
-          Showing 1 - {assignmentsStats?.answerStats?.totalAssignments}{" "}
-          Questions
+          {/* Showing 1 - {assignmentsStats?.answerStats?.totalAssignments}{" "}
+          Questions */}
           <p className="font-medium">
             Answered-{" "}
             {assignmentsStats?.answerStats?.totalAssignments -
@@ -154,7 +169,7 @@ const Page = () => {
         frameworkId={params.id as string}
         answers={answers}
         onAnswerChange={handleAnswerChange}
-        assignments={assignments}
+        assignments={assignments?.assignments || []}
       />
 
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-2 py-4 gap-4">
@@ -183,7 +198,7 @@ const Page = () => {
 
           {/* Page info */}
           <div className="text-sm font-medium whitespace-nowrap">
-            Page {page} of 50
+            Page {page} of {assignments?.meta?.totalPages || 1}
           </div>
 
           {/* Jump to page */}
@@ -194,27 +209,30 @@ const Page = () => {
             {/* TODO kr dena sir */}
             <Input
               type="number"
-              // value={jumpToPage}
+              value={jumpToPage}
               placeholder="Page #"
               min={1}
-              // max={totalPages}
-              // onChange={(e) => setJumpToPage(e.target.value)}
-              // onKeyPress={handleKeyPress}
+              max={totalPages}
+              onChange={(e) => setJumpToPage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleJumpToPage();
+              }}
               className="h-8 w-20"
             />
             <Button
               variant="outline"
               size="sm"
-              // onClick={handleJumpToPage}
-              // disabled={
-              //   !jumpToPage ||
-              //   isNaN(Number(jumpToPage)) ||
-              //   Number(jumpToPage) < 1 ||
-              //   Number(jumpToPage) > totalPages
-              // }
+              onClick={handleJumpToPage}
+              disabled={
+                !jumpToPage ||
+                isNaN(Number(jumpToPage)) ||
+                Number(jumpToPage) < 1 ||
+                Number(jumpToPage) > totalPages
+              }
             >
               Go
             </Button>
+
           </div>
 
           {/* Row info */}
@@ -253,7 +271,7 @@ const Page = () => {
             onClick={() => {
               setPage(page + 1);
             }}
-            disabled={page === 10}
+            disabled={page === assignments?.meta?.totalPages}
             aria-label="Next Page"
           >
             <ChevronRightIcon className="h-4 w-4" />
@@ -264,7 +282,7 @@ const Page = () => {
             onClick={() => {
               setPage(10);
             }}
-            disabled={page === 10}
+            disabled={page === assignments?.meta?.totalPages}
             aria-label="Last Page"
           >
             Last
