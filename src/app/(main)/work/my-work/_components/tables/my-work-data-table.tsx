@@ -38,7 +38,6 @@ import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-f
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -160,6 +159,7 @@ const MyWorkTable = () => {
               table.toggleAllPageRowsSelected(!!value)
             }
             aria-label="Select all"
+            className="mx-1"
           />
         ),
         cell: ({ row }) => (
@@ -308,6 +308,8 @@ const MyWorkTable = () => {
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter, sorting, pagination, columnOrder },
     enableSortingRemoval: false,
+    rowCount: 20,
+    pageCount: 10,
     defaultColumn: {
       minSize: 200,
     },

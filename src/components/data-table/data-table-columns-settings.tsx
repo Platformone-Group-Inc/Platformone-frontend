@@ -8,9 +8,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SettingsIcon, GripVerticalIcon } from "lucide-react";
+import {
+  SettingsIcon,
+  GripVerticalIcon,
+  EyeIcon,
+  EyeOffIcon,
+} from "lucide-react";
 
 import {
   useSortable,
@@ -31,6 +36,7 @@ import {
 } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 interface ColumnSettingsProps<TData> {
   table: Table<TData>;
@@ -55,12 +61,15 @@ const ColumnItem = <TData,>({ column }: { column: Column<TData, unknown> }) => {
     zIndex: isDragging ? 50 : undefined,
   };
 
-  const isVisible = column.getIsVisible();
   const label =
     column.columnDef.meta?.label ??
     (typeof column.columnDef.header === "string"
       ? column.columnDef.header
       : column.id);
+
+  const isVisible = column.getIsVisible();
+
+  const toggleVisibility = () => column.toggleVisibility(!isVisible);
 
   return (
     <div
@@ -81,12 +90,9 @@ const ColumnItem = <TData,>({ column }: { column: Column<TData, unknown> }) => {
       >
         <GripVerticalIcon className="h-4 w-4" />
       </button>
-
-      <Checkbox
-        checked={isVisible}
-        onCheckedChange={(checked) => column.toggleVisibility(!!checked)}
-        aria-label={`Toggle visibility for ${label}`}
-      />
+      <button onClick={toggleVisibility}>
+        {isVisible ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+      </button>
 
       <span className="flex-1 text-sm truncate">{label}</span>
     </div>
@@ -159,11 +165,16 @@ export const ColumnSettings = <TData,>({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button variant="secondary" size="icon" className="size-8">
-          <SettingsIcon size={14} />
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button variant="secondary" size="icon" className="size-8">
+              <SettingsIcon size={14} />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Columns Settings</TooltipContent>
+      </Tooltip>
 
       <DialogContent className="max-w-md">
         <DialogHeader>
