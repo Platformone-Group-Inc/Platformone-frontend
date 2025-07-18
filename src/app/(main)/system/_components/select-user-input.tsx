@@ -35,7 +35,11 @@ const getUser = (): User => ({
   email: faker.internet.email(),
 });
 
-const SelectUserInput = () => {
+interface Props {
+  placeholder?: string;
+}
+
+const SelectUserInput: React.FC<Props> = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState("");
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState<User[]>(
@@ -94,7 +98,7 @@ const SelectUserInput = () => {
           className="flex items-center gap-1 p-2 rounded-md border"
           role="listitem"
         >
-          <Avatar className="size-7">
+          <Avatar className="size-5">
             <AvatarImage src={user.avatar} alt={`Avatar of ${user.name}`} />
             <AvatarFallback>{user.name[0]}</AvatarFallback>
           </Avatar>
