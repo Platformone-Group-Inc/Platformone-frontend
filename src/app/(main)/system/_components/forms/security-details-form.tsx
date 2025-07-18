@@ -1,5 +1,11 @@
+import SelectUserInput from "../select-user-input";
+
 const SecurityDetailsForm = () => {
-  return <div>SecurityDetailsForm</div>;
+  return (
+    <div>
+      <SelectUserInput />
+    </div>
+  );
 };
 
 export default SecurityDetailsForm;

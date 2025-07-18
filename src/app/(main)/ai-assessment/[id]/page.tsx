@@ -157,7 +157,7 @@ const Page = () => {
         assignments={assignments}
       />
 
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-2 py-4 gap-4">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-2 px-4 gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           {/* Rows per page */}
           <div className="flex items-center gap-2">
@@ -172,7 +172,7 @@ const Page = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent side="top">
-                {[10, 25, 50, 100].map((size) => (
+                {[10, 20, 25, 50, 100].map((size) => (
                   <SelectItem key={size} value={size.toString()}>
                     {size}
                   </SelectItem>
@@ -183,6 +183,7 @@ const Page = () => {
 
           {/* Page info */}
           <div className="text-sm font-medium whitespace-nowrap">
+            {/* TODO add final page */}
             Page {page} of 50
           </div>
 
