@@ -2,8 +2,8 @@
 
 - [x] make pagination compact
 - [x] ai assessments unchecked by default
-- prevent save modal on diff places
-- prevent save modal bug
+- [x] prevent save modal on diff places
+- [x] prevent save modal bug
 - other input on technology
 - dummy data table on old tables
 - new data table old tables

@@ -52,6 +52,8 @@ const TechnologiesPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [navigationBlocked, setNavigationBlocked] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [contentLoaded, setContentLoaded] = useState(false);
   const pendingNavigationRef = useRef<(() => void) | null>(null);
   const originalPushRef = useRef<typeof router.push | null>(null);
   const originalReplaceRef = useRef<typeof router.replace | null>(null);
@@ -64,7 +66,9 @@ const TechnologiesPage = () => {
     enabled: !!user?.organization,
     retry: false,
   });
+  const isLoadingContent = isLoading || isInitializing;
 
+  const shouldShowSkeleton = isLoadingContent || !user?.organization;
   const technologyMutation = useTechnologyMutation(isEdit, {
     onSuccess: () => {
       setIsEdit(true);
@@ -194,6 +198,8 @@ const TechnologiesPage = () => {
       });
       setFormData(apiMap);
       setInitialData(apiMap);
+      setIsInitializing(false);
+      setTimeout(() => setContentLoaded(true), 100);
     } else if (isError || (!isLoading && !data?.data?.technologies)) {
       setIsEdit(false);
       setShowForm(true);
@@ -205,8 +211,11 @@ const TechnologiesPage = () => {
       });
       setFormData(blankFormData);
       setInitialData(blankFormData);
+      setIsInitializing(false);
+      setTimeout(() => setContentLoaded(true), 100);
     } else if (isError) {
       setShowForm(false);
+      setIsInitializing(false);
     }
   }, [data, isError, error, isLoading]);
 
@@ -258,10 +267,8 @@ const TechnologiesPage = () => {
   };
 
   const handleDialogCancel = () => {
-    router.refresh();
     setShowDialog(false);
     setNavigationBlocked(false);
-
     pendingNavigationRef.current = null;
   };
 
