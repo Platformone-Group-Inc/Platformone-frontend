@@ -25,6 +25,7 @@ import {
 import { technologiesOption } from "./data";
 import { getTechnologyQueryFn } from "@/services/operations/Technology";
 import { useTechnologyMutation } from "@/services/mutations/Technology";
+import { Input } from "@/components/ui/input";
 
 type FormData = Record<string, string>;
 
@@ -366,9 +367,12 @@ const TechnologiesPage = () => {
                             {opt.label}
                           </SelectItem>
                         ))}
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
+                    {formData[item.value] === "other" && (
+                      <Input placeholder={item.label} />
+                    )}
                   </div>
                 ))}
               </TabsContent>
