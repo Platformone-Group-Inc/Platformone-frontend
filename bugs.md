@@ -1,7 +1,7 @@
 # bug fixes
 
-- make pagination compact
-- ai assessments unchecked by default
+- [x] make pagination compact
+- [x] ai assessments unchecked by default
 - prevent save modal on diff places
 - prevent save modal bug
 - other input on technology
