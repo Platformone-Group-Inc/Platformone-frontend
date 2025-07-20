@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+
 import {
   Select,
   SelectContent,
@@ -22,6 +22,7 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 interface Props {
   open?: boolean;
   onOpenChange?: () => void;
+  children: React.ReactNode;
 }
 
 function StatusDot({ className }: { className?: string }) {
@@ -41,22 +42,21 @@ function StatusDot({ className }: { className?: string }) {
 }
 
 import { XIcon } from "lucide-react";
-import { useId } from "react";
 
-const UpdateControlModal: React.FC<Props> = ({ open, onOpenChange }) => {
-  const id = useId();
-
+const UpdateControlModal: React.FC<Props> = ({
+  open,
+  onOpenChange,
+  children,
+}) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Update dialog</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       {/* <DialogClose /> */}
       <DialogContent className="flex flex-col gap-0 p-6 space-y-6 sm:rounded-none sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:hidden">
         <div className="space-y-4">
           <DialogHeader className="flex flex-row items-start gap-3">
             <DialogTitle className="text-xl font-semibold">
-              Update control status
+              Update status
             </DialogTitle>
             <DialogClose className="ml-auto">
               <XIcon className=" text-placeholder" />
@@ -64,14 +64,8 @@ const UpdateControlModal: React.FC<Props> = ({ open, onOpenChange }) => {
           </DialogHeader>
           <div>
             <div className="space-y-2 min-w-[300px]">
-              <Label htmlFor={id} className="text-secondary-400">
-                Update status for Policy and Procedure{" "}
-              </Label>
               <Select defaultValue="1">
-                <SelectTrigger
-                  id={id}
-                  className="[&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0"
-                >
+                <SelectTrigger className="[&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent className="[&_*[role=option]>span>svg]:shrink-0 [&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]]:pe-8 [&_*[role=option]]:ps-2">

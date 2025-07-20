@@ -107,10 +107,12 @@ const DataTableFilterHeader = <T,>({ header, title }: Props<T>) => {
               Descending
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={handleHideColumn}>
-              <EyeClosedIcon className="size-3 mr-2" />
-              Hide
-            </DropdownMenuItem>
+            {column.getCanHide() && (
+              <DropdownMenuItem onClick={handleHideColumn}>
+                <EyeClosedIcon className="size-3 mr-2" />
+                Hide
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
 

@@ -4,7 +4,7 @@
 - [x] ai assessments unchecked by default
 - [x] prevent save modal on diff places
 - [x] prevent save modal bug
-- other input on technology
+- [x] other input on technology
 - dummy data table on old tables
 - new data table old tables
 - back buttons

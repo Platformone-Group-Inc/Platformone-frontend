@@ -36,6 +36,17 @@ import DataTableFilterHeader from "@/components/data-table/data-table-filter-hea
 import { TableHead } from "@/components/ui/table";
 import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-filter-header";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+
 interface IDocument {
   id: string;
   name: string;
@@ -48,7 +59,7 @@ interface IDocument {
 }
 
 const getFakeData = async (): Promise<IDocument[]> => {
-  return Array.from({ length: 100 }).map((_, i) => ({
+  return Array.from({ length: 100 }).map(() => ({
     id: crypto.randomUUID(),
     name: faker.person.fullName(),
     assignee: faker.person.fullName(),
@@ -79,8 +90,56 @@ const RowAction = ({ row }: { row: Row<IDocument> }) => (
   </DropdownMenu>
 );
 
+const ResignUserModal = () => {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <DropdownMenuItem>Reassign User</DropdownMenuItem>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Resign User?</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to resign this user? This action cannot be
+            undone.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter className="mt-4">
+          {/* <DialogClose asChild> */}
+          <Button variant="secondary">Cancel</Button>
+          {/* </DialogClose> */}
+          <Button variant="error">Confirm Resignation</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const ReassignUser: React.FC<{ user: string }> = ({ user }) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <div className="flex items-center gap-2">
+          <Avatar className="">
+            <AvatarFallback>{user[0]}</AvatarFallback>
+          </Avatar>
+          <p className="font-semibold underline ">{user}</p>
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {/* <ResignUserModal /> */}
+        <DropdownMenuItem>Reassign User</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 const TeamWorkTable = () => {
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useQueryState(
+    "globalFilter",
+    parseAsString.withDefault("")
+  );
   const { data, isLoading } = useQuery({
     queryKey: ["team-work"],
     queryFn: async () => {
@@ -104,6 +163,7 @@ const TeamWorkTable = () => {
               table.toggleAllPageRowsSelected(!!value)
             }
             aria-label="Select all"
+            className="mx-1"
           />
         ),
         cell: ({ row }) => (
@@ -136,14 +196,7 @@ const TeamWorkTable = () => {
         header: ({ header }) => (
           <DataTableFilterHeader header={header} title="Assignee" />
         ),
-        cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <Avatar className="">
-              <AvatarFallback>{row.original.assignee[0]}</AvatarFallback>
-            </Avatar>
-            <p>{row.original.assignee}</p>
-          </div>
-        ),
+        cell: ({ row }) => <ReassignUser user={row.original.assignee} />,
         meta: { label: "Assignee" },
         enableSorting: true,
       },
@@ -243,7 +296,12 @@ const TeamWorkTable = () => {
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((c) => c.id as string)
   );
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
+  const [limit, setLimit] = useQueryState(
+    "limit",
+    parseAsInteger.withDefault(20)
+  );
 
   const table = useReactTable({
     data: data || [],
@@ -253,12 +311,37 @@ const TeamWorkTable = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+
     onColumnOrderChange: setColumnOrder,
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
-    state: { globalFilter, sorting, pagination, columnOrder },
+    onPaginationChange: (updater) => {
+      const newPagination =
+        typeof updater === "function"
+          ? updater(table.getState().pagination)
+          : updater;
+      setPage(newPagination.pageIndex);
+      setLimit(newPagination.pageSize);
+    },
+    initialState: {
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+    },
+
+    state: {
+      globalFilter,
+      sorting,
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+      columnOrder,
+    },
     enableSortingRemoval: false,
+    rowCount: 20,
+    pageCount: 2, // need to change
     defaultColumn: {
       minSize: 200,
     },
