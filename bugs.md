@@ -5,9 +5,9 @@
 - [x] prevent save modal on diff places
 - [x] prevent save modal bug
 - [x] other input on technology
-- dummy data table on old tables
-- new data table old tables
-- back buttons
+- [x] dummy data table on old tables
+- [x] new data table old tables
+- [x] back buttons
 - [x] my framework image
 - [x] fix avaliable frameworks
 - tooltips
