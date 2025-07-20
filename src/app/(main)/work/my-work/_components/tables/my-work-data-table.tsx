@@ -14,6 +14,7 @@ import {
   useReactTable,
   type ColumnDef,
   type Row,
+  type Table as ITable,
   type SortingState,
 } from "@tanstack/react-table";
 
@@ -48,6 +49,7 @@ import {
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import UpdateControlModal from "@/app/(main)/controls/components/update-control-modal";
 import ReassignUsersModal from "../reassign-user-modal";
+import DeleteControllersModal from "@/app/(main)/controls/info/[id]/_components/modals/delete-controls-modal";
 
 interface IDocument {
   id: string;
@@ -73,8 +75,16 @@ const getFakeData = async (): Promise<IDocument[]> => {
   }));
 };
 
-const RowAction = ({ row }: { row: Row<IDocument> }) => {
+const RowAction = ({
+  row,
+  table,
+}: {
+  table: ITable<IDocument>;
+  row: Row<IDocument>;
+}) => {
   const [open, setOpen] = useState(false);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   return (
     <>
@@ -85,8 +95,8 @@ const RowAction = ({ row }: { row: Row<IDocument> }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onSelect={() => setOpen(true)}>
-            Open Modal
+          <DropdownMenuItem asChild>
+            <DeleteControllersModal table={table} />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -280,7 +290,7 @@ const MyWorkTable = () => {
         id: "actions",
         accessorKey: "actions",
         header: "Actions",
-        cell: ({ row }) => <RowAction row={row} />,
+        cell: ({ row }) => <RowAction table={table} row={row} />,
         enableSorting: false,
         enableHiding: false,
       },

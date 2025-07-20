@@ -65,7 +65,10 @@ const NewFrameworkPage = () => {
   return (
     <div className="space-y-6 p-6 w-full">
       <MyFrameworksList frameworks={myFrameworks} />
-      <AvailableFrameworksList availableFrameworks={filteredFrameworks} />
+
+      {filteredFrameworks?.length > 0 && (
+        <AvailableFrameworksList availableFrameworks={filteredFrameworks} />
+      )}
     </div>
   );
 };

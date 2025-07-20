@@ -8,10 +8,10 @@
 - dummy data table on old tables
 - new data table old tables
 - back buttons
-- my framer image
-- fix avaliable frameworks
+- [x] my framework image
+- [x] fix avaliable frameworks
 - tooltips
-- remove schedule reorts
-- reassign user modal
-- data table actions
-- change status modal
+- [x] remove schedule reorts
+- [x] reassign user modal
+- [x] data table actions
+- [x] change status modal

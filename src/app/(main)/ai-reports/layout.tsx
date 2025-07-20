@@ -12,10 +12,10 @@ const tabData = [
     value: "/ai-reports",
     label: "Generated Reports",
   },
-  {
-    value: "/ai-reports/scheduled",
-    label: "Scheduled Reports",
-  },
+  // {
+  //   value: "/ai-reports/scheduled",
+  //   label: "Scheduled Reports",
+  // },
   {
     value: "/ai-reports/new",
     label: "New Reports",
