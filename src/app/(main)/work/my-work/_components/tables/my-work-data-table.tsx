@@ -41,10 +41,8 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import UpdateControlModal from "@/app/(main)/controls/components/update-control-modal";

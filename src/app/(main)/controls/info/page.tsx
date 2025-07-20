@@ -22,6 +22,10 @@ import { useAuthContext } from "@/context/auth-provider";
 import { useQuery } from "@tanstack/react-query";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
+import { ArrowLeftIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 const ControlInfoPage = () => {
   const { user, isLoading: authLoading } = useAuthContext();
@@ -75,10 +79,20 @@ const ControlInfoPage = () => {
     <div className="@container w-full">
       <div className="flex items-center bg-white justify-between py-4 px-6 sticky top-0 z-10 border-b">
         <div>
-          <h1 className="font-semibold text-lg">
-            {/* FedRAMP Moderate (800-53 Rev. 5) */}
-            {cloneFrameworkName}
-          </h1>
+          <div className="flex items-center gap-2">
+            <Link
+              href={"/controls"}
+              className={cn(
+                "p-2 aspect-square hover:bg-primary-100 rounded-full"
+              )}
+            >
+              <ArrowLeftIcon size={16} />
+            </Link>
+            <h1 className="font-semibold text-lg line-clamp-1">
+              {/* FedRAMP Moderate (800-53 Rev. 5) */}
+              {cloneFrameworkName}
+            </h1>
+          </div>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>

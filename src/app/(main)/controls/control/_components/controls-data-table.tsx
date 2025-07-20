@@ -1,10 +1,12 @@
 "use client";
 
-import DataTableHeader from "@/components/data-table/data-table-header";
+import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-filter-header";
+import DataTableFilterHeader from "@/components/data-table/data-table-filter-header";
+
 import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
@@ -16,7 +18,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { TableHead } from "@/components/ui/table";
+
 import { ControlResponse, Control } from "@/services/operations/Control";
 import {
   ColumnDef,
@@ -28,6 +31,10 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
+import { ArrowLeftIcon } from "lucide-react";
+
+import { useRouter } from "next/navigation";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { useMemo, useState } from "react";
 
 interface ControlsDataTableProps {
@@ -74,9 +81,12 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
       {
         id: "name",
         accessorKey: "name",
-        header: "Name",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Name" />
+        ),
         meta: { label: "Name" },
         maxSize: 200,
+
         cell: ({ row }) => (
           <p className="font-medium truncate max-w-[200px]">
             {row.original.name}
@@ -86,7 +96,9 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
       {
         id: "description",
         accessorKey: "description",
-        header: "Description",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Description" />
+        ),
         meta: { label: "Description" },
         cell: ({ row }) => (
           <p className="font-medium truncate max-w-[200px]">
@@ -97,20 +109,36 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
       {
         id: "identifier",
         accessorKey: "identifier",
-        header: "Identifier",
+
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Identifier" />
+        ),
         meta: { label: "Identifier" },
       },
       {
         id: "level",
         accessorKey: "level",
-        header: "Level",
+        header: ({ header }) => (
+          <DataTableChipFilterHeader
+            header={header}
+            title="Lever"
+            options={["1", "2", "3"]}
+          />
+        ),
+
         meta: { label: "Level" },
         cell: ({ getValue }) => <Badge>{getValue<number>()}</Badge>,
       },
       {
         id: "status",
         accessorKey: "status",
-        header: "Status",
+        header: ({ header }) => (
+          <DataTableChipFilterHeader
+            header={header}
+            title="Status"
+            options={["active", "inactive"]}
+          />
+        ),
         meta: { label: "Status" },
         cell: ({ getValue }) => (
           <Badge variant="secondary">{getValue<string>()}</Badge>
@@ -119,13 +147,19 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
       {
         id: "controlFamilyId",
         accessorKey: "controlFamilyId",
-        header: "Control Family ID",
+
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Control Family ID" />
+        ),
         meta: { label: "Control Family ID" },
       },
       {
         id: "assignments",
         accessorKey: "assignments",
-        header: "Assignments",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Assignments" />
+        ),
+
         meta: { label: "Assignments" },
         cell: ({ getValue }) => {
           const assignments = getValue<any[]>();
@@ -139,37 +173,51 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
       {
         id: "isOriginal",
         accessorKey: "isOriginal",
-        header: "Original",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Original" />
+        ),
         meta: { label: "Original" },
         cell: ({ getValue }) => (getValue<boolean>() ? "Yes" : "No"),
       },
       {
         id: "createdAt",
         accessorKey: "createdAt",
-        header: "Created At",
+        // header: "Created At",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="Created At" />
+        ),
         meta: { label: "Created At" },
         cell: ({ getValue }) => {
           const date = getValue<Date>();
           return date ? new Date(date).toLocaleDateString() : "";
         },
       },
-      {
-        id: "framework_id",
-        accessorKey: "framework_id",
-        header: "Framework ID",
-        meta: { label: "Framework ID" },
-      },
+      // {
+      //   id: "framework_id",
+      //   accessorKey: "framework_id",
+      //   header: "Framework ID",
+      //   meta: { label: "Framework ID" },
+      // },
     ],
     []
   );
-
-  const [globalFilter, setGlobalFilter] = useState("");
+  const router = useRouter();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((c) => c.id as string)
   );
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+
+  const [globalFilter, setGlobalFilter] = useQueryState(
+    "globalFilter",
+    parseAsString.withDefault("")
+  );
+
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
+  const [limit, setLimit] = useQueryState(
+    "limit",
+    parseAsInteger.withDefault(20)
+  );
 
   const table = useReactTable({
     data: controls?.data || [],
@@ -179,11 +227,32 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+    onPaginationChange: (updater) => {
+      const newPagination =
+        typeof updater === "function"
+          ? updater(table.getState().pagination)
+          : updater;
+      setPage(newPagination.pageIndex);
+      setLimit(newPagination.pageSize);
+    },
+    initialState: {
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+    },
     onColumnOrderChange: setColumnOrder,
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
-    state: { globalFilter, sorting, pagination, columnOrder },
+    state: {
+      globalFilter,
+      sorting,
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+      columnOrder,
+    },
     enableSortingRemoval: false,
   });
 
@@ -192,16 +261,28 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
   const rows = table.getRowModel().rows;
   const hasRows = rows.length > 0;
   const isNoVisibleColumns = visibleColumns.length === 2; // assuming first 2 are control columns
+  const filteredRows = table.getFilteredRowModel().rows;
 
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">
       {/* Page Header */}
 
       <div className="py-4 px-6 border-b">
-        <div>
-          <h1 className="font-semibold text-lg">
-            FedRAMP Moderate (800-53 Rev. 5)
-          </h1>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={router.back}
+              // href={"/controls"}
+              // className={cn(
+              //   "p-2 aspect-square hover:bg-primary-100 rounded-full"
+              // )}
+            >
+              <ArrowLeftIcon size={16} />
+            </button>
+            <h1 className="font-semibold text-lg">
+              FedRAMP Moderate (800-53 Rev. 5)
+            </h1>
+          </div>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -234,23 +315,26 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
         <ScrollArea className="border rounded-md w-full overflow-auto h-[calc(100vh-400px)]">
           <table className="min-w-full table-auto">
             {/* Sticky Header */}
-            {hasRows && visibleColumns.length > 2 && (
-              <thead className="sticky top-0 z-10 bg-white shadow-sm">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className="px-2 py-2 text-left text-sm font-medium text-gray-700"
-                        style={{ width: `${header.getSize?.()}px` }}
-                      >
-                        <DataTableHeader header={header} />
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-            )}
+            <thead className="sticky top-0 z-10 bg-background border-b shadow-sm">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className="relative group w-full px-3 py-2 text-left text-sm align-top"
+                      style={{ width: `${header.column.getSize()}px` }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  ))}
+                </tr>
+              ))}
+            </thead>
 
             {/* Table Body */}
             <tbody>
@@ -280,6 +364,26 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
                     </button>
                   </td>
                 </tr>
+              ) : filteredRows.length === 0 ? (
+                <tr className="h-[300px]">
+                  <td
+                    colSpan={columns.length}
+                    className="h-24 text-sm text-center text-gray-500"
+                  >
+                    No results found for your filter criteria.{" "}
+                    <button
+                      className="text-primary-600 font-bold"
+                      onClick={() => {
+                        console.log("Clear filters clicked");
+
+                        // Reset column filters
+                        table.resetColumnFilters();
+                      }}
+                    >
+                      Clear filter
+                    </button>
+                  </td>
+                </tr>
               ) : hasRows && visibleColumns.length > 2 ? (
                 rows.map((row) => (
                   <tr
@@ -289,7 +393,7 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="truncate px-4 py-2 text-sm text-gray-800"
+                        className="truncate flex-shrink-0 px-4 py-2 text-sm text-gray-800"
                         style={{ width: `${cell.column.getSize()}px` }}
                       >
                         {flexRender(
@@ -306,7 +410,7 @@ const ControlsDataTable: React.FC<ControlsDataTableProps> = ({
                     colSpan={columns.length}
                     className="h-24 text-center text-gray-500"
                   >
-                    No results.
+                    No results available.
                   </td>
                 </tr>
               )}
