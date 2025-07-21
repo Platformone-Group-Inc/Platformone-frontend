@@ -10,7 +10,7 @@ import { ChevronRightIcon, SendIcon } from "lucide-react";
 import AiIcon from "../icons/ai-icon";
 import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
 import { getChatRemediationQueryFn } from "@/services/operations/Ai";
-
+import { formatMessageContent } from "@/lib/formatMessageContent";
 interface ChatMessage {
   id: number;
   content: string;
@@ -188,13 +188,14 @@ const AiChatBox = () => {
               variant={message.sender === "user" ? "sent" : "received"}
             >
               <div className="flex flex-col">
-                <div className="mb-1">{message.content}</div>
-                <div className="text-xs text-gray-500 opacity-70">
-                  {new Date(message.timestamp).toLocaleTimeString([], { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  })}
-                </div>
+               <div className="mb-1">
+      {message.sender === "ai"
+        ? formatMessageContent(message.content)
+        : message.content}
+    </div>
+    <div className="text-xs text-gray-500 opacity-70">
+      {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+    </div>
               </div>
             </ChatBubbleMessage>
           </ChatBubble>
