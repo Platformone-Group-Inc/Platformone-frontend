@@ -21,8 +21,8 @@ import { Row } from "@tanstack/react-table";
 
 interface AssessmentRowProps {
   i: any;
-  value: "yes" | "no" | "n/a";
-  onAnswerChange: (id: string, value: "yes" | "no" | "n/a") => void;
+  value: "yes" | "no" | "n/a" | "";
+  onAnswerChange: (id: string, value: "yes" | "no" | "n/a" ) => void;
 }
 
 function AssessmentRow({ i, value, onAnswerChange }: AssessmentRowProps) {
@@ -110,7 +110,7 @@ const RowAction = ({ row }: { row: Row<any> }) => (
 
 interface AssessmentTableProps {
   frameworkId: any;
-  answers: Record<string, "yes" | "no" | "n/a">;
+  answers: Record<string, "yes" | "no" | "n/a" | undefined>;
   onAnswerChange: (id: string, value: "yes" | "no" | "n/a") => void;
   assignments: any[]; // Add assignments as prop
 }
@@ -145,7 +145,7 @@ const AssessmentTable = ({
             <AssessmentRow
               key={assignment?._id}
               i={assignment}
-              value={answers[assignment._id] || "n/a"}
+              value={answers[assignment._id] || ""}
               onAnswerChange={onAnswerChange}
             />
           ))}
