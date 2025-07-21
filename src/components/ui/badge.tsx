@@ -45,7 +45,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
       <div
         ref={ref}
         className={cn(
-          "truncate",
+          "truncate cursor-pointer",
           badgeVariants({ variant, size }),
           withDot && "gap-1.5",
           className

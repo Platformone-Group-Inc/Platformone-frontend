@@ -17,20 +17,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import NewActionModal from "./modals/new-action-modal";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  Row,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useMemo, useState } from "react";
-import DataTableHeader from "@/components/data-table/data-table-header";
-import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { Row } from "@tanstack/react-table";
 
 interface AssessmentRowProps {
   i: any;
@@ -47,7 +34,6 @@ function AssessmentRow({ i, value, onAnswerChange }: AssessmentRowProps) {
           {i?.question}
         </p>
       </div>
-
       <RadioGroup
         value={value}
         onValueChange={(newValue) =>

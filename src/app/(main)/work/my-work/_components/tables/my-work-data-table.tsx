@@ -14,6 +14,7 @@ import {
   useReactTable,
   type ColumnDef,
   type Row,
+  type Table as ITable,
   type SortingState,
 } from "@tanstack/react-table";
 
@@ -38,14 +39,15 @@ import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-f
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import UpdateControlModal from "@/app/(main)/controls/components/update-control-modal";
+import ReassignUsersModal from "../reassign-user-modal";
+import DeleteControllersModal from "@/app/(main)/controls/info/[id]/_components/modals/delete-controls-modal";
 
 interface IDocument {
   id: string;
@@ -71,72 +73,75 @@ const getFakeData = async (): Promise<IDocument[]> => {
   }));
 };
 
-const RowAction = ({ row }: { row: Row<IDocument> }) => (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button variant="transparent" size="icon" aria-label="Row actions">
-        <EllipsisVerticalIcon size={16} />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
-      <DropdownMenuItem
-        onClick={() => {
-          console.log(row.original);
-        }}
-      >
-        View Details
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
+const RowAction = ({
+  row,
+  table,
+}: {
+  table: ITable<IDocument>;
+  row: Row<IDocument>;
+}) => {
+  const [open, setOpen] = useState(false);
 
-const ResignUserModal = () => {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   return (
-    <Dialog>
-      <DialogTrigger>
-        <DropdownMenuItem>Reassign User</DropdownMenuItem>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Resign User?</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to resign this user? This action cannot be
-            undone.
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="transparent" size="icon" aria-label="Row actions">
+            <EllipsisVerticalIcon size={16} />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem asChild>
+            <DeleteControllersModal table={table} />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-        <DialogFooter className="mt-4">
-          {/* <DialogClose asChild> */}
-          <Button variant="secondary">Cancel</Button>
-          {/* </DialogClose> */}
-          <Button variant="error">Confirm Resignation</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
 const ReassignUser: React.FC<{ user: string }> = ({ user }) => {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div className="flex items-center gap-2">
-          <Avatar className="">
-            <AvatarFallback>{user[0]}</AvatarFallback>
-          </Avatar>
-          <p className="font-semibold underline ">{user}</p>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {/* <ResignUserModal /> */}
-        <DropdownMenuItem>Reassign User</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <div className="flex items-center gap-2">
+            <Avatar className="">
+              <AvatarFallback>{user[0]}</AvatarFallback>
+            </Avatar>
+            <p className="font-semibold underline ">{user}</p>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {/* <ResignUserModal /> */}
+          <DropdownMenuItem asChild>
+            <ReassignUsersModal />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };
 
 const MyWorkTable = () => {
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useQueryState(
+    "globalFilter",
+    parseAsString.withDefault("")
+  );
   const { data, isLoading } = useQuery({
     queryKey: ["my-work"],
     queryFn: async () => {
@@ -160,6 +165,7 @@ const MyWorkTable = () => {
               table.toggleAllPageRowsSelected(!!value)
             }
             aria-label="Select all"
+            className="mx-1"
           />
         ),
         cell: ({ row }) => (
@@ -208,7 +214,9 @@ const MyWorkTable = () => {
         ),
         meta: { label: "Status" },
         cell: ({ row }) => (
-          <Badge className="capitalize">{row.original.status}</Badge>
+          <UpdateControlModal>
+            <Badge className="capitalize">{row.original.status}</Badge>
+          </UpdateControlModal>
         ),
       },
       {
@@ -280,7 +288,7 @@ const MyWorkTable = () => {
         id: "actions",
         accessorKey: "actions",
         header: "Actions",
-        cell: ({ row }) => <RowAction row={row} />,
+        cell: ({ row }) => <RowAction table={table} row={row} />,
         enableSorting: false,
         enableHiding: false,
       },
@@ -292,7 +300,12 @@ const MyWorkTable = () => {
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((c) => c.id as string)
   );
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
+  const [limit, setLimit] = useQueryState(
+    "limit",
+    parseAsInteger.withDefault(20)
+  );
 
   const table = useReactTable({
     data: data || [],
@@ -302,12 +315,37 @@ const MyWorkTable = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+
     onColumnOrderChange: setColumnOrder,
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
-    state: { globalFilter, sorting, pagination, columnOrder },
+    onPaginationChange: (updater) => {
+      const newPagination =
+        typeof updater === "function"
+          ? updater(table.getState().pagination)
+          : updater;
+      setPage(newPagination.pageIndex);
+      setLimit(newPagination.pageSize);
+    },
+    initialState: {
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+    },
+
+    state: {
+      globalFilter,
+      sorting,
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+      columnOrder,
+    },
     enableSortingRemoval: false,
+    rowCount: 20,
+    pageCount: 2, // need to change
     defaultColumn: {
       minSize: 200,
     },

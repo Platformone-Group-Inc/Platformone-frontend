@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InfoCircle } from "iconsax-react";
@@ -25,6 +25,7 @@ import {
 import { technologiesOption } from "./data";
 import { getTechnologyQueryFn } from "@/services/operations/Technology";
 import { useTechnologyMutation } from "@/services/mutations/Technology";
+import { Input } from "@/components/ui/input";
 
 type FormData = Record<string, string>;
 
@@ -51,7 +52,12 @@ const TechnologiesPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const nextRoute = useRef<string | null>(null);
+  const [navigationBlocked, setNavigationBlocked] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [contentLoaded, setContentLoaded] = useState(false);
+  const pendingNavigationRef = useRef<(() => void) | null>(null);
+  const originalPushRef = useRef<typeof router.push | null>(null);
+  const originalReplaceRef = useRef<typeof router.replace | null>(null);
 
   const isDirty = JSON.stringify(formData) !== JSON.stringify(initialData);
 
@@ -61,46 +67,104 @@ const TechnologiesPage = () => {
     enabled: !!user?.organization,
     retry: false,
   });
+  const isLoadingContent = isLoading || isInitializing;
 
+  const shouldShowSkeleton = isLoadingContent || !user?.organization;
   const technologyMutation = useTechnologyMutation(isEdit, {
     onSuccess: () => {
       setIsEdit(true);
       setInitialData(formData);
+      // If there's a pending navigation after successful save, execute it
+      if (pendingNavigationRef.current) {
+        const pendingNavigation = pendingNavigationRef.current;
+        pendingNavigationRef.current = null;
+        setNavigationBlocked(false);
+        setTimeout(() => pendingNavigation(), 0);
+      }
     },
   });
 
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isDirty) {
+  // Enhanced beforeunload handler
+  const handleBeforeUnload = useCallback(
+    (e: BeforeUnloadEvent) => {
+      if (isDirty && !technologyMutation.isPending) {
         e.preventDefault();
-        e.returnValue = "";
+        e.returnValue =
+          "You have unsaved changes. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    },
+    [isDirty, technologyMutation.isPending]
+  );
+
+  // Navigation blocking setup
+  useEffect(() => {
+    if (!originalPushRef.current) {
+      originalPushRef.current = router.push;
+      originalReplaceRef.current = router.replace;
+    }
+
+    const interceptNavigation = (
+      originalMethod: typeof router.push,
+      url: Parameters<typeof router.push>[0],
+      options?: Parameters<typeof router.push>[1]
+    ) => {
+      if (isDirty && !navigationBlocked) {
+        setNavigationBlocked(true);
+        setShowDialog(true);
+        pendingNavigationRef.current = () => originalMethod(url, options);
+        return Promise.resolve(true); // Indicate navigation was handled
+      }
+      return originalMethod(url, options);
+    };
+
+    // Override router methods
+    router.push = (url, options) =>
+      interceptNavigation(originalPushRef.current!, url, options);
+    router.replace = (url, options) =>
+      interceptNavigation(originalReplaceRef.current!, url, options);
+
+    return () => {
+      // Restore original methods
+      if (originalPushRef.current) {
+        router.push = originalPushRef.current;
+      }
+      if (originalReplaceRef.current) {
+        router.replace = originalReplaceRef.current;
       }
     };
+  }, [isDirty, navigationBlocked, router]);
+
+  // Browser navigation protection
+  useEffect(() => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [isDirty]);
+  }, [handleBeforeUnload]);
 
+  // History/back button protection (for browsers that support it)
   useEffect(() => {
-    const handleRouteChange = (url: string) => {
+    if (!isDirty) return;
+
+    const handlePopState = (e: PopStateEvent) => {
       if (isDirty) {
+        e.preventDefault();
         setShowDialog(true);
-        nextRoute.current = url;
-        throw "Route change blocked.";
+        pendingNavigationRef.current = () => {
+          window.history.back();
+        };
+        // Push current state back to prevent actual navigation
+        window.history.pushState(null, "", window.location.href);
       }
     };
-    const pushState = router.push;
-    router.push = (url) => {
-      if (isDirty) {
-        setShowDialog(true);
-        nextRoute.current = url.toString();
-        return;
-      }
-      pushState(url);
-    };
+
+    // Add a dummy state to the history to catch back button
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
     return () => {
-      router.push = pushState;
+      window.removeEventListener("popstate", handlePopState);
     };
-  }, [isDirty, router]);
+  }, [isDirty]);
 
   useEffect(() => {
     if (data?.data?.technologies) {
@@ -135,6 +199,8 @@ const TechnologiesPage = () => {
       });
       setFormData(apiMap);
       setInitialData(apiMap);
+      setIsInitializing(false);
+      setTimeout(() => setContentLoaded(true), 100);
     } else if (isError || (!isLoading && !data?.data?.technologies)) {
       setIsEdit(false);
       setShowForm(true);
@@ -146,8 +212,11 @@ const TechnologiesPage = () => {
       });
       setFormData(blankFormData);
       setInitialData(blankFormData);
+      setIsInitializing(false);
+      setTimeout(() => setContentLoaded(true), 100);
     } else if (isError) {
       setShowForm(false);
+      setIsInitializing(false);
     }
   }, [data, isError, error, isLoading]);
 
@@ -167,13 +236,50 @@ const TechnologiesPage = () => {
     await technologyMutation.mutateAsync(payload);
   };
 
-  const handleLeave = () => {
-    setShowDialog(false);
-    if (nextRoute.current) {
-      router.push(nextRoute.current);
-      nextRoute.current = null;
+  const handleSaveAndLeave = async () => {
+    if (!user?.organization) return;
+
+    try {
+      const payload = {
+        organizationId: user?.organization,
+        responses: buildResponsesFromFormData(formData, technologiesOption),
+      };
+      await technologyMutation.mutateAsync(payload);
+      // Navigation will be handled in the mutation success callback
+    } catch (error) {
+      console.error("Save failed:", error);
+      // Keep dialog open if save fails
     }
   };
+
+  const handleDiscardAndLeave = () => {
+    setShowDialog(false);
+    setNavigationBlocked(false);
+
+    // Reset form to initial state
+    setFormData(initialData);
+
+    // Execute pending navigation
+    if (pendingNavigationRef.current) {
+      const pendingNavigation = pendingNavigationRef.current;
+      pendingNavigationRef.current = null;
+      setTimeout(() => pendingNavigation(), 0);
+    }
+  };
+
+  const handleDialogCancel = () => {
+    setShowDialog(false);
+    setNavigationBlocked(false);
+    pendingNavigationRef.current = null;
+  };
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      setNavigationBlocked(false);
+      pendingNavigationRef.current = null;
+    };
+  }, []);
 
   return (
     <div className="@container w-full">
@@ -182,17 +288,26 @@ const TechnologiesPage = () => {
         onValueChange={() => {
           if (typeof window !== "undefined") {
             const rootScroll = document.querySelector("#root-scroll");
-            rootScroll!.scrollIntoView({
+            rootScroll?.scrollIntoView({
               behavior: "smooth",
             });
           }
         }}
       >
-        <div className="p-6 bg-white space-y-6 w-full border-b border-black/10 pb-0 sticky top-0 z-10 ">
-          <h1 className="font-semibold text-lg inline-flex items-center gap-2">
-            Technologies
-            <InfoCircle className="size-4 stroke-secondary" />
-          </h1>
+        <div className="p-6 bg-white space-y-6 w-full border-b border-black/10 pb-0 sticky top-0 z-10">
+          <div className="flex items-center justify-between">
+            <h1 className="font-semibold text-lg inline-flex items-center gap-2">
+              Technologies
+              <InfoCircle className="size-4 stroke-secondary" />
+            </h1>
+
+            {isDirty && (
+              <div className="text-sm text-orange-600 font-medium flex items-center gap-1">
+                <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
+                Unsaved changes
+              </div>
+            )}
+          </div>
 
           {isLoading && (
             <div className="flex pb-3 h-auto w-full gap-2 flex-wrap justify-start rounded-none p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">
@@ -252,9 +367,12 @@ const TechnologiesPage = () => {
                             {opt.label}
                           </SelectItem>
                         ))}
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
+                    {formData[item.value] === "other" && (
+                      <Input placeholder={item.label} />
+                    )}
                   </div>
                 ))}
               </TabsContent>
@@ -265,15 +383,6 @@ const TechnologiesPage = () => {
 
       {showForm && !isLoading && (
         <div className="fixed right-8 bottom-8">
-          <button
-            onClick={() => {
-              const rootScroll = document.querySelector("#root-scroll");
-              console.log(rootScroll);
-              rootScroll!.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            click
-          </button>
           <Button
             className="rounded-xl"
             onClick={handleSave}
@@ -291,17 +400,32 @@ const TechnologiesPage = () => {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Unsaved changes</DialogTitle>
+            <DialogTitle>You have unsaved changes</DialogTitle>
           </DialogHeader>
-          <p>
-            You have unsaved changes. Are you sure you want to leave this page?
+          <p className="text-gray-600">
+            You have unsaved changes that will be lost if you leave this page.
+            What would you like to do?
           </p>
-          <DialogFooter>
-            <Button variant="secondary" onClick={() => setShowDialog(false)}>
-              Cancel
+          <DialogFooter className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={handleDialogCancel}
+              disabled={technologyMutation.isPending}
+            >
+              Stay on Page
             </Button>
-            <Button variant="error" onClick={handleLeave}>
-              Leave Anyway
+            <Button
+              variant="error"
+              onClick={handleDiscardAndLeave}
+              disabled={technologyMutation.isPending}
+            >
+              Discard Changes
+            </Button>
+            <Button
+              onClick={handleSaveAndLeave}
+              disabled={technologyMutation.isPending}
+            >
+              {technologyMutation.isPending ? "Saving..." : "Save & Leave"}
             </Button>
           </DialogFooter>
         </DialogContent>

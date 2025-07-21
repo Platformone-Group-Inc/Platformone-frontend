@@ -51,7 +51,7 @@ export const SystemTabs = () => {
         </TabsList>
       </div>
 
-      <div className="px-6 my-6 max-w-2xl">
+      <div className="px-6 my-6 max-w-3xl">
         {systemTabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value} className="space-y-4">
             <tab.content />
