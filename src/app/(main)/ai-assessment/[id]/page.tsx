@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 // import { InfoCircle } from "iconsax-react";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useSearchParams } from 'next/navigation'
@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getAssignmentsByOrganizationQueryFn,
   getAssignmentStatQueryFn,
+  getReportQueryFn,
 } from "@/services/operations/Assignments";
 import FallbackLoader from "@/components/other/fallback-loader";
 
@@ -27,12 +28,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { useAuthContext } from "@/context/auth-provider";
 
 const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams()
+  const { user, isLoading: authLoading } = useAuthContext();
+  const [isGenerating, setIsGenerating] = useState(false);
+  // console.log(user, 'user')
   const npage = searchParams.get('page')
   const [jumpToPage, setJumpToPage] = useState('');
   const [pageSize, setPageSize] = useQueryState(
@@ -46,6 +51,42 @@ const Page = () => {
   const [originalAnswers, setOriginalAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
     {}
   );
+
+ function toSafeUrl(rawUrl: string) {
+  const u = new URL(rawUrl);
+  u.pathname = u.pathname.split("/").map(encodeURIComponent).join("/");
+  return u.toString();
+}
+
+const generateReportHandler = async () => {
+  if (isGenerating) return;
+  setIsGenerating(true);
+    const newTab = window.open("", "_blank", "noopener,noreferrer");
+
+  try {
+    const data = {
+      client_id: user?.id,
+      client_name: user?.fullname,
+      report_type: "CMMC",
+      report_name: "GAP ANALYSIS REPORT",
+      client_logo: "https://example.com/logo.png",
+      client_address: [],
+      organization_id: user?.organization,
+      frameworkId: params?.id,
+    };
+    const response = await getReportQueryFn(data);
+    console.log(response?.data?.data?.download_url)
+    // window.open(response?.data?.data?.download_url);
+    const rawUrl = response?.data?.data?.download_url;
+router.push(rawUrl)
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsGenerating(false);
+  }
+};
+
 
   const {
     data: assignments,
@@ -112,7 +153,7 @@ const Page = () => {
       })
       .map(([_id, answer]) => ({
         _id,
-         answer: answer as string,
+        answer: answer as string,
       }));
     if (changedAnswers.length > 0) {
       submitAssignment.mutate(changedAnswers);
@@ -146,7 +187,26 @@ const Page = () => {
           <div className="flex items-center gap-4">
             {/* <AssessmentTableAction />
           <FilterModal /> */}
-            <Button onClick={()=>{console.log("report")}} disabled={assignmentsStats?.answerStats?.totalAssignments != assignmentsStats?.answerStats?.answeredYes + assignmentsStats?.answerStats?.answeredNo + assignmentsStats?.answerStats?.answeredNA}>Generate Report</Button>
+        <Button
+  onClick={generateReportHandler}
+  disabled={
+    isGenerating ||
+    assignmentsStats?.answerStats?.totalAssignments !=
+      assignmentsStats?.answerStats?.answeredYes +
+        assignmentsStats?.answerStats?.answeredNo +
+        assignmentsStats?.answerStats?.answeredNA
+  }
+>
+  {isGenerating ? (
+    <span className="inline-flex items-center gap-2">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      Generating report…
+    </span>
+  ) : (
+    "Generate Report"
+  )}
+</Button>
+
             <Button onClick={handleSave}>Save</Button>
           </div>
         </div>
