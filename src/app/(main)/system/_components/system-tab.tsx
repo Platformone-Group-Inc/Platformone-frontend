@@ -13,11 +13,11 @@ export const systemTabs = [
     label: "Organization",
     content: OrganizationTabContent,
   },
-  {
-    value: "security",
-    label: "Security Personnel",
-    content: SecurityTabContent,
-  },
+  // {
+  //   value: "security",
+  //   label: "Security Personnel",
+  //   content: SecurityTabContent,
+  // },
   {
     value: "info-system",
     label: "Info System",
