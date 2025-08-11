@@ -61,7 +61,7 @@ const Page = () => {
 const generateReportHandler = async () => {
   if (isGenerating) return;
   setIsGenerating(true);
-    const newTab = window.open("", "_blank", "noopener,noreferrer");
+    // const newTab = window.open("", "_blank", "noopener,noreferrer");
 
   try {
     const data = {
