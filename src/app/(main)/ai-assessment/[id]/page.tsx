@@ -2,10 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 // import { InfoCircle } from "iconsax-react";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  LoaderIcon,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 import AssessmentTable from "../components/assesment-table";
 // import FilterModal from "../components/modals/filter-modal";
 // import AssessmentTableAction from "../components/table-actions";
@@ -32,20 +37,20 @@ const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams()
-  const npage = searchParams.get('page')
-  const [jumpToPage, setJumpToPage] = useState('');
+  const searchParams = useSearchParams();
+  const npage = searchParams.get("page");
+  const [jumpToPage, setJumpToPage] = useState("");
   const [pageSize, setPageSize] = useQueryState(
     "pageSize",
     parseAsInteger.withDefault(10)
   );
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
-    {}
-  );
-  const [originalAnswers, setOriginalAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
-    {}
-  );
+  const [answers, setAnswers] = useState<
+    Record<string, "yes" | "no" | "n/a" | undefined>
+  >({});
+  const [originalAnswers, setOriginalAnswers] = useState<
+    Record<string, "yes" | "no" | "n/a" | undefined>
+  >({});
 
   const {
     data: assignments,
@@ -53,7 +58,8 @@ const Page = () => {
     error: assignmentsError,
   } = useQuery({
     queryKey: ["assignments", params.id, page, pageSize],
-    queryFn: () => getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
+    queryFn: () =>
+      getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
     enabled: !!params.id,
   });
 
@@ -73,10 +79,16 @@ const Page = () => {
 
   useEffect(() => {
     if (assignments?.assignments && assignments?.assignments?.length > 0) {
-      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> = {};
+      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> =
+        {};
       assignments?.assignments?.forEach((assignment: any) => {
-        const answer = assignment.answer || assignment.response || assignment.value;
-        if (answer && answer !== "" && (answer === "yes" || answer === "no" || answer === "n/a")) {
+        const answer =
+          assignment.answer || assignment.response || assignment.value;
+        if (
+          answer &&
+          answer !== "" &&
+          (answer === "yes" || answer === "no" || answer === "n/a")
+        ) {
           existingAnswers[assignment._id] = answer;
         } else {
           existingAnswers[assignment._id] = undefined;
@@ -96,8 +108,12 @@ const Page = () => {
 
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["assignments", params.id, page, pageSize] });
-      queryClient.invalidateQueries({ queryKey: ["assignmentsStats", params.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["assignments", params.id, page, pageSize],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["assignmentsStats", params.id],
+      });
       setOriginalAnswers({ ...answers });
     },
     onError: (error) => {
@@ -112,7 +128,7 @@ const Page = () => {
       })
       .map(([_id, answer]) => ({
         _id,
-         answer: answer as string,
+        answer: answer as string,
       }));
     if (changedAnswers.length > 0) {
       submitAssignment.mutate(changedAnswers);
@@ -146,8 +162,23 @@ const Page = () => {
           <div className="flex items-center gap-4">
             {/* <AssessmentTableAction />
           <FilterModal /> */}
-            <Button onClick={()=>{console.log("report")}} disabled={assignmentsStats?.answerStats?.totalAssignments != assignmentsStats?.answerStats?.answeredYes + assignmentsStats?.answerStats?.answeredNo + assignmentsStats?.answerStats?.answeredNA}>Generate Report</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button
+              onClick={() => {
+                console.log("report");
+              }}
+              disabled={
+                assignmentsStats?.answerStats?.totalAssignments !=
+                assignmentsStats?.answerStats?.answeredYes +
+                  assignmentsStats?.answerStats?.answeredNo +
+                  assignmentsStats?.answerStats?.answeredNA
+              }
+            >
+              Generate Report
+            </Button>
+            <Button onClick={handleSave} className="opacity-50">
+              <LoaderIcon className="animate-spin" size={16} />
+              Save
+            </Button>
           </div>
         </div>
         <div className="pb-4 border-b px-6">
@@ -172,6 +203,7 @@ const Page = () => {
         assignments={assignments?.assignments || []}
       />
 
+      {/* pagination */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-2 px-4 gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           {/* Rows per page */}
@@ -198,10 +230,8 @@ const Page = () => {
 
           {/* Page info */}
           <div className="text-sm font-medium whitespace-nowrap">
-
             {/* TODO add final page */}
             Page {page} of 50
-
           </div>
 
           {/* Jump to page */}
@@ -218,7 +248,7 @@ const Page = () => {
               max={totalPages}
               onChange={(e) => setJumpToPage(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleJumpToPage();
+                if (e.key === "Enter") handleJumpToPage();
               }}
               className="h-8 w-20"
             />
@@ -235,7 +265,6 @@ const Page = () => {
             >
               Go
             </Button>
-
           </div>
 
           {/* Row info */}

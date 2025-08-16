@@ -27,6 +27,12 @@ export function DataTablePagination<TData>({
   className,
   ...props
 }: DataTablePaginationProps<TData>) {
+  const currentPageSelectedCount = table
+    .getSelectedRowModel()
+    .rows.filter((r) => table.getRowModel().rows.includes(r)).length;
+
+  const currentPageRowCount = table.getRowModel().rows.length;
+
   return (
     <div
       className={cn(
@@ -36,8 +42,7 @@ export function DataTablePagination<TData>({
       {...props}
     >
       <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        {currentPageSelectedCount} of {currentPageRowCount} row(s) selected.
       </div>
       <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
         <div className="flex items-center space-x-2">
@@ -52,11 +57,15 @@ export function DataTablePagination<TData>({
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {pageSizeOptions.map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
+              {pageSizeOptions
+                .filter(
+                  (size) => size <= table.getPrePaginationRowModel().rows.length
+                )
+                .map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
