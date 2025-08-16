@@ -11,13 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import API from "@/services/axios-client";
+import { useAuthContext } from "@/context/auth-provider";
 
 const FrameworksCardActions = ({ frameworkId }: { frameworkId: string }) => {
   const router = useRouter();
 
+  const { user } = useAuthContext();
+
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       try {
@@ -35,9 +39,13 @@ const FrameworksCardActions = ({ frameworkId }: { frameworkId: string }) => {
     },
     onSuccess: () => {
       toast.success("Framework uninstalled");
+      window.location.reload();
+      // queryClient.refetchQueries({
+      //   queryKey: ["frameworks", user?.organization],
+      // });
     },
     onError: () => {
-      toast.success("Failed to uninstall framework");
+      toast.error("Failed to uninstall framework");
     },
   });
 
@@ -70,6 +78,13 @@ const FrameworksCardActions = ({ frameworkId }: { frameworkId: string }) => {
         <DropdownMenuItem disabled={isPending} onClick={() => mutate()}>
           Uninstall
         </DropdownMenuItem>
+        {/* <button
+          onClick={() => {
+            console.log(frameworkId, user?.organization);
+          }}
+        >
+          click
+        </button> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
