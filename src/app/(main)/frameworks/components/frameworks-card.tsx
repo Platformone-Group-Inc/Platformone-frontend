@@ -2,7 +2,7 @@
 
 import RadialChart from "@/components/charts/radial-chart";
 import { Button } from "@/components/ui/button";
-import { ChevronRightIcon, EllipsisIcon } from "lucide-react";
+import { ChevronRightIcon, EllipsisIcon, Loader2Icon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -11,18 +11,50 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import API from "@/services/axios-client";
 
-const FrameworksCardActions = () => {
+const FrameworksCardActions = ({ frameworkId }: { frameworkId: string }) => {
   const router = useRouter();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      try {
+        const { data } = await API({
+          url: "/frameworks/uninstallFramework",
+          data: { frameworkId },
+          method: "delete",
+        });
+
+        return data;
+      } catch (error) {
+        console.log(error);
+        throw Error("Failed to uninstall framework");
+      }
+    },
+    onSuccess: () => {
+      toast.success("Framework uninstalled");
+    },
+    onError: () => {
+      toast.success("Failed to uninstall framework");
+    },
+  });
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant={"transparent"}
           size={"icon"}
+          disabled={isPending}
           // onClick={() => setOpenInfoModal(true)}
         >
-          <EllipsisIcon size={20} className="stroke-secondary-400" />
+          {isPending ? (
+            <Loader2Icon className="animate-spin" />
+          ) : (
+            <EllipsisIcon size={20} className="stroke-secondary-400" />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[240px]">
@@ -34,6 +66,9 @@ const FrameworksCardActions = () => {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push("/ai-reports")}>
           Report
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled={isPending} onClick={() => mutate()}>
+          Uninstall
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -55,8 +90,14 @@ const FrameworksCard = ({ framework }: any) => {
 
           <p className="font-semibold text-sm">{framework?.name}</p>
         </div>
-
-        <FrameworksCardActions />
+        {/* <button
+          onClick={() => {
+            console.log(framework);
+          }}
+        >
+          click
+        </button> */}
+        <FrameworksCardActions frameworkId={framework._id as string} />
       </div>
       <div className="flex flex-col items-center justify-center gap-2 w-full">
         <RadialChart value={80} size={140} arcWidth={15} />

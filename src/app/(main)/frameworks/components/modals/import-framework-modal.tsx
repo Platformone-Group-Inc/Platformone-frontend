@@ -20,18 +20,18 @@ import { XIcon } from "lucide-react";
 const ImportFrameworkModal = ({ framework }: any) => {
   const { user, isLoading: authLoading } = useAuthContext();
   const { mutate: cloneFramework } = useCloneFramework({
-    redirectTo: '/frameworks',
+    redirectTo: "/frameworks",
     onSuccess: (data) => {
-      console.log('Framework cloned:', data);
-    }
+      console.log("Framework cloned:", data);
+    },
   });
 
   const handleCloneClick = () => {
-  cloneFramework({
-    organizationId: user?.organization || '',
-    frameworkId: framework?._id
-  });
-};
+    cloneFramework({
+      organizationId: user?.organization || "",
+      frameworkId: framework?._id,
+    });
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
