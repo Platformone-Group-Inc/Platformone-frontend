@@ -13,7 +13,7 @@ const SecurityUsers = () => {
       <div className="flex-grow p-4 rounded-2xl bg-white">
         <div className="space-y-1 pb-6 flex items-center justify-between ">
           <h1 className="font-semibold text-xl inline-flex gap-1 items-center">
-            Security Group
+            Users
             {/* <Badge className="ml-3.5">2 Control Set</Badge> */}
             <InfoCircle className="stroke-secondary size-4" />
           </h1>
