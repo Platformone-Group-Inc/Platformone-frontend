@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisVerticalIcon } from "lucide-react";
+import { EllipsisVerticalIcon, InfoIcon } from "lucide-react";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
@@ -360,6 +360,7 @@ const TeamWorkTable = () => {
       <div className="border-b p-4">
         <h1 className="font-semibold inline-flex items-center gap-2 text-xl">
           Team Work
+          <InfoIcon className="" size={16} />
         </h1>
       </div>
 

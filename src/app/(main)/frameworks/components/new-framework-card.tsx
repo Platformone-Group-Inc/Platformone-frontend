@@ -13,9 +13,9 @@ import AddedFrameworkBadge from "./added-framework-badge";
 // TODO: add framework props
 interface Props {
   added?: boolean;
-  framework?: any
+  framework?: any;
 }
-const NewFrameworkCard: React.FC<Props> = ({ added,framework }) => {
+const NewFrameworkCard: React.FC<Props> = ({ added, framework }) => {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   return (
     <>
@@ -24,9 +24,9 @@ const NewFrameworkCard: React.FC<Props> = ({ added,framework }) => {
           <div className="flex items-center gap-1.5">
             {/* TODO */}
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
+              src="https://assets.ctrlmap.com/assets/images/framework_logos/cmmc2.png"
               alt=""
-              className="size-10 rounded-lg"
+              className="size-10 rounded-lg object-cover"
             />
 
             <p className="font-semibold text-sm">
@@ -49,7 +49,11 @@ const NewFrameworkCard: React.FC<Props> = ({ added,framework }) => {
         </p>
         <hr className="mb-4" />
         {/* TODO add framework props */}
-        {added ? <AddedFrameworkBadge /> : <ImportFrameworkModal framework={framework} />}
+        {added ? (
+          <AddedFrameworkBadge />
+        ) : (
+          <ImportFrameworkModal framework={framework} />
+        )}
       </div>
       <FrameworkInfoModal
         open={openInfoModal}

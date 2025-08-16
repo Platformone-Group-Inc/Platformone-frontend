@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import {
@@ -86,9 +86,9 @@ const AssessmentCard = ({ framework }: any) => {
         >
           Take Assessment
         </Link>
-        <Button variant={"link"} size={"md"} className="rounded-full">
+        {/* <Button variant={"link"} size={"md"} className="rounded-full">
           View Details
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

@@ -2,10 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 // import { InfoCircle } from "iconsax-react";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  LoaderIcon,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 import AssessmentTable from "../components/assesment-table";
 // import FilterModal from "../components/modals/filter-modal";
 // import AssessmentTableAction from "../components/table-actions";
@@ -16,7 +21,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getAssignmentsByOrganizationQueryFn,
   getAssignmentStatQueryFn,
-  getReportQueryFn,
 } from "@/services/operations/Assignments";
 import FallbackLoader from "@/components/other/fallback-loader";
 
@@ -28,65 +32,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useAuthContext } from "@/context/auth-provider";
 
 const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams()
-  const { user, isLoading: authLoading } = useAuthContext();
-  const [isGenerating, setIsGenerating] = useState(false);
-  // console.log(user, 'user')
-  const npage = searchParams.get('page')
-  const [jumpToPage, setJumpToPage] = useState('');
+  const searchParams = useSearchParams();
+  const npage = searchParams.get("page");
+  const [jumpToPage, setJumpToPage] = useState("");
   const [pageSize, setPageSize] = useQueryState(
     "pageSize",
     parseAsInteger.withDefault(10)
   );
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
-    {}
-  );
-  const [originalAnswers, setOriginalAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
-    {}
-  );
-
- function toSafeUrl(rawUrl: string) {
-  const u = new URL(rawUrl);
-  u.pathname = u.pathname.split("/").map(encodeURIComponent).join("/");
-  return u.toString();
-}
-
-const generateReportHandler = async () => {
-  if (isGenerating) return;
-  setIsGenerating(true);
-    // const newTab = window.open("", "_blank", "noopener,noreferrer");
-
-  try {
-    const data = {
-      client_id: user?.id,
-      client_name: user?.fullname,
-      report_type: "CMMC",
-      report_name: "GAP ANALYSIS REPORT",
-      client_logo: "https://example.com/logo.png",
-      client_address: [],
-      organization_id: user?.organization,
-      frameworkId: params?.id,
-    };
-    const response = await getReportQueryFn(data);
-    console.log(response?.data?.data?.download_url)
-    // window.open(response?.data?.data?.download_url);
-    const rawUrl = response?.data?.data?.download_url;
-router.push(rawUrl)
-
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setIsGenerating(false);
-  }
-};
-
+  const [answers, setAnswers] = useState<
+    Record<string, "yes" | "no" | "n/a" | undefined>
+  >({});
+  const [originalAnswers, setOriginalAnswers] = useState<
+    Record<string, "yes" | "no" | "n/a" | undefined>
+  >({});
 
   const {
     data: assignments,
@@ -94,7 +58,8 @@ router.push(rawUrl)
     error: assignmentsError,
   } = useQuery({
     queryKey: ["assignments", params.id, page, pageSize],
-    queryFn: () => getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
+    queryFn: () =>
+      getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
     enabled: !!params.id,
   });
 
@@ -114,10 +79,16 @@ router.push(rawUrl)
 
   useEffect(() => {
     if (assignments?.assignments && assignments?.assignments?.length > 0) {
-      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> = {};
+      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> =
+        {};
       assignments?.assignments?.forEach((assignment: any) => {
-        const answer = assignment.answer || assignment.response || assignment.value;
-        if (answer && answer !== "" && (answer === "yes" || answer === "no" || answer === "n/a")) {
+        const answer =
+          assignment.answer || assignment.response || assignment.value;
+        if (
+          answer &&
+          answer !== "" &&
+          (answer === "yes" || answer === "no" || answer === "n/a")
+        ) {
           existingAnswers[assignment._id] = answer;
         } else {
           existingAnswers[assignment._id] = undefined;
@@ -137,8 +108,12 @@ router.push(rawUrl)
 
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["assignments", params.id, page, pageSize] });
-      queryClient.invalidateQueries({ queryKey: ["assignmentsStats", params.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["assignments", params.id, page, pageSize],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["assignmentsStats", params.id],
+      });
       setOriginalAnswers({ ...answers });
     },
     onError: (error) => {
@@ -187,27 +162,23 @@ router.push(rawUrl)
           <div className="flex items-center gap-4">
             {/* <AssessmentTableAction />
           <FilterModal /> */}
-        <Button
-  onClick={generateReportHandler}
-  disabled={
-    isGenerating ||
-    assignmentsStats?.answerStats?.totalAssignments !=
-      assignmentsStats?.answerStats?.answeredYes +
-        assignmentsStats?.answerStats?.answeredNo +
-        assignmentsStats?.answerStats?.answeredNA
-  }
->
-  {isGenerating ? (
-    <span className="inline-flex items-center gap-2">
-      <Loader2 className="h-4 w-4 animate-spin" />
-      Generating report…
-    </span>
-  ) : (
-    "Generate Report"
-  )}
-</Button>
-
-            <Button onClick={handleSave}>Save</Button>
+            <Button
+              onClick={() => {
+                console.log("report");
+              }}
+              disabled={
+                assignmentsStats?.answerStats?.totalAssignments !=
+                assignmentsStats?.answerStats?.answeredYes +
+                  assignmentsStats?.answerStats?.answeredNo +
+                  assignmentsStats?.answerStats?.answeredNA
+              }
+            >
+              Generate Report
+            </Button>
+            <Button onClick={handleSave} className="opacity-50">
+              <LoaderIcon className="animate-spin" size={16} />
+              Save
+            </Button>
           </div>
         </div>
         <div className="pb-4 border-b px-6">
@@ -232,6 +203,7 @@ router.push(rawUrl)
         assignments={assignments?.assignments || []}
       />
 
+      {/* pagination */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-2 px-4 gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           {/* Rows per page */}
@@ -258,10 +230,8 @@ router.push(rawUrl)
 
           {/* Page info */}
           <div className="text-sm font-medium whitespace-nowrap">
-
             {/* TODO add final page */}
             Page {page} of 50
-
           </div>
 
           {/* Jump to page */}
@@ -278,7 +248,7 @@ router.push(rawUrl)
               max={totalPages}
               onChange={(e) => setJumpToPage(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleJumpToPage();
+                if (e.key === "Enter") handleJumpToPage();
               }}
               className="h-8 w-20"
             />
@@ -295,7 +265,6 @@ router.push(rawUrl)
             >
               Go
             </Button>
-
           </div>
 
           {/* Row info */}

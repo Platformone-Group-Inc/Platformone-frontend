@@ -20,18 +20,18 @@ import { XIcon } from "lucide-react";
 const ImportFrameworkModal = ({ framework }: any) => {
   const { user, isLoading: authLoading } = useAuthContext();
   const { mutate: cloneFramework } = useCloneFramework({
-    redirectTo: '/frameworks',
+    redirectTo: "/frameworks",
     onSuccess: (data) => {
-      console.log('Framework cloned:', data);
-    }
+      console.log("Framework cloned:", data);
+    },
   });
 
   const handleCloneClick = () => {
-  cloneFramework({
-    organizationId: user?.organization || '',
-    frameworkId: framework?._id
-  });
-};
+    cloneFramework({
+      organizationId: user?.organization || "",
+      frameworkId: framework?._id,
+    });
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -47,12 +47,12 @@ const ImportFrameworkModal = ({ framework }: any) => {
         <div className="space-y-4">
           <DialogHeader className="flex flex-row items-start gap-3">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
+              src="https://www.sysarc.com/wp-content/uploads/2023/05/CMMC-Logo.jpeg"
               alt=""
               className="size-10 rounded-xl"
             />
             <DialogTitle className="text-xl font-semibold">
-              Fedramp (Rev5) Moderate Baseline
+              CYBERSECURITY MATURITY MODEL CERTIFICATION (CMMC 2.0)
             </DialogTitle>
             <DialogClose className="ml-auto">
               <XIcon className=" text-placeholder" />
@@ -61,14 +61,16 @@ const ImportFrameworkModal = ({ framework }: any) => {
           <div className="border rounded-xl">
             <h2 className="text-base font-medium py-3 px-4">Program Name</h2>
             <hr />
-            <p className="text-sm  p-4">Fedramp (Rev5) Moderate Baseline</p>
+            <p className="text-sm  p-4">
+              CYBERSECURITY MATURITY MODEL CERTIFICATION (CMMC 2.0)
+            </p>
           </div>
           <div className="border rounded-xl">
             <h2 className="text-base font-semibold py-3 px-4">Program scope</h2>
             <p className="text-sm px-4">
-              There are 323 objectives to be implemented for Fedramp (Rev5)
-              Moderate Baseline. All requirements in Fedramp (Rev5) Moderate
-              Baseline are required to be implemented for successful completion.
+              The Cybersecurity Maturity Model Certification (CMMC) is a unified
+              standard for implementing cybersecurity across the defense
+              industrial base (DIB).
             </p>
             <hr className="mt-3" />
             <div className="flex items-center gap-3 p-4">

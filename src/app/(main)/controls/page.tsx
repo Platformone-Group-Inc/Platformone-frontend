@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
 
 import ControlCardSkeleton from "./components/control-card-sekeleton";
+import { InfoIcon } from "lucide-react";
 
 const ControlsPage = () => {
   const { user } = useAuthContext();
@@ -27,8 +28,9 @@ const ControlsPage = () => {
   return (
     <div className="@container">
       <div className="sticky backdrop-blur top-0 z-10 border-b px-6 py-4 flex items-center justify-between ">
-        <h1 className="font-semibold text-xl">
+        <h1 className="font-semibold text-xl inline-flex items-center gap-2">
           Control Set
+          <InfoIcon className="" size={16} />
           {false && <Badge className="ml-3.5">2 Control Set</Badge>}
         </h1>
         <div className="flex items-center gap-4">

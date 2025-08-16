@@ -3,6 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { TooltipProvider } from "../ui/tooltip";
 import { TooltipProvider as AnimateTooltipProvider } from "../animate-ui/radix-tooltip";
+import { Toaster } from "sonner";
 // import { ThemeProvider } from "./theme-provider";
 
 const Providers = ({ children }: React.PropsWithChildren) => {
@@ -15,7 +16,11 @@ const Providers = ({ children }: React.PropsWithChildren) => {
         disableTransitionOnChange
       > */}
       <AnimateTooltipProvider>
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          {children}
+
+          <Toaster richColors />
+        </TooltipProvider>
       </AnimateTooltipProvider>
       {/* </ThemeProvider> */}
     </NuqsAdapter>

@@ -6,7 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OrganizationTabContent from "./tab-content/organization-tab-content";
 import SecurityTabContent from "./tab-content/security-tab-content";
 import InfoSystemTabContent from "./tab-content/info-system-tab-content";
+import ImpactTabContent from "./tab-content/impact-tab-content";
+import { InfoIcon } from "lucide-react";
 
+// TODO: remove this and save it on routes
 export const systemTabs = [
   {
     value: "organization",
@@ -23,11 +26,11 @@ export const systemTabs = [
     label: "Info System",
     content: InfoSystemTabContent,
   },
-  //   {
-  //     value: "organization",
-  //     label: "Organization",
-  //     content: () => null,
-  //   },
+  {
+    value: "impact",
+    label: "Impact",
+    content: ImpactTabContent,
+  },
 ];
 
 export const SystemTabs = () => {
@@ -36,6 +39,7 @@ export const SystemTabs = () => {
       <div className="p-6 bg-white space-y-6 w-full border-b border-black/10 pb-0 sticky top-0 z-10 ">
         <h1 className="px-2 font-semibold text-lg inline-flex items-center gap-2">
           System Information
+          <InfoIcon className="" size={16} />
         </h1>
 
         <TabsList className="flex h-auto w-full flex-wrap justify-start rounded-none p-0 @lg:flex-nowrap @lg:overflow-x-auto @lg:whitespace-nowrap">

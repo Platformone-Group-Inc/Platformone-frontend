@@ -4,6 +4,7 @@ import AssessmentCard from "./components/assessment-card";
 import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
 import { useAuthContext } from "@/context/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { InfoIcon } from "lucide-react";
 
 const AiAssessment = () => {
   const { user, isLoading: authLoading } = useAuthContext();
@@ -16,11 +17,14 @@ const AiAssessment = () => {
   return (
     <div className="@container">
       <div className="p-6 border-b">
-        <h1 className="font-semibold text-xl">Ai Assessment</h1>
+        <h1 className="font-semibold text-xl inline-flex items-center gap-2">
+          Ai Assessment
+          <InfoIcon className="" size={16} />
+        </h1>
       </div>
       <div className="py-4 space-y-4 px-6 @container">
         <h2 className="text-base font-medium ">
-          Answers Progress for frameworks
+          Select a framework for gap assessment
         </h2>
         <div className="grid gap-4 grid-cols-1 @[550px]:grid-cols-2 @[800px]:grid-cols-3 @[1200px]:grid-cols-4 ">
           {(myFrameworksLoading || authLoading || !myFrameworks) &&

@@ -9,6 +9,7 @@ import {
   getFrameworksQueryFn,
 } from "@/services/operations/Framework";
 import { useMemo } from "react";
+import FallbackLoader from "@/components/other/fallback-loader";
 
 const NewFrameworkPage = () => {
   const { user, isLoading: authLoading } = useAuthContext();
@@ -55,7 +56,7 @@ const NewFrameworkPage = () => {
   const hasError = myFrameworksError || availableFrameworksError;
 
   if (isLoading) {
-    return <div className="p-6">Loading frameworks...</div>;
+    return <FallbackLoader />;
   }
 
   // if (hasError) {
