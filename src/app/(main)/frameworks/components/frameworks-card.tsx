@@ -30,21 +30,20 @@ const FrameworksCardActions = () => {
   );
 };
 
-const FrameworksCard = ({framework}:any) => {
+const FrameworksCard = ({ framework }: any) => {
   return (
     <div className="rounded-2xl flex flex-col justify-normal items-center gap-3 p-6 border">
       <div className="flex items-start justify-between w-full">
         <div className="flex items-center gap-1.5">
           {/* TODO */}
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
+            // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
+            src="https://www.sysarc.com/wp-content/uploads/2023/05/CMMC-Logo.jpeg"
             alt=""
-            className="size-10 rounded-lg"
+            className="size-10 rounded-lg object-cover"
           />
 
-          <p className="font-semibold text-sm">
-           {framework?.name}
-          </p>
+          <p className="font-semibold text-sm">{framework?.name}</p>
         </div>
 
         <FrameworksCardActions />
