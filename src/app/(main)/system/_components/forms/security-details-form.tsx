@@ -9,6 +9,10 @@ const SecurityDetailsForm = () => {
         <SelectUserInput placeholder="Select Employee" />
       </div>
       <div className="space-y-2">
+        <Label className="font-semibold">System Owner</Label>
+        <SelectUserInput placeholder="Select Employee" />
+      </div>
+      <div className="space-y-2">
         <Label className="font-semibold">System Security Officer</Label>
         <SelectUserInput placeholder="Select Employee" />
       </div>
