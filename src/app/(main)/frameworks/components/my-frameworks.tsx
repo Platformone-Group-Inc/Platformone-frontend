@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
 import { useAuthContext } from "@/context/auth-provider";
 import NoFrameworks from "./no-frameworks";
+import FallbackLoader from "@/components/other/fallback-loader";
 const MyFrameworks = () => {
   const { user, isLoading: authLoading } = useAuthContext();
 
@@ -24,7 +25,7 @@ const MyFrameworks = () => {
   });
 
   if (myFrameworksLoading) {
-    return <p> Loading Frameworks</p>;
+    return <FallbackLoader />;
   }
   return (
     <>
