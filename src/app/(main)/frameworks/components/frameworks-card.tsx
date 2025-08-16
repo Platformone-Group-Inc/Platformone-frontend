@@ -1,3 +1,5 @@
+"use client";
+
 import RadialChart from "@/components/charts/radial-chart";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, EllipsisIcon } from "lucide-react";
@@ -8,8 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 
 const FrameworksCardActions = () => {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,9 +26,15 @@ const FrameworksCardActions = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[240px]">
-        <DropdownMenuItem>Dashboard</DropdownMenuItem>
-        <DropdownMenuItem>Control</DropdownMenuItem>
-        <DropdownMenuItem>Report</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push("/")}>
+          Dashboard
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push("/controls")}>
+          Control
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push("/ai-reports")}>
+          Report
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
