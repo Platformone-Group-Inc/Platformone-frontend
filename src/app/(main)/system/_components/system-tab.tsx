@@ -6,7 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OrganizationTabContent from "./tab-content/organization-tab-content";
 import SecurityTabContent from "./tab-content/security-tab-content";
 import InfoSystemTabContent from "./tab-content/info-system-tab-content";
+import ImpactTabContent from "./tab-content/impact-tab-content";
 
+// TODO: remove this and save it on routes
 export const systemTabs = [
   {
     value: "organization",
@@ -23,11 +25,11 @@ export const systemTabs = [
     label: "Info System",
     content: InfoSystemTabContent,
   },
-  //   {
-  //     value: "organization",
-  //     label: "Organization",
-  //     content: () => null,
-  //   },
+  {
+    value: "impact",
+    label: "Impact",
+    content: ImpactTabContent,
+  },
 ];
 
 export const SystemTabs = () => {
