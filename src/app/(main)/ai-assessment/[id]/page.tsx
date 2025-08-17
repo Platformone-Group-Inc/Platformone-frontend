@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/auth-provider";
+import toast from "react-hot-toast";
 
 const Page = () => {
   const router = useRouter();
@@ -52,43 +53,46 @@ const Page = () => {
     {}
   );
 
- function toSafeUrl(rawUrl: string) {
-  const u = new URL(rawUrl);
-  u.pathname = u.pathname.split("/").map(encodeURIComponent).join("/");
-  return u.toString();
-}
+  function toSafeUrl(rawUrl: string) {
+    const u = new URL(rawUrl);
+    u.pathname = u.pathname.split("/").map(encodeURIComponent).join("/");
+    return u.toString();
+  }
 
-const generateReportHandler = async () => {
-  if (isGenerating) return;
-  setIsGenerating(true);
+  const generateReportHandler = async () => {
+    if (isGenerating) return;
+    setIsGenerating(true);
     // const newTab = window.open("", "_blank", "noopener,noreferrer");
 
-  try {
-    const data = {
-      client_id: user?.id,
-      client_name: user?.fullname,
-      report_type: "CMMC",
-      report_name: "GAP ANALYSIS REPORT",
-      client_logo: "https://example.com/logo.png",
-      client_address: [],
-      organization_id: user?.organization,
-      frameworkId: params?.id,
-    };
-    const response = await getReportQueryFn(data);
+    try {
+      const data = {
+        client_id: user?.id,
+        client_name: user?.fullname,
+        report_type: "CMMC",
+        report_name: "GAP ANALYSIS REPORT",
+        client_logo: "https://example.com/logo.png",
+        client_address: [],
+        organization_id: user?.organization,
+        frameworkId: params?.id,
+      };
+      const response = await getReportQueryFn(data);
+      if (response?.data?.data?.task_id) {
+        toast.success("Report generation started");
+        router.push("/ai-reports?from=assignment");
+      }
+      // console.log(response?.data?.data?.task_id, 'task_id')
+      // console.log(response?.data?.data?.download_url, 'download_url')
 
-    console.log(response?.data?.data?.task_id, 'task_id')
-    // console.log(response?.data?.data?.download_url, 'download_url')
+      // window.open(response?.data?.data?.download_url);
+      //     const rawUrl = response?.data?.data?.download_url;
+      // router.push(rawUrl)
 
-    // window.open(response?.data?.data?.download_url);
-//     const rawUrl = response?.data?.data?.download_url;
-// router.push(rawUrl)
-
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setIsGenerating(false);
-  }
-};
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
 
   const {
@@ -190,25 +194,25 @@ const generateReportHandler = async () => {
           <div className="flex items-center gap-4">
             {/* <AssessmentTableAction />
           <FilterModal /> */}
-        <Button
-  onClick={generateReportHandler}
-  disabled={
-    isGenerating ||
-    assignmentsStats?.answerStats?.totalAssignments !=
-      assignmentsStats?.answerStats?.answeredYes +
-        assignmentsStats?.answerStats?.answeredNo +
-        assignmentsStats?.answerStats?.answeredNA
-  }
->
-  {isGenerating ? (
-    <span className="inline-flex items-center gap-2">
-      <Loader2 className="h-4 w-4 animate-spin" />
-      Generating report…
-    </span>
-  ) : (
-    "Generate Report"
-  )}
-</Button>
+            <Button
+              onClick={generateReportHandler}
+              disabled={
+                isGenerating ||
+                assignmentsStats?.answerStats?.totalAssignments !=
+                assignmentsStats?.answerStats?.answeredYes +
+                assignmentsStats?.answerStats?.answeredNo +
+                assignmentsStats?.answerStats?.answeredNA
+              }
+            >
+              {isGenerating ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Generating report…
+                </span>
+              ) : (
+                "Generate Report"
+              )}
+            </Button>
 
             <Button onClick={handleSave}>Save</Button>
           </div>
