@@ -16,10 +16,10 @@ const tabData = [
   //   value: "/ai-reports/scheduled",
   //   label: "Scheduled Reports",
   // },
-  {
-    value: "/ai-reports/new",
-    label: "New Reports",
-  },
+  // {
+  //   value: "/ai-reports/new",
+  //   label: "New Reports",
+  // },
 ];
 
 const ReportsLayout = ({ children }: React.PropsWithChildren) => {

@@ -20,6 +20,7 @@ import {
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 interface Props<T> {
   header: Header<T, unknown>;
@@ -56,15 +57,19 @@ const DataTableFilterHeader = <T,>({ header, title }: Props<T>) => {
         <DropdownMenu>
           <DropdownMenuTrigger
             disabled={!canSort}
-            className="flex items-center justify-between w-full text-left"
+            className={cn("flex items-center justify-between w-full text-left")}
           >
             <span className="truncate">{title}</span>
-            {isSorted === "asc" ? (
-              <ArrowUpIcon className="ml-2 size-4" />
-            ) : isSorted === "desc" ? (
-              <ArrowDownIcon className="ml-2 size-4" />
-            ) : (
-              <ArrowUpDownIcon className="ml-2 size-4 text-muted-foreground" />
+            {canSort && (
+              <span>
+                {isSorted === "asc" ? (
+                  <ArrowUpIcon className="ml-2 size-4" />
+                ) : isSorted === "desc" ? (
+                  <ArrowDownIcon className="ml-2 size-4" />
+                ) : (
+                  <ArrowUpDownIcon className="ml-2 size-4 text-muted-foreground" />
+                )}
+              </span>
             )}
           </DropdownMenuTrigger>
 
