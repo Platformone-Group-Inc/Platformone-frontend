@@ -2,6 +2,7 @@
 
 
 import axios, { AxiosError } from "axios";
+import API from "../axios-client";
 
 export const getChatRemediationQueryFn = async (
   chat_history: any[] = [],
@@ -27,4 +28,17 @@ export const getChatRemediationQueryFn = async (
     }
     throw new Error(`Unexpected error: ${(error as Error).message}`);
   }
+};
+
+
+export const getReportVersions = async (
+  organizationId?: string,
+  opts?: { page?: number; limit?: number }
+) => {
+  const { page = 1, limit = 10 } = opts ?? {};
+  const res = await API.get<any>(
+    `/report/versions/${encodeURIComponent(organizationId || '')}`,
+    { params: { page, limit } }
+  );
+  return res.data;
 };

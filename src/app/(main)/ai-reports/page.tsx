@@ -29,6 +29,8 @@ import DataTableHeader from "@/components/data-table/data-table-header";
 
 import { Badge } from "@/components/ui/badge";
 import DataTableLoadingSkeleton from "@/components/data-table/data-table-loading-skeleton";
+import { getReportVersions } from "@/services/operations/Ai";
+import { useAuthContext } from "@/context/auth-provider";
 
 interface IDocument {
   id: string;
@@ -57,6 +59,9 @@ const getFakeData = async (): Promise<IDocument[]> => {
 
 const AiReports = () => {
   const [globalFilter, setGlobalFilter] = useState("");
+  const { user, isLoading: authLoading } = useAuthContext();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const { data, isLoading } = useQuery({
     queryKey: ["my-work"],
     queryFn: async () => {
@@ -64,6 +69,13 @@ const AiReports = () => {
       return data;
     },
   });
+
+  const { data: reportVersions, isLoading: reportVersionsLoading } =  useQuery({
+    queryKey: ["report-versions", user?.organization, page, limit],
+    queryFn: () => getReportVersions(user?.organization, { page:1  , limit:10 }),
+    enabled: !!user?.organization
+  });
+console.log(reportVersions, 'reportVersions')
 
   const columns: ColumnDef<IDocument>[] = useMemo(
     () => [
