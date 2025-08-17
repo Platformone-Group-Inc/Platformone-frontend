@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 import {
@@ -40,6 +40,7 @@ import DataTableFilterHeader from "@/components/data-table/data-table-filter-hea
 import { Button } from "@/components/ui/button";
 import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
 import { TableHead } from "@/components/ui/table";
+import { useSearchParams } from "next/navigation";
 
 export interface ReportResponse {
   success: boolean;
@@ -87,7 +88,7 @@ const RowAction: React.FC<{ report: IDocument }> = ({ report }) => {
   };
 
   return (
-    <Button variant={"transparent"} size={"icon"} onClick={handleDownload}>
+    <Button variant={"transparent"} size={"icon"} disabled={report.status !== "completed"} onClick={handleDownload}>
       <DownloadIcon size={16} />
     </Button>
     // <DropdownMenu>
@@ -112,21 +113,28 @@ const RowAction: React.FC<{ report: IDocument }> = ({ report }) => {
 const AiReports = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const { user } = useAuthContext();
-
+  const searchParams = useSearchParams();
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
   const [limit, setLimit] = useQueryState(
     "limit",
     parseAsInteger.withDefault(20)
   );
 
-  const { data: reportVersions, isLoading: isLoading } =
-    useQuery<ReportResponse>({
-      queryKey: ["report-versions", user?.organization, page, limit],
-      queryFn: () =>
-        getReportVersions(user?.organization, { page: 1, limit: 10 }),
-      enabled: !!user?.organization,
-    });
-  console.log(reportVersions, "reportVersions");
+  const { data: reportVersions, isLoading,refetch } = useQuery<ReportResponse>({
+    queryKey: ["report-versions", user?.organization, page, limit],
+    queryFn: () =>
+      getReportVersions(user?.organization, { page, limit }),
+    enabled: !!user?.organization,
+    refetchInterval: 120000,
+    refetchIntervalInBackground: true, 
+  });
+
+  useEffect(() => {
+    if (searchParams.get("from") === "assignment") {
+      refetch(); 
+    }
+  }, []);
+  
 
   const columns: ColumnDef<IDocument>[] = useMemo(
     () => [
