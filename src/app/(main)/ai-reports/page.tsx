@@ -38,7 +38,7 @@ import { useAuthContext } from "@/context/auth-provider";
 import { parseAsInteger, useQueryState } from "nuqs";
 import DataTableFilterHeader from "@/components/data-table/data-table-filter-header";
 import { Button } from "@/components/ui/button";
-import { DownloadIcon, EllipsisVerticalIcon } from "lucide-react";
+import { DownloadIcon, EllipsisVerticalIcon, Eye } from "lucide-react";
 import { TableHead } from "@/components/ui/table";
 import { useSearchParams } from "next/navigation";
 
@@ -87,10 +87,21 @@ const RowAction: React.FC<{ report: IDocument }> = ({ report }) => {
     window.open(report.download_url);
   };
 
+  const handleView = () => {
+    const src = encodeURIComponent(report.download_url);
+    // Office viewer renders DOCX in an iframe/tab
+    window.open(`https://view.officeapps.live.com/op/embed.aspx?src=${src}`, "_blank", "noopener,noreferrer");
+  };
+
   return (
+   <div className="flex gap-2">
     <Button variant={"transparent"} size={"icon"} disabled={report.status !== "completed"} onClick={handleDownload}>
       <DownloadIcon size={16} />
     </Button>
+       <Button variant={"transparent"} size={"icon"} disabled={report.status !== "completed"} onClick={handleView}>
+       <Eye size={16} />
+     </Button>
+   </div>
     // <DropdownMenu>
     //   <DropdownMenuTrigger asChild>
     //     <Button variant={"transparent"} size={"icon"}>
