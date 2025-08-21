@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "motion/react";
+
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -15,8 +19,9 @@ const AssessmentCard = ({ framework }: any) => {
       <div className="p-3 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           {/* TODO */}
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
+          <motion.img
+            // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
+            src="https://www.sysarc.com/wp-content/uploads/2023/05/CMMC-Logo.jpeg"
             alt=""
             className="size-10 rounded-lg"
           />

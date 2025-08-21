@@ -44,6 +44,13 @@ export function DataTablePagination<TData>({
       <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
         {currentPageSelectedCount} of {currentPageRowCount} row(s) selected.
       </div>
+      <button
+        onClick={() => {
+          console.log(pageSizeOptions);
+        }}
+      >
+        click
+      </button>
       <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
         <div className="flex items-center space-x-2">
           <p className="whitespace-nowrap font-medium text-sm">Rows per page</p>

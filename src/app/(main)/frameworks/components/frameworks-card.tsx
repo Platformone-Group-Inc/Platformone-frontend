@@ -3,6 +3,7 @@
 import RadialChart from "@/components/charts/radial-chart";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon, EllipsisIcon, Loader2Icon } from "lucide-react";
+import { motion } from "motion/react";
 
 import {
   DropdownMenu,
@@ -11,17 +12,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import API from "@/services/axios-client";
-import { useAuthContext } from "@/context/auth-provider";
 
 const FrameworksCardActions = ({ frameworkId }: { frameworkId: string }) => {
   const router = useRouter();
 
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       try {
@@ -91,12 +91,13 @@ const FrameworksCardActions = ({ frameworkId }: { frameworkId: string }) => {
 };
 
 const FrameworksCard = ({ framework }: any) => {
+  const router = useRouter();
   return (
     <div className="rounded-2xl flex flex-col justify-normal items-center gap-3 p-6 border">
       <div className="flex items-start justify-between w-full">
         <div className="flex items-center gap-1.5">
           {/* TODO */}
-          <img
+          <motion.img
             // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvJSRyd-WENuShraJJsJ22fdVvoKTztuuZ4A&s"
             src="https://www.sysarc.com/wp-content/uploads/2023/05/CMMC-Logo.jpeg"
             alt=""
@@ -122,7 +123,17 @@ const FrameworksCard = ({ framework }: any) => {
       </div>
       <hr className="w-full" />
 
-      <Button variant={"transparent"} className="text-primary-600 text-sm">
+      <Button
+        onClick={() => {
+          // console.log(framework);
+
+          router.push(
+            `/controls/info?id=${framework?._id}&name=${framework?.name}}`
+          );
+        }}
+        variant={"transparent"}
+        className="text-primary-600 text-sm"
+      >
         View Details
         <ChevronRightIcon />
       </Button>
