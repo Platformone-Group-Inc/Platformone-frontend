@@ -87,10 +87,6 @@ export const DataTableToolbar = <TData,>({
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Column Settings */}
-            <ColumnSettings table={table} />
-
-            {/* Export */}
             {onExport && (
               <Select
                 onValueChange={(value) =>
@@ -111,7 +107,7 @@ export const DataTableToolbar = <TData,>({
             {/* Bulk Delete */}
             {selectedRows.length > 0 && (
               <>
-                <Button
+                {/* <Button
                   variant="error"
                   size="sm"
                   className="h-9"
@@ -119,7 +115,7 @@ export const DataTableToolbar = <TData,>({
                 >
                   <Trash className="mr-2 h-4 w-4" />
                   Delete ({selectedRows.length})
-                </Button>
+                </Button> */}
                 <Button
                   variant="transparent"
                   size="sm"
@@ -131,6 +127,7 @@ export const DataTableToolbar = <TData,>({
                 </Button>
               </>
             )}
+            <ColumnSettings table={table} />
           </div>
         </div>
 

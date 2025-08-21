@@ -1,14 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -38,9 +30,10 @@ import { useAuthContext } from "@/context/auth-provider";
 import { parseAsInteger, useQueryState } from "nuqs";
 import DataTableFilterHeader from "@/components/data-table/data-table-filter-header";
 import { Button } from "@/components/ui/button";
-import { DownloadIcon, EllipsisVerticalIcon, Eye } from "lucide-react";
+import { DownloadIcon, Eye, EyeIcon } from "lucide-react";
 import { TableHead } from "@/components/ui/table";
 import { useSearchParams } from "next/navigation";
+import DataTableChipFilterHeader from "@/components/data-table/data-table-chip-filter-header";
 
 export interface ReportResponse {
   success: boolean;
@@ -82,45 +75,6 @@ export interface Pagination {
   prev_page: any;
 }
 
-const RowAction: React.FC<{ report: IDocument }> = ({ report }) => {
-  const handleDownload = () => {
-    window.open(report.download_url);
-  };
-
-  const handleView = () => {
-    const src = encodeURIComponent(report.download_url);
-    // Office viewer renders DOCX in an iframe/tab
-    window.open(`https://view.officeapps.live.com/op/embed.aspx?src=${src}`, "_blank", "noopener,noreferrer");
-  };
-
-  return (
-   <div className="flex gap-2">
-    <Button variant={"transparent"} size={"icon"} disabled={report.status !== "completed"} onClick={handleDownload}>
-      <DownloadIcon size={16} />
-    </Button>
-       <Button variant={"transparent"} size={"icon"} disabled={report.status !== "completed"} onClick={handleView}>
-       <Eye size={16} />
-     </Button>
-   </div>
-    // <DropdownMenu>
-    //   <DropdownMenuTrigger asChild>
-    //     <Button variant={"transparent"} size={"icon"}>
-    //       <EllipsisVerticalIcon className="size-5" />
-    //     </Button>
-    //   </DropdownMenuTrigger>
-    //   <DropdownMenuContent>
-    //     <DropdownMenuItem
-    //       onClick={handleDownload}
-    //       disabled={report.status !== "completed"}
-    //     >
-    //       <DownloadIcon />
-    //       Download
-    //     </DropdownMenuItem>
-    //   </DropdownMenuContent>
-    // </DropdownMenu>
-  );
-};
-
 const AiReports = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const { user } = useAuthContext();
@@ -131,21 +85,23 @@ const AiReports = () => {
     parseAsInteger.withDefault(20)
   );
 
-  const { data: reportVersions, isLoading,refetch } = useQuery<ReportResponse>({
+  const {
+    data: reportVersions,
+    isLoading,
+    refetch,
+  } = useQuery<ReportResponse>({
     queryKey: ["report-versions", user?.organization, page, limit],
-    queryFn: () =>
-      getReportVersions(user?.organization, { page, limit }),
+    queryFn: () => getReportVersions(user?.organization, { page, limit }),
     enabled: !!user?.organization,
     refetchInterval: 120000,
-    refetchIntervalInBackground: true, 
+    refetchIntervalInBackground: true,
   });
 
   useEffect(() => {
     if (searchParams.get("from") === "assignment") {
-      refetch(); 
+      refetch();
     }
   }, []);
-  
 
   const columns: ColumnDef<IDocument>[] = useMemo(
     () => [
@@ -161,6 +117,7 @@ const AiReports = () => {
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(!!value)
             }
+            className="mx-1"
             aria-label="Select all"
           />
         ),
@@ -184,6 +141,7 @@ const AiReports = () => {
           <DataTableFilterHeader header={header} title="Organization" />
         ),
         cell: () => reportVersions?.organization.name,
+        meta: { label: "Organization" },
       },
       {
         id: "report-id",
@@ -191,38 +149,90 @@ const AiReports = () => {
           <DataTableFilterHeader header={header} title="Report ID" />
         ),
         cell: ({ row }) => row.original.report_id,
+        meta: { label: "Report ID" },
       },
       {
+        id: "version",
         accessorKey: "version",
         header: ({ header }) => (
           <DataTableFilterHeader header={header} title="Version" />
         ),
+        meta: { label: "Version" },
       },
 
       {
+        id: "author",
         accessorKey: "author",
         header: ({ header }) => (
           <DataTableFilterHeader header={header} title="Author" />
         ),
+        meta: { label: "Author" },
       },
       {
+        id: "status",
         accessorKey: "status",
         header: ({ header }) => (
-          <DataTableFilterHeader header={header} title="Status" />
+          <DataTableChipFilterHeader
+            header={header}
+            title="Status"
+            options={["completed", "incomplete"]}
+          />
         ),
         cell: ({ row }) => (
           <Badge className="capitalize">{row.original.status}</Badge>
         ),
+        meta: { label: "Status" },
       },
+
       {
-        id: "action",
+        id: "download",
         header: ({ header }) => (
-          <DataTableFilterHeader header={header} title="Actions" />
+          <DataTableFilterHeader header={header} title="Download" />
         ),
-        cell: ({ row }) => <RowAction report={row.original} />,
+        cell: ({ row }) => (
+          <Button
+            variant={"transparent"}
+            size={"icon"}
+            disabled={row.original.status !== "completed"}
+            onClick={() => {
+              window.open(row.original.download_url);
+            }}
+          >
+            <DownloadIcon size={16} />
+          </Button>
+        ),
         enableHiding: false,
         enableResizing: false,
         enableSorting: false,
+        meta: { label: "Actions" },
+      },
+      {
+        id: "view",
+        header: ({ header }) => (
+          <DataTableFilterHeader header={header} title="View" />
+        ),
+        cell: ({ row }) => (
+          <Button
+            variant={"transparent"}
+            size={"icon"}
+            disabled={row.original.status !== "completed"}
+            onClick={() => {
+              const src = encodeURIComponent(row.original.download_url);
+              // Office viewer renders DOCX in an iframe/tab
+              window.open(
+                `https://view.officeapps.live.com/op/embed.aspx?src=${src}`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }}
+          >
+            <EyeIcon size={16} />
+          </Button>
+        ),
+        enableHiding: false,
+        enableResizing: false,
+        enableSorting: false,
+        meta: { label: "Actions" },
       },
     ],
     [reportVersions?.organization.name]
@@ -241,6 +251,10 @@ const AiReports = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
+
+    onColumnOrderChange: setColumnOrder,
+    onGlobalFilterChange: setGlobalFilter,
+    getFilteredRowModel: getFilteredRowModel(),
     onPaginationChange: (updater) => {
       const newPagination =
         typeof updater === "function"
@@ -249,9 +263,13 @@ const AiReports = () => {
       setPage(newPagination.pageIndex);
       setLimit(newPagination.pageSize);
     },
-    onColumnOrderChange: setColumnOrder,
-    onGlobalFilterChange: setGlobalFilter,
-    getFilteredRowModel: getFilteredRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: page,
+        pageSize: limit,
+      },
+    },
+
     state: {
       globalFilter,
       sorting,
@@ -262,6 +280,11 @@ const AiReports = () => {
       columnOrder,
     },
     enableSortingRemoval: false,
+    rowCount: 20,
+    pageCount: 2, // need to change
+    defaultColumn: {
+      minSize: 200,
+    },
   });
 
   const visibleColumns = table.getVisibleLeafColumns();
@@ -281,6 +304,7 @@ const AiReports = () => {
       >
         click
       </button> */}
+
       <div className="p-4 flex-1 space-y-4 flex flex-col">
         {/* Filter / Search / Actions */}
         <DataTableToolbar
