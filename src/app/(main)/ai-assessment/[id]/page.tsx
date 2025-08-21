@@ -2,10 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 // import { InfoCircle } from "iconsax-react";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ChevronLeft,
+  ChevronLeftIcon,
+  ChevronRight,
+  ChevronRightIcon,
+  ChevronsLeft,
+  ChevronsRight,
+  Loader2,
+} from "lucide-react";
 import { useState, useEffect } from "react";
-import { parseAsInteger, useQueryState } from "nuqs";
-import { useSearchParams } from 'next/navigation'
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { useSearchParams } from "next/navigation";
 import AssessmentTable from "../components/assesment-table";
 // import FilterModal from "../components/modals/filter-modal";
 // import AssessmentTableAction from "../components/table-actions";
@@ -30,28 +39,31 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/auth-provider";
 import toast from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
 const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const { user, isLoading: authLoading } = useAuthContext();
   const [isGenerating, setIsGenerating] = useState(false);
   // console.log(user, 'user')
-  const npage = searchParams.get('page')
-  const [jumpToPage, setJumpToPage] = useState('');
+
+  const [jumpToPage, setJumpToPage] = useState("");
+
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [pageSize, setPageSize] = useQueryState(
     "pageSize",
-    parseAsInteger.withDefault(10)
+    parseAsInteger.withDefault(20)
   );
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
-    {}
-  );
-  const [originalAnswers, setOriginalAnswers] = useState<Record<string, "yes" | "no" | "n/a" | undefined>>(
-    {}
-  );
+
+  const [answers, setAnswers] = useState<
+    Record<string, "yes" | "no" | "n/a" | undefined>
+  >({});
+  const [originalAnswers, setOriginalAnswers] = useState<
+    Record<string, "yes" | "no" | "n/a" | undefined>
+  >({});
 
   function toSafeUrl(rawUrl: string) {
     const u = new URL(rawUrl);
@@ -86,7 +98,6 @@ const Page = () => {
       // window.open(response?.data?.data?.download_url);
       //     const rawUrl = response?.data?.data?.download_url;
       // router.push(rawUrl)
-
     } catch (error) {
       console.error(error);
     } finally {
@@ -94,14 +105,14 @@ const Page = () => {
     }
   };
 
-
   const {
     data: assignments,
     isLoading: assignmentsLoading,
     error: assignmentsError,
   } = useQuery({
     queryKey: ["assignments", params.id, page, pageSize],
-    queryFn: () => getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
+    queryFn: () =>
+      getAssignmentsByOrganizationQueryFn(params.id as string, page, pageSize),
     enabled: !!params.id,
   });
 
@@ -121,10 +132,16 @@ const Page = () => {
 
   useEffect(() => {
     if (assignments?.assignments && assignments?.assignments?.length > 0) {
-      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> = {};
+      const existingAnswers: Record<string, "yes" | "no" | "n/a" | undefined> =
+        {};
       assignments?.assignments?.forEach((assignment: any) => {
-        const answer = assignment.answer || assignment.response || assignment.value;
-        if (answer && answer !== "" && (answer === "yes" || answer === "no" || answer === "n/a")) {
+        const answer =
+          assignment.answer || assignment.response || assignment.value;
+        if (
+          answer &&
+          answer !== "" &&
+          (answer === "yes" || answer === "no" || answer === "n/a")
+        ) {
           existingAnswers[assignment._id] = answer;
         } else {
           existingAnswers[assignment._id] = undefined;
@@ -144,8 +161,12 @@ const Page = () => {
 
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["assignments", params.id, page, pageSize] });
-      queryClient.invalidateQueries({ queryKey: ["assignmentsStats", params.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["assignments", params.id, page, pageSize],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["assignmentsStats", params.id],
+      });
       setOriginalAnswers({ ...answers });
     },
     onError: (error) => {
@@ -199,9 +220,9 @@ const Page = () => {
               disabled={
                 isGenerating ||
                 assignmentsStats?.answerStats?.totalAssignments !=
-                assignmentsStats?.answerStats?.answeredYes +
-                assignmentsStats?.answerStats?.answeredNo +
-                assignmentsStats?.answerStats?.answeredNA
+                  assignmentsStats?.answerStats?.answeredYes +
+                    assignmentsStats?.answerStats?.answeredNo +
+                    assignmentsStats?.answerStats?.answeredNA
               }
             >
               {isGenerating ? (
@@ -239,124 +260,83 @@ const Page = () => {
         assignments={assignments?.assignments || []}
       />
 
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-2 px-4 gap-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          {/* Rows per page */}
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-medium whitespace-nowrap">
+      <div
+        className={cn(
+          "flex w-full flex-col-reverse items-center justify-between gap-4 overflow-auto p-1 sm:flex-row sm:gap-8"
+        )}
+      >
+        <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
+          {page} of {pageSize} row(s) selected.
+        </div>
+
+        <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
+          <div className="flex items-center space-x-2">
+            <p className="whitespace-nowrap font-medium text-sm">
               Rows per page
             </p>
             <Select
               value={pageSize.toString()}
-              onValueChange={(num) => setPageSize(Number(num))}
+              onValueChange={(value) => {
+                setPageSize(parseInt(value));
+              }}
             >
-              <SelectTrigger className="h-8 w-[80px]">
-                <SelectValue />
+              <SelectTrigger className="h-8 w-[4.5rem] [&[data-size]]:h-8">
+                <SelectValue placeholder={pageSize} />
               </SelectTrigger>
               <SelectContent side="top">
-                {[10, 20, 25, 50, 100].map((size) => (
-                  <SelectItem key={size} value={size.toString()}>
-                    {size}
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-
-          {/* Page info */}
-          <div className="text-sm font-medium whitespace-nowrap">
-
-            {/* TODO add final page */}
-            Page {page} of 50
-
+          <div className="flex items-center justify-center font-medium text-sm">
+            Page {page} of {100}
           </div>
-
-          {/* Jump to page */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium whitespace-nowrap">
-              Jump to:
-            </span>
-            {/* TODO kr dena sir */}
-            <Input
-              type="number"
-              value={jumpToPage}
-              placeholder="Page #"
-              min={1}
-              max={totalPages}
-              onChange={(e) => setJumpToPage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleJumpToPage();
-              }}
-              className="h-8 w-20"
-            />
+          <div className="flex items-center space-x-2">
             <Button
+              aria-label="Go to first page"
               variant="outline"
-              size="sm"
-              onClick={handleJumpToPage}
-              disabled={
-                !jumpToPage ||
-                isNaN(Number(jumpToPage)) ||
-                Number(jumpToPage) < 1 ||
-                Number(jumpToPage) > totalPages
-              }
+              size="icon"
+              className="hidden size-8 lg:flex"
+              onClick={() => setPageSize((s) => s - 1)}
+              // disabled={!table.getCanPreviousPage()}
             >
-              Go
+              <ChevronsLeft size={16} />
             </Button>
+            <Button
+              aria-label="Go to previous page"
+              variant="outline"
+              size="icon"
+              className="size-8"
+              onClick={() => setPageSize((s) => s - 1)}
+              // disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft size={16} />
+            </Button>
+            <Button
+              aria-label="Go to next page"
+              variant="outline"
+              size="icon"
+              className="size-8"
+              onClick={() => setPageSize((s) => s + 1)}
+              // disabled={!table.getCanNextPage()}
+            >
+              <ChevronRight size={16} />
+            </Button>
+            <Button
+              aria-label="Go to last page"
+              variant="outline"
+              size="icon"
+              className="hidden size-8 lg:flex"
 
+              // disabled={!table.getCanNextPage()}
+            >
+              <ChevronsRight size={16} />
+            </Button>
           </div>
-
-          {/* Row info */}
-          <div className="hidden sm:flex text-sm text-muted-foreground whitespace-nowrap">
-            {/* Showing {startRow} to {endRow} of {totalCount} entries */}
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center gap-2 self-end lg:self-auto">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setPage(1);
-            }}
-            disabled={page === 1}
-            aria-label="First Page"
-          >
-            First
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setPage(page - 1);
-            }}
-            disabled={page === 1}
-            aria-label="Previous Page"
-          >
-            <ChevronLeftIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setPage(page + 1);
-            }}
-            disabled={page === assignments?.meta?.totalPages}
-            aria-label="Next Page"
-          >
-            <ChevronRightIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setPage(10);
-            }}
-            disabled={page === assignments?.meta?.totalPages}
-            aria-label="Last Page"
-          >
-            Last
-          </Button>
         </div>
       </div>
     </div>
