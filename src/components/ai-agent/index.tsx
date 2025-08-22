@@ -9,7 +9,12 @@ import { Button } from "../ui/button";
 import { ChevronRightIcon, SendIcon } from "lucide-react";
 import AiIcon from "../icons/ai-icon";
 import { useAiChatBoxStore } from "@/store/useAiChatBoxStore";
-import { getChatRemediationQueryFn } from "@/services/operations/Ai";
+import { 
+  getChatRemediationQueryFn, 
+  getChatResponse, 
+  getChatRemediationComplete,
+  type ChatMessage as ApiChatMessage 
+} from "@/services/operations/Ai";
 import { formatMessageContent } from "@/lib/formatMessageContent";
 
 interface ChatMessage {
@@ -22,7 +27,7 @@ interface ChatMessage {
 
 interface StoredChatData {
   messages: ChatMessage[];
-  apiChatHistory: any[];
+  apiChatHistory: ApiChatMessage[];
   expiry: number;
 }
 
@@ -102,13 +107,13 @@ const AiChatBox = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
-      content: "Hello! How can I help you today?",
+      content: "Hello! How can I help you with CMMC compliance today?",
       sender: "ai",
       timestamp: Date.now(),
     }
   ]);
 
-  const [apiChatHistory, setApiChatHistory] = useState<any[]>([]);
+  const [apiChatHistory, setApiChatHistory] = useState<ApiChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
@@ -208,13 +213,36 @@ const AiChatBox = () => {
     setIsLoading(true);
 
     try {
-      // Call your existing API
-      const response = await getChatRemediationQueryFn(
+      // Step 1: Get task ID
+      const chatResponse = await getChatRemediationQueryFn(
         apiChatHistory, 
         userMessageContent
       );
 
-      const responseText = response.response || "I apologize, but I couldn't generate a response. Please try again.";
+      // Step 2: Poll for task completion
+      let taskStatus;
+      let attempts = 0;
+      const maxAttempts = 30; // Maximum 30 attempts (30 seconds)
+      
+      while (attempts < maxAttempts) {
+        taskStatus = await getChatResponse(chatResponse.task_id);
+        
+        if (taskStatus.status === "SUCCESS") {
+          break;
+        } else if (taskStatus.status === "FAILED") {
+          throw new Error("Task failed to complete");
+        }
+        
+        // Wait 1 second before next attempt
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        attempts++;
+      }
+      
+      if (!taskStatus || taskStatus.status !== "SUCCESS") {
+        throw new Error("Task timed out after 30 seconds");
+      }
+
+      const responseText = taskStatus.result?.response || "I apologize, but I couldn't generate a response. Please try again.";
       
       // Create streaming AI message
       const streamingMessageId = Date.now() + 1;
@@ -230,8 +258,8 @@ const AiChatBox = () => {
       setMessages((prev) => [...prev, streamingMessage]);
       
       // Update chat history if provided
-      if (response.chat_history) {
-        setApiChatHistory(response.chat_history);
+      if (taskStatus.result?.chat_history) {
+        setApiChatHistory(taskStatus.result.chat_history);
       }
 
     } catch (error) {

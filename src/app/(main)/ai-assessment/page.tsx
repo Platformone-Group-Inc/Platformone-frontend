@@ -4,7 +4,9 @@ import AssessmentCard from "./components/assessment-card";
 import { getFrameworksByOrganizationQueryFn } from "@/services/operations/Framework";
 import { useAuthContext } from "@/context/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const AiAssessment = () => {
   const { user, isLoading: authLoading } = useAuthContext();
@@ -17,10 +19,18 @@ const AiAssessment = () => {
   return (
     <div className="@container">
       <div className="p-6 border-b">
-        <h1 className="font-semibold text-xl inline-flex items-center gap-2">
-          Ai Assessment
-          <InfoIcon className="" size={16} />
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="font-semibold text-xl inline-flex items-center gap-2">
+            Ai Assessment
+            <InfoIcon className="" size={16} />
+          </h1>
+          <Link href="/ai-assessment/test-chat">
+            <Button variant="outline" className="inline-flex items-center gap-2">
+              <MessageSquare size={16} />
+              Test AI Chat
+            </Button>
+          </Link>
+        </div>
       </div>
       <div className="py-4 space-y-4 px-6 @container">
         <h2 className="text-base font-medium ">

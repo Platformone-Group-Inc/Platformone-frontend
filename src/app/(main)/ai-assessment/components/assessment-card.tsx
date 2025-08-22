@@ -12,8 +12,25 @@ import {
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 import RadialChart from "@/components/charts/radial-chart";
+import { useQuery } from "@tanstack/react-query";
+import { getStatsByFramework } from "@/services/operations/Stats";
 
 const AssessmentCard = ({ framework }: any) => {
+  const {
+    data: myStats,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["stats", framework._id],
+    queryFn: () => getStatsByFramework(framework._id),
+    enabled: !!framework._id,
+  }); 
+  
+  const completionPct = Math.max(
+    0,
+    Math.min(100, Number(myStats?.
+      statistics?.totalCompletedInPercentage ?? 0))
+  );
   return (
     <div className="w-full border rounded-2xl divide-y">
       <div className="p-3 flex items-center justify-between">
@@ -75,7 +92,7 @@ const AssessmentCard = ({ framework }: any) => {
       </div>
       {/* <div className="h-20" /> */}
       <div className="flex items-center justify-center p-4">
-        <RadialChart value={68} />
+        <RadialChart value={completionPct} />
       </div>
       <div className="flex flex-col p-3">
         <Link
