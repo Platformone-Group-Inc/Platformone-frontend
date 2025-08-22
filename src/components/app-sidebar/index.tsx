@@ -110,14 +110,18 @@ const AppSidebar = () => {
         {/* Sidebar items with stagger */}
         <ScrollArea className="-mr-3">
           <motion.div
-            layout
             variants={containerVariants}
             initial="hidden"
             animate="show"
             className="flex flex-col gap-2 max-h-[calc(100vh-5rem)]"
           >
             {SIDEBAR_DATA.map((item, i) => (
-              <motion.div key={i} variants={itemVariants}>
+              <motion.div
+                key={i}
+                layout="position"
+                layoutId={`nav-item-${i}`}
+                variants={itemVariants}
+              >
                 <Tooltip>
                   <SidebarItem item={item} />
                 </Tooltip>

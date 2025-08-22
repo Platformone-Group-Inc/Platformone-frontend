@@ -4,6 +4,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tag, TagInput } from "emblor";
+import { InfoIcon } from "lucide-react";
 import { useState } from "react";
 
 const tags = [
@@ -19,7 +20,10 @@ const SecurityPersonnel = () => {
   return (
     <>
       <div className="space-y-2">
-        <h2 className="text-base font-semibold">Security Personnel</h2>
+        <h2 className="text-base font-semibold inline-flex items-center gap-2">
+          Security Personnel
+          <InfoIcon className="" size={16} />
+        </h2>
         <p className="text-sm text-gray-600">
           Provide the names & contact details of key information security
           personnel.

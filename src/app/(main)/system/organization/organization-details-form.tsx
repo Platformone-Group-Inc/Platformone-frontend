@@ -8,7 +8,7 @@ import {
   DropzoneEmptyState,
 } from "@/components/ui/dropzone";
 import { Input } from "@/components/ui/input";
-import { TrashIcon } from "lucide-react";
+import { InfoIcon, TrashIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import { XIcon, SaveIcon } from "lucide-react";
@@ -96,7 +96,10 @@ const OrganizationDetailsForm = () => {
       </form>
       <div className="space-y-2">
         {/* TODO change to smectic tag */}
-        <p className="text-base font-semibold">Upload Image</p>
+        <p className="text-base font-semibold inline-flex items-center gap-2">
+          Upload Image
+          <InfoIcon className="" size={16} />
+        </p>
         <p className="text-sm text-gray-600">
           Provide your organization&apos;s name and address that will appear on
           various reports requiring this information.

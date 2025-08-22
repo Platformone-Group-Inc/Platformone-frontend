@@ -26,6 +26,7 @@ import { technologiesOption } from "./data";
 import { getTechnologyQueryFn } from "@/services/operations/Technology";
 import { useTechnologyMutation } from "@/services/mutations/Technology";
 import { Input } from "@/components/ui/input";
+import { InfoIcon } from "lucide-react";
 
 type FormData = Record<string, string>;
 
@@ -348,7 +349,11 @@ const TechnologiesPage = () => {
                     key={item.value}
                     className="border p-4 rounded-xl space-y-2"
                   >
-                    <Label className="font-semibold">{item.label}</Label>
+                    <Label className="font-semibold inline-flex items-center gap-2">
+                      {item.label}
+
+                      <InfoIcon className="" size={16} />
+                    </Label>
                     {item?.description && (
                       <p className="text-xs">{item.description}</p>
                     )}
