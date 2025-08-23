@@ -324,15 +324,6 @@ const Page = () => {
                 "Generate Report"
               )}
             </Button>
-
-            {/* Manual save button */}
-            <Button
-              onClick={handleSave}
-              disabled={saveStatus === "saved" || saveStatus === "pending"}
-            >
-              {saveStatus === "saving" && <Loader2 className="animate-spin" />}
-              Save Changes
-            </Button>
           </div>
         </div>
         <div className="pb-4 border-b px-6">
