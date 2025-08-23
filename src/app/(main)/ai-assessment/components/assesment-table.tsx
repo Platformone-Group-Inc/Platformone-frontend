@@ -147,8 +147,8 @@ const AssessmentTable = ({
   onSelectAll,
   selectAll,
 }: AssessmentTableProps) => {
-  const isIndeterminate =
-    selectedRows.size > 0 && selectedRows.size < assignments.length;
+  // const isIndeterminate =
+  //   selectedRows.size > 0 && selectedRows.size < assignments.length;
 
   return (
     <div className="@container w-full overflow-hidden flex flex-col h-full">

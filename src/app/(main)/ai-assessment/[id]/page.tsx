@@ -7,11 +7,17 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ClockIcon,
   Loader2,
+  Check,
+  TriangleAlertIcon,
+  Loader2Icon,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
+import { parseAsInteger, useQueryState } from "nuqs";
+
+import { useDebouncedCallback } from "@mantine/hooks";
+
 import AssessmentTable from "../components/assesment-table";
 import { useParams, useRouter } from "next/navigation";
 import { useSubmitAssignment } from "@/services/mutations/Assignment";
@@ -22,7 +28,6 @@ import {
   getAssignmentStatQueryFn,
   getReportQueryFn,
 } from "@/services/operations/Assignments";
-import FallbackLoader from "@/components/other/fallback-loader";
 
 import {
   Select,
@@ -31,7 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/auth-provider";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
@@ -40,11 +45,11 @@ const Page = () => {
   const router = useRouter();
   const params = useParams();
   const queryClient = useQueryClient();
-  const searchParams = useSearchParams();
+
   const { user } = useAuthContext();
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const [jumpToPage, setJumpToPage] = useState("");
+  // const [jumpToPage, setJumpToPage] = useState("");
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [selectAll, setSelectAll] = useState(false);
 
@@ -57,6 +62,11 @@ const Page = () => {
   const [answers, setAnswers] = useState<
     Record<string, "yes" | "no" | "n/a" | undefined>
   >({});
+
+  const [saveStatus, setSaveStatus] = useState<
+    "saved" | "saving" | "pending" | "error"
+  >("saved");
+
   const [originalAnswers, setOriginalAnswers] = useState<
     Record<string, "yes" | "no" | "n/a" | undefined>
   >({});
@@ -149,13 +159,13 @@ const Page = () => {
     }
   }, [selectedRows, currentPageData]);
 
-  const handleJumpToPage = () => {
-    const num = Number(jumpToPage);
-    if (num >= 1 && num <= totalPages) {
-      setPage(num);
-      setJumpToPage("");
-    }
-  };
+  // const handleJumpToPage = () => {
+  //   const num = Number(jumpToPage);
+  //   if (num >= 1 && num <= totalPages) {
+  //     setPage(num);
+  //     setJumpToPage("");
+  //   }
+  // };
 
   useEffect(() => {
     if (assignments?.assignments && assignments?.assignments?.length > 0) {
@@ -179,13 +189,6 @@ const Page = () => {
     }
   }, [assignments]);
 
-  const handleAnswerChange = (id: string, value: "yes" | "no" | "n/a") => {
-    setAnswers((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
   const submitAssignment = useSubmitAssignment({
     onSuccess: (data) => {
       queryClient.invalidateQueries({
@@ -201,7 +204,8 @@ const Page = () => {
     },
   });
 
-  const handleSave = () => {
+  // Create the save function
+  const saveChanges = useCallback(async () => {
     const changedAnswers = Object.entries(answers)
       .filter(([_id, answer]) => {
         return originalAnswers[_id] !== answer;
@@ -210,10 +214,51 @@ const Page = () => {
         _id,
         answer: answer as string,
       }));
+
     if (changedAnswers.length > 0) {
-      submitAssignment.mutate(changedAnswers);
+      setSaveStatus("saving");
+      try {
+        await submitAssignment.mutateAsync(changedAnswers);
+        setSaveStatus("saved");
+      } catch (error) {
+        setSaveStatus("error");
+        console.error("Save failed:", error);
+      }
     }
+  }, [answers, originalAnswers]);
+
+  // Debounced version for auto-save
+  const debouncedSave = useDebouncedCallback(saveChanges, 1000);
+
+  // Handle answer changes
+  const handleAnswerChange = (
+    id: string,
+    answer: "yes" | "no" | "n/a" | undefined
+  ) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [id]: answer,
+    }));
+
+    // Set status to pending when user makes changes
+    setSaveStatus("pending");
+
+    // Trigger auto-save
+    debouncedSave();
   };
+
+  // Manual save (immediate)
+  const handleSave = async () => {
+    debouncedSave.cancel(); // Cancel pending auto-save
+    await saveChanges(); // Save immediately
+  };
+
+  // Optional: Reset error status when user makes new changes
+  // const resetErrorStatus = () => {
+  //   if (saveStatus === "error") {
+  //     setSaveStatus("pending");
+  //   }
+  // };
 
   // Bulk operations for selected rows
   const handleBulkAnswer = (value: "yes" | "no" | "n/a") => {
@@ -280,7 +325,14 @@ const Page = () => {
               )}
             </Button>
 
-            <Button onClick={handleSave}>Save</Button>
+            {/* Manual save button */}
+            <Button
+              onClick={handleSave}
+              disabled={saveStatus === "saved" || saveStatus === "pending"}
+            >
+              {saveStatus === "saving" && <Loader2 className="animate-spin" />}
+              Save Changes
+            </Button>
           </div>
         </div>
         <div className="pb-4 border-b px-6">
